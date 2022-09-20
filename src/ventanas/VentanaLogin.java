@@ -27,6 +27,8 @@ import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 
 public class VentanaLogin {
+	
+	// estoy en login-window
 
 	private JFrame frame;
 	private JTextField textField;
