@@ -31,6 +31,8 @@ public class VentanaLogin {
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
+	
+	// buenos dias
 
 	/**
 	 * Launch the application.
