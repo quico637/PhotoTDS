@@ -36,7 +36,7 @@ public class VentanaLogin {
 
 	// prueba para ver si se cambia de rama
 	
-	//Peckicos
+	//Al yotaeisei no le piden pass
 	
 	
 	/**
