@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.Toolkit;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
@@ -25,6 +29,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
 
 public class VentanaLogin {
 	
@@ -68,7 +74,7 @@ public class VentanaLogin {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/imagenes/picture.png")));
-		frame.setBounds(100, 100, 516, 381);
+		frame.setBounds(100, 100, 629, 472);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
 		
@@ -91,10 +97,10 @@ public class VentanaLogin {
 		JPanel panel_2 = new JPanel();
 		frame.getContentPane().add(panel_2, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{15, 0, 0, 0, 15, 0};
-		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		
 		JLabel lblNewLabel_1 = new JLabel("Usuario:");
@@ -102,7 +108,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 1;
+		gbc_lblNewLabel_1.gridy = 0;
 		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		textField = new JTextField();
@@ -111,7 +117,7 @@ public class VentanaLogin {
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.fill = GridBagConstraints.BOTH;
 		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 1;
+		gbc_textField.gridy = 0;
 		panel_2.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
@@ -120,7 +126,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2.gridx = 1;
-		gbc_lblNewLabel_2.gridy = 2;
+		gbc_lblNewLabel_2.gridy = 1;
 		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		textField_1 = new JTextField();
@@ -128,7 +134,7 @@ public class VentanaLogin {
 		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 2;
+		gbc_textField_1.gridy = 1;
 		panel_2.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 		
@@ -137,21 +143,41 @@ public class VentanaLogin {
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1.gridx = 3;
-		gbc_btnNewButton_1.gridy = 2;
+		gbc_btnNewButton_1.gridy = 1;
 		panel_2.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 2;
-		gbc_scrollPane.gridy = 3;
+		gbc_scrollPane.gridy = 2;
 		panel_2.add(scrollPane, gbc_scrollPane);
 		
 		JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_1.gridx = 2;
+		gbc_scrollPane_1.gridy = 3;
+		panel_2.add(scrollPane_1, gbc_scrollPane_1);
+		
+		JList list = new JList();
+		scrollPane_1.setViewportView(list);
+		list.setModel(new AbstractListModel() {
+			List<String> values = (List<String>) Arrays.asList(new String[]{"Opcion1", "Opcion2", "Opcion3", "Opcion4", "Opcion5", "Opcion6"});
+			public int getSize() {
+				return values.size();
+			}
+			public Object getElementAt(int index) {
+				return values.get(index);
+			}
+		});
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
