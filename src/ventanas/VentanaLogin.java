@@ -20,11 +20,24 @@ import javax.swing.JTextPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
+import java.awt.CardLayout;
 
 public class VentanaLogin {
 	
@@ -32,7 +45,9 @@ public class VentanaLogin {
 
 	private JFrame frame;
 	private JTextField textField;
+	private JPasswordField passwordField;
 	private JTextField textField_1;
+	private JPasswordField passwordField_1;
 
 	// prueba para ver si se cambia de rama
 	
@@ -73,29 +88,34 @@ public class VentanaLogin {
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(null);
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/take-a-photo (2).png")));
-		panel.add(lblNewLabel);
+		JLabel photoApp = new JLabel("PhotoApp");
+		photoApp.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/instagram.png")));
+		panel.add(photoApp);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
+		JPanel panelBottom = new JPanel();
+		panelBottom.setBorder(null);
+		frame.getContentPane().add(panelBottom, BorderLayout.SOUTH);
 		
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.setToolTipText("");
-		btnNewButton.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter.png")));
-		panel_1.add(btnNewButton);
+	
+	
 		
-		JPanel panel_2 = new JPanel();
-		frame.getContentPane().add(panel_2, BorderLayout.CENTER);
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{15, 0, 0, 0, 15, 0};
-		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		panel_2.setLayout(gbl_panel_2);
+		JPanel panelCenterCardLayout = new JPanel();
+		frame.getContentPane().add(panelCenterCardLayout, BorderLayout.CENTER);
+		panelCenterCardLayout.setLayout(new CardLayout(0, 0));
+		
+		
+		JPanel panelLogin = new JPanel();
+		panelCenterCardLayout.add(panelLogin, "panelLogin");
+		GridBagLayout gbl_panelLogin = new GridBagLayout();
+		gbl_panelLogin.columnWidths = new int[]{15, 0, 0, 0, 15, 0};
+		gbl_panelLogin.rowHeights = new int[]{50, 0, 0, 0, 0, 0};
+		gbl_panelLogin.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelLogin.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		panelLogin.setLayout(gbl_panelLogin);
 		
 		JLabel lblNewLabel_1 = new JLabel("Usuario:");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -103,17 +123,17 @@ public class VentanaLogin {
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 1;
 		gbc_lblNewLabel_1.gridy = 1;
-		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		panelLogin.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		textField = new JTextField();
+		textField.setColumns(10);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.BOTH;
 		gbc_textField.gridwidth = 2;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.BOTH;
 		gbc_textField.gridx = 2;
 		gbc_textField.gridy = 1;
-		panel_2.add(textField, gbc_textField);
-		textField.setColumns(10);
+		panelLogin.add(textField, gbc_textField);
 		
 		JLabel lblNewLabel_2 = new JLabel("Clave:");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
@@ -121,37 +141,24 @@ public class VentanaLogin {
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2.gridx = 1;
 		gbc_lblNewLabel_2.gridy = 2;
-		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		panelLogin.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 2;
-		panel_2.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		passwordField = new JPasswordField();
+		GridBagConstraints gbc_passwordField = new GridBagConstraints();
+		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
+		gbc_passwordField.gridx = 2;
+		gbc_passwordField.gridy = 2;
+		panelLogin.add(passwordField, gbc_passwordField);
+	
 		
-		JButton btnNewButton_1 = new JButton("Generar clave");
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 3;
-		gbc_btnNewButton_1.gridy = 2;
-		panel_2.add(btnNewButton_1, gbc_btnNewButton_1);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 2;
-		gbc_scrollPane.gridy = 3;
-		panel_2.add(scrollPane, gbc_scrollPane);
-		
-		JTextPane textPane = new JTextPane();
-		scrollPane.setViewportView(textPane);
+		JLabel textRegistro = new JLabel("¿No estás registrado?");
+		GridBagConstraints gbc_textRegistro = new GridBagConstraints();
+		gbc_textRegistro.anchor = GridBagConstraints.NORTH;
+		gbc_textRegistro.insets = new Insets(0, 0, 5, 5);
+		gbc_textRegistro.gridx = 3;
+		gbc_textRegistro.gridy = 3;
+		panelLogin.add(textRegistro, gbc_textRegistro);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -168,6 +175,109 @@ public class VentanaLogin {
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Salir");
 		mntmNewMenuItem_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/salida-de-emergencia.png")));
 		mnNewMenu.add(mntmNewMenuItem_1);
+		
+		JButton btnNewButton_1 = new JButton("Generar clave");
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton_1.gridx = 3;
+		gbc_btnNewButton_1.gridy = 2;
+		panelLogin.add(btnNewButton_1, gbc_btnNewButton_1);
+		
+		JPanel panelRegister = new JPanel();
+		panelCenterCardLayout.add(panelRegister, "panelRegister");
+		GridBagLayout gbl_panelRegister = new GridBagLayout();
+		gbl_panelRegister.columnWidths = new int[]{15, 0, 0, 0, 15, 0};
+		gbl_panelRegister.rowHeights = new int[]{50, 0, 0, 0, 0, 0};
+		gbl_panelRegister.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelRegister.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		panelRegister.setLayout(gbl_panelRegister);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Registerrrr");
+		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1_1.gridx = 1;
+		gbc_lblNewLabel_1_1.gridy = 1;
+		panelRegister.add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.fill = GridBagConstraints.BOTH;
+		gbc_textField_1.gridwidth = 2;
+		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_1.gridx = 2;
+		gbc_textField_1.gridy = 1;
+		panelRegister.add(textField_1, gbc_textField_1);
+		
+		JLabel lblNewLabel_2_1 = new JLabel("Clave:");
+		GridBagConstraints gbc_lblNewLabel_2_1 = new GridBagConstraints();
+		gbc_lblNewLabel_2_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_2_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2_1.gridx = 1;
+		gbc_lblNewLabel_2_1.gridy = 2;
+		panelRegister.add(lblNewLabel_2_1, gbc_lblNewLabel_2_1);
+		
+		passwordField_1 = new JPasswordField();
+		GridBagConstraints gbc_passwordField_1 = new GridBagConstraints();
+		gbc_passwordField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_passwordField_1.gridx = 2;
+		gbc_passwordField_1.gridy = 2;
+		panelRegister.add(passwordField_1, gbc_passwordField_1);
+		
+		JButton btnNewButton_1_1 = new JButton("Generar clave");
+		GridBagConstraints gbc_btnNewButton_1_1 = new GridBagConstraints();
+		gbc_btnNewButton_1_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton_1_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton_1_1.gridx = 3;
+		gbc_btnNewButton_1_1.gridy = 2;
+		panelRegister.add(btnNewButton_1_1, gbc_btnNewButton_1_1);
+		
+		JLabel textRegistro_1 = new JLabel("¿No estás registrado?");
+		GridBagConstraints gbc_textRegistro_1 = new GridBagConstraints();
+		gbc_textRegistro_1.anchor = GridBagConstraints.NORTH;
+		gbc_textRegistro_1.insets = new Insets(0, 0, 5, 5);
+		gbc_textRegistro_1.gridx = 3;
+		gbc_textRegistro_1.gridy = 3;
+		panelRegister.add(textRegistro_1, gbc_textRegistro_1);
+		
+		
+		/* BOTONES */
+		
+		JButton btnLogin = new JButton("Login");
+		btnLogin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnLogin.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter.png")));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnLogin.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter-2.png")));
+			}
+		});
+		
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
+				cl.show(panelCenterCardLayout, "panelLogin");
+			}
+		});
+		btnLogin.setToolTipText("");
+		btnLogin.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter-2.png")));
+		panelBottom.add(btnLogin);
+
+		
+		
+		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
+				cl.show(panelCenterCardLayout, "panelRegister");
+			}
+		});
+		panelBottom.add(btnRegister);
 	}
 
 }
