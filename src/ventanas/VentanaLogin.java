@@ -24,6 +24,7 @@ import javax.swing.JTextPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
@@ -31,6 +32,10 @@ import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentanaLogin {
 	
@@ -90,6 +95,17 @@ public class VentanaLogin {
 		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
 		
 		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JOptionPane.showConfirmDialog(frame, "Se fue fuerita del boton");
+			}
+		});
+		/*btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showConfirmDialog(frame, "Responda Si o No","Dialogo de Opción",JOptionPane.OK_CANCEL_OPTION );
+			}
+		});*/
 		btnNewButton.setToolTipText("");
 		btnNewButton.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter.png")));
 		panel_1.add(btnNewButton);
