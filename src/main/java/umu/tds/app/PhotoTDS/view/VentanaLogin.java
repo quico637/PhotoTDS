@@ -1,4 +1,5 @@
-package ventanas;
+package umu.tds.app.PhotoTDS.view;
+
 
 import java.awt.EventQueue;
 
@@ -35,6 +36,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
+
+// import controller.AppPhotoController;
+
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import java.awt.CardLayout;
@@ -45,7 +49,6 @@ import javax.swing.DropMode;
 
 public class VentanaLogin {
 	
-	// estoy en login-window
 
 	private JFrame frame;
 	private JTextField textField;
@@ -55,11 +58,6 @@ public class VentanaLogin {
 	private JTextField txtNombreCom;
 	private JTextField txtNombreDeUsuario;
 
-	// prueba para ver si se cambia de rama
-	
-	//Al yotaeisei no le piden pass
-	
-	
 	/**
 	 * Launch the application.
 	 */
@@ -88,7 +86,7 @@ public class VentanaLogin {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/imagenes/picture.png")));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/picture.png")));
 		frame.setBounds(100, 100, 516, 381);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
@@ -99,7 +97,7 @@ public class VentanaLogin {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel photoApp = new JLabel("PhotoApp");
-		photoApp.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/instagram.png")));
+		photoApp.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
 		panel.add(photoApp);
 		
 		JPanel panelBottom = new JPanel();
@@ -170,27 +168,24 @@ public class VentanaLogin {
 		mnNewMenu.add(separator);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Salir");
-		mntmNewMenuItem_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/salida-de-emergencia.png")));
+		mntmNewMenuItem_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/salida-de-emergencia.png")));
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
 		JButton btnNewButton_1 = new JButton("Login");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		// btnNewButton_1.addActionListener(event -> AppPhotoController.getInstancia().login());
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter.png")));
+				btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter.png")));
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter-2.png")));
+				btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
 			}
 			
 		});
-		btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/imagenes/enter-2.png")));
+		btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
