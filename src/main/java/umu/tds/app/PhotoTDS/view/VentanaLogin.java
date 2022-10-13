@@ -51,6 +51,8 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.DropMode;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.border.EmptyBorder;
+import java.awt.Font;
 
 public class VentanaLogin {
 	
@@ -72,6 +74,7 @@ public class VentanaLogin {
 				try {
 					VentanaLogin window = new VentanaLogin();
 					window.frame.setVisible(true);
+					window.frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -97,22 +100,27 @@ public class VentanaLogin {
 		}
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/picture.png")));
-		frame.setBounds(100, 100, 516, 381);
+		frame.setBounds(200, 200, 600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(null);
+		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel photoApp = new JLabel("PhotoApp");
+		photoApp.setFont(new Font("Chalkduster", Font.PLAIN, 32));
 		photoApp.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
 		panel.add(photoApp);
 		
 		JPanel panelBottom = new JPanel();
-		panelBottom.setBorder(null);
+		panelBottom.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		frame.getContentPane().add(panelBottom, BorderLayout.SOUTH);
+		
+				
+				
+				
 		
 	
 	
@@ -122,12 +130,33 @@ public class VentanaLogin {
 		panelCenterCardLayout.setLayout(new CardLayout(0, 0));
 		
 		
+		JButton btnRegister = new JButton("Register");
+		panelBottom.add(btnRegister);
+		btnRegister.addActionListener(new ActionListener() {
+			boolean login = true;
+			public void actionPerformed(ActionEvent e) {
+				if(login == true){
+					CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
+					cl.show(panelCenterCardLayout, "panelRegister");
+					btnRegister.setText("Login");
+					login = false;
+				}
+				else {
+					CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
+					cl.show(panelCenterCardLayout, "panelLogin");
+					btnRegister.setText("Register");
+					login = true;
+				}
+				
+			}
+		});
+		
 		JPanel panelLogin = new JPanel();
 		panelCenterCardLayout.add(panelLogin, "panelLogin");
 		GridBagLayout gbl_panelLogin = new GridBagLayout();
-		gbl_panelLogin.columnWidths = new int[]{15, 0, 207, 0, 15, 0};
+		gbl_panelLogin.columnWidths = new int[]{15, 0, 207, 15, 0};
 		gbl_panelLogin.rowHeights = new int[]{50, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelLogin.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelLogin.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panelLogin.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelLogin.setLayout(gbl_panelLogin);
 		
@@ -143,7 +172,6 @@ public class VentanaLogin {
 		textField.setColumns(10);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.BOTH;
-		gbc_textField.gridwidth = 2;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 2;
 		gbc_textField.gridy = 1;
@@ -181,34 +209,18 @@ public class VentanaLogin {
 		});
 		btnNewButton_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 3;
-		gbc_btnNewButton_1.gridy = 2;
+		gbc_btnNewButton_1.gridx = 2;
+		gbc_btnNewButton_1.gridy = 3;
 		panelLogin.add(btnNewButton_1, gbc_btnNewButton_1);
-		
-				
-				
-				JButton btnRegister = new JButton("Register");
-				GridBagConstraints gbc_btnRegister = new GridBagConstraints();
-				gbc_btnRegister.insets = new Insets(0, 0, 0, 5);
-				gbc_btnRegister.gridx = 2;
-				gbc_btnRegister.gridy = 6;
-				panelLogin.add(btnRegister, gbc_btnRegister);
-				btnRegister.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
-						cl.show(panelCenterCardLayout, "panelRegister");
-					}
-				});
 		
 		JPanel panelRegister = new JPanel();
 		panelCenterCardLayout.add(panelRegister, "panelRegister");
 		GridBagLayout gbl_panelRegister = new GridBagLayout();
 		gbl_panelRegister.columnWidths = new int[]{15, 0, 0, 0, 15, 0};
-		gbl_panelRegister.rowHeights = new int[]{50, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panelRegister.rowHeights = new int[]{0, 50, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelRegister.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelRegister.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelRegister.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelRegister.setLayout(gbl_panelRegister);
 		
 		JLabel lblNewLabel = new JLabel("Email:");
@@ -216,7 +228,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
+		gbc_lblNewLabel.gridy = 2;
 		panelRegister.add(lblNewLabel, gbc_lblNewLabel);
 		
 		txtEmail = new JTextField();
@@ -224,7 +236,7 @@ public class VentanaLogin {
 		gbc_txtEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_txtEmail.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEmail.gridx = 2;
-		gbc_txtEmail.gridy = 1;
+		gbc_txtEmail.gridy = 2;
 		panelRegister.add(txtEmail, gbc_txtEmail);
 		txtEmail.setColumns(10);
 		
@@ -233,7 +245,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_3.gridx = 1;
-		gbc_lblNewLabel_3.gridy = 2;
+		gbc_lblNewLabel_3.gridy = 3;
 		panelRegister.add(lblNewLabel_3, gbc_lblNewLabel_3);
 
 		txtNombreCom = new JTextField();
@@ -241,7 +253,7 @@ public class VentanaLogin {
 		gbc_txtNombreCom.insets = new Insets(0, 0, 5, 5);
 		gbc_txtNombreCom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtNombreCom.gridx = 2;
-		gbc_txtNombreCom.gridy = 2;
+		gbc_txtNombreCom.gridy = 3;
 		panelRegister.add(txtNombreCom, gbc_txtNombreCom);
 		txtNombreCom.setColumns(10);
 		
@@ -250,7 +262,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_4.gridx = 1;
-		gbc_lblNewLabel_4.gridy = 3;
+		gbc_lblNewLabel_4.gridy = 4;
 		panelRegister.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		
 		txtNombreDeUsuario = new JTextField();
@@ -258,7 +270,7 @@ public class VentanaLogin {
 		gbc_txtNombreDeUsuario.insets = new Insets(0, 0, 5, 5);
 		gbc_txtNombreDeUsuario.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtNombreDeUsuario.gridx = 2;
-		gbc_txtNombreDeUsuario.gridy = 3;
+		gbc_txtNombreDeUsuario.gridy = 4;
 		panelRegister.add(txtNombreDeUsuario, gbc_txtNombreDeUsuario);
 		txtNombreDeUsuario.setColumns(10);
 		
@@ -267,7 +279,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_5.gridx = 1;
-		gbc_lblNewLabel_5.gridy = 4;
+		gbc_lblNewLabel_5.gridy = 5;
 		panelRegister.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
 		passwordField_1 = new JPasswordField();
@@ -276,10 +288,10 @@ public class VentanaLogin {
 		gbc_passwordField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordField_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passwordField_1.gridx = 2;
-		gbc_passwordField_1.gridy = 4;
+		gbc_passwordField_1.gridy = 5;
 		panelRegister.add(passwordField_1, gbc_passwordField_1);
 		
-		JButton btnLogin = new JButton("Login");
+		JButton btnLogin = new JButton("Register");
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -293,23 +305,28 @@ public class VentanaLogin {
 		gbc_calendarLabel.anchor = GridBagConstraints.NORTHEAST;
 		gbc_calendarLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_calendarLabel.gridx = 1;
-		gbc_calendarLabel.gridy = 5;
+		gbc_calendarLabel.gridy = 6;
 		panelRegister.add(calendarLabel, gbc_calendarLabel);
 		
 		JDateChooser calendar = new JDateChooser();
+		calendar.getCalendarButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		calendar.getCalendarButton().setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/calendario.png")));
 		calendar.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_calendar = new GridBagConstraints();
 		gbc_calendar.anchor = GridBagConstraints.NORTH;
 		gbc_calendar.insets = new Insets(0, 0, 5, 5);
 		gbc_calendar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_calendar.gridx = 2;
-		gbc_calendar.gridy = 5;
+		gbc_calendar.gridy = 6;
 		panelRegister.add(calendar, gbc_calendar);
-		btnLogin.setActionCommand("Login");
+		btnLogin.setActionCommand("Register");
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
 		gbc_btnLogin.gridx = 2;
-		gbc_btnLogin.gridy = 6;
+		gbc_btnLogin.gridy = 7;
 		panelRegister.add(btnLogin, gbc_btnLogin);
 	}
 
