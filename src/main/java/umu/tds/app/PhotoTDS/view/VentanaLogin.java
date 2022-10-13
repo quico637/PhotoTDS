@@ -37,6 +37,8 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import umu.tds.app.PhotoTDS.controller.Controller;
+
 // import controller.AppPhotoController;
 
 import java.awt.FlowLayout;
@@ -172,6 +174,7 @@ public class VentanaLogin {
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
 		JButton btnNewButton_1 = new JButton("Login");
+		btnNewButton_1.addActionListener(a -> Controller.getInstancia().login());
 		// btnNewButton_1.addActionListener(event -> AppPhotoController.getInstancia().login());
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
