@@ -97,8 +97,7 @@ public class VentanaLogin {
 			System.err.println("Failed to initialize LaF");
 		}
 		frame = new JFrame();
-		frame.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/picture.png")));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
 		frame.setBounds(200, 200, 600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
@@ -109,7 +108,7 @@ public class VentanaLogin {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel photoApp = new JLabel("PhotoApp");
-		photoApp.setFont(new Font("Chalkduster", Font.PLAIN, 32));
+		photoApp.setFont(new Font("Segoe Script", Font.PLAIN, 32));
 		photoApp.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
 		panel.add(photoApp);
 
@@ -159,9 +158,9 @@ public class VentanaLogin {
 		JPanel panelLogin = new JPanel();
 		panelCenterCardLayout.add(panelLogin, "panelLogin");
 		GridBagLayout gbl_panelLogin = new GridBagLayout();
-		gbl_panelLogin.columnWidths = new int[] { 0, 15, 0, 207, 0, 15, 0 };
+		gbl_panelLogin.columnWidths = new int[] { 80, 15, 0, 207, 0, 120, 0 };
 		gbl_panelLogin.rowHeights = new int[] { 50, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panelLogin.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_panelLogin.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_panelLogin.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelLogin.setLayout(gbl_panelLogin);
 		
@@ -228,9 +227,9 @@ public class VentanaLogin {
 		JPanel panelRegister = new JPanel();
 		panelCenterCardLayout.add(panelRegister, "panelRegister");
 		GridBagLayout gbl_panelRegister = new GridBagLayout();
-		gbl_panelRegister.columnWidths = new int[] { 0, 15, 0, 0, 15, 15, 0 };
+		gbl_panelRegister.columnWidths = new int[] { 70, 15, 0, 0, 15, 80, 0 };
 		gbl_panelRegister.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panelRegister.columnWeights = new double[] { 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_panelRegister.columnWeights = new double[] { 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_panelRegister.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelRegister.setLayout(gbl_panelRegister);
 		
