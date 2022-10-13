@@ -41,6 +41,9 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.CardLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -85,6 +88,11 @@ public class VentanaLogin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		try {
+		    UIManager.setLookAndFeel("com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme");
+		} catch( Exception ex ) {
+		    System.err.println( "Failed to initialize LaF" );
+		}
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/picture.png")));
 		frame.setBounds(100, 100, 516, 381);
@@ -154,22 +162,6 @@ public class VentanaLogin {
 		gbc_passwordField.gridx = 2;
 		gbc_passwordField.gridy = 2;
 		panelLogin.add(passwordField, gbc_passwordField);
-		
-		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-		
-		JMenu mnNewMenu = new JMenu("PhotoTDS");
-		menuBar.add(mnNewMenu);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Registro");
-		mnNewMenu.add(mntmNewMenuItem);
-		
-		JSeparator separator = new JSeparator();
-		mnNewMenu.add(separator);
-		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Salir");
-		mntmNewMenuItem_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/salida-de-emergencia.png")));
-		mnNewMenu.add(mntmNewMenuItem_1);
 		
 		JButton btnNewButton_1 = new JButton("Login");
 		// btnNewButton_1.addActionListener(event -> AppPhotoController.getInstancia().login());
