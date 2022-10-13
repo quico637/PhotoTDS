@@ -231,7 +231,7 @@ public class VentanaLogin {
 		gbl_panelRegister.columnWidths = new int[] { 0, 15, 0, 0, 15, 15, 0 };
 		gbl_panelRegister.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panelRegister.columnWeights = new double[] { 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
-		gbl_panelRegister.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelRegister.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelRegister.setLayout(gbl_panelRegister);
 		
 				JLabel lblNewLabel = new JLabel("Email:");
