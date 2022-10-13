@@ -49,6 +49,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.DropMode;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 public class VentanaLogin {
 	
@@ -285,6 +287,24 @@ public class VentanaLogin {
 				cl.show(panelCenterCardLayout, "panelLogin");
 			}
 		});
+		
+		JLabel calendarLabel = new JLabel("Fecha:");
+		GridBagConstraints gbc_calendarLabel = new GridBagConstraints();
+		gbc_calendarLabel.anchor = GridBagConstraints.NORTHEAST;
+		gbc_calendarLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_calendarLabel.gridx = 1;
+		gbc_calendarLabel.gridy = 5;
+		panelRegister.add(calendarLabel, gbc_calendarLabel);
+		
+		JDateChooser calendar = new JDateChooser();
+		calendar.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_calendar = new GridBagConstraints();
+		gbc_calendar.anchor = GridBagConstraints.NORTH;
+		gbc_calendar.insets = new Insets(0, 0, 5, 5);
+		gbc_calendar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_calendar.gridx = 2;
+		gbc_calendar.gridy = 5;
+		panelRegister.add(calendar, gbc_calendar);
 		btnLogin.setActionCommand("Login");
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.insets = new Insets(0, 0, 0, 5);
