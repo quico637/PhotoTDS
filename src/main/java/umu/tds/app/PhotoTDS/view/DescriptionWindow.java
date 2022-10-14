@@ -10,6 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.TextArea;
 import java.awt.Color;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.border.EtchedBorder;
+import java.awt.Font;
 
 public class DescriptionWindow {
 
@@ -57,6 +64,7 @@ public class DescriptionWindow {
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
 		JLabel lblNewLabel = new JLabel("Add your presentation card");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		panel.add(lblNewLabel);
 		
 		Panel panel_1 = new Panel();
@@ -65,10 +73,25 @@ public class DescriptionWindow {
 		JButton btnNewButton = new JButton("Send");
 		panel_1.add(btnNewButton);
 		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		frame.getContentPane().add(panel_2, BorderLayout.CENTER);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_panel_2.rowHeights = new int[]{0, 106, 0, 0};
+		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		panel_2.setLayout(gbl_panel_2);
+		
 		TextArea textArea = new TextArea();
-		textArea.setBackground(Color.ORANGE);
-		textArea.setForeground(Color.BLACK);
-		frame.getContentPane().add(textArea, BorderLayout.CENTER);
+		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textArea.insets = new Insets(0, 0, 5, 5);
+		gbc_textArea.gridx = 1;
+		gbc_textArea.gridy = 1;
+		panel_2.add(textArea, gbc_textArea);
+		textArea.setBackground(new Color(20, 32, 49));
+		textArea.setForeground(Color.WHITE);
 	}
 
 }

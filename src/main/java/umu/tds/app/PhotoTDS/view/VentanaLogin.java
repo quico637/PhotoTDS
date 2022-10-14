@@ -59,6 +59,11 @@ import umu.tds.app.PhotoTDS.controller.Controller;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 
+/**
+ * 
+ * @author quico y JC
+ *
+ */
 public class VentanaLogin {
 
 	private JFrame frame;
