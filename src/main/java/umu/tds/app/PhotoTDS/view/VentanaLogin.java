@@ -27,6 +27,8 @@ import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -51,8 +53,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.DropMode;
+
+import com.toedter.calendar.IDateEditor;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
 
@@ -120,7 +125,7 @@ public class VentanaLogin {
 		}
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
-		frame.setBounds(200, 200, 600, 400);
+		frame.setBounds(200, 200, 656, 456);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
 
@@ -342,6 +347,15 @@ public class VentanaLogin {
 		});
 
 		JDateChooser calendar = new JDateChooser();
+		IDateEditor dateEditor = calendar.getDateEditor();
+        if (dateEditor instanceof JTextFieldDateEditor) {
+            JTextFieldDateEditor txtFld = (JTextFieldDateEditor) dateEditor;
+            txtFld.addPropertyChangeListener("foreground", event -> {
+                if (Color.BLACK.equals(event.getNewValue())) {
+                    txtFld.setForeground(Color.WHITE);
+                }
+            });
+        }
 		calendar.getCalendarButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
