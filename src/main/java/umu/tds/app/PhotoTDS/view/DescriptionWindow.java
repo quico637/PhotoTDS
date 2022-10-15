@@ -1,7 +1,6 @@
 package umu.tds.app.PhotoTDS.view;
 
 import java.awt.EventQueue;
-import java.awt.Window;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
@@ -11,18 +10,17 @@ import javax.swing.JButton;
 import java.awt.TextArea;
 import java.awt.Color;
 import javax.swing.JPanel;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
 import java.awt.Font;
 
-public class DescriptionWindow {
+public class DescriptionWindow implements Showable{
 
 	private JFrame frame;
-	private VentanaLogin lw = null;
-
+	private static DescriptionWindow instance = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -30,7 +28,7 @@ public class DescriptionWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DescriptionWindow window = new DescriptionWindow(null);
+					DescriptionWindow window = new DescriptionWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,9 +40,15 @@ public class DescriptionWindow {
 	/**
 	 * Create the application.
 	 */
-	public DescriptionWindow(VentanaLogin lw) {
-		this.lw = lw;
+	public DescriptionWindow() {
 		initialize();
+	}
+	
+	public static DescriptionWindow getInstance() {
+		if(instance == null)
+			instance = new DescriptionWindow();
+		
+		return instance;
 	}
 
 	public void showWindow() {

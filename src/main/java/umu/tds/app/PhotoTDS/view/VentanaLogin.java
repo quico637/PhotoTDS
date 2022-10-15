@@ -11,21 +11,12 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
+
+
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
@@ -33,30 +24,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 // import controller.AppPhotoController;
 
 import java.awt.FlowLayout;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.CardLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseMotionAdapter;
-import javax.swing.DropMode;
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
 
-import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 
 /**
@@ -73,7 +52,6 @@ public class VentanaLogin {
 	private JPasswordField passwordField_1;
 	private JTextField txtNombreCom;
 	private JTextField txtNombreDeUsuario;
-	private DescriptionWindow descWindow = null;
 	private JLabel lblNewLabel_7;
 	
 	
@@ -101,12 +79,9 @@ public class VentanaLogin {
 		initialize();
 	}
 	
-	public void showWindow() {
+	public void showWindow(Showable showableWindow) {
 		
-		if(descWindow == null)
-				descWindow = new DescriptionWindow(this);
-		
-		descWindow.showWindow();
+		showableWindow.showWindow();
 	}
 
 	/**
@@ -376,7 +351,7 @@ public class VentanaLogin {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showWindow();				
+				showWindow(DescriptionWindow.getInstance());			
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
