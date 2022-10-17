@@ -44,6 +44,9 @@ import java.awt.Font;
  * 
  * @author quico y JC
  *
+ *
+ *
+ *
  */
 public class VentanaLogin {
 
