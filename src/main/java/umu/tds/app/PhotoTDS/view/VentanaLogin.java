@@ -44,9 +44,6 @@ import java.awt.Font;
  * 
  * @author quico y JC
  *
- *
- *
- *
  */
 public class VentanaLogin {
 
@@ -58,6 +55,7 @@ public class VentanaLogin {
 	private JTextField txtNombreCom;
 	private JTextField txtNombreDeUsuario;
 	private JLabel lblNewLabel_7;
+	private DescriptionWindow dw;
 
 	/**
 	 * Launch the application.
@@ -80,12 +78,8 @@ public class VentanaLogin {
 	 * Create the application.
 	 */
 	public VentanaLogin() {
+		this.dw = new DescriptionWindow();
 		initialize();
-	}
-
-	public void showWindow(Showable showableWindow) {
-
-		showableWindow.showWindow();
 	}
 
 	/**
@@ -361,7 +355,7 @@ public class VentanaLogin {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showWindow(DescriptionWindow.getInstance());
+				dw.showWindow();
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();

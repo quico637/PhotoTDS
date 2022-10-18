@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import java.awt.TextArea;
 import java.awt.Color;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -19,10 +21,9 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DescriptionWindow implements Showable{
+public class DescriptionWindow {
 
 	private JFrame frame;
-	private static DescriptionWindow instance = null;
 	
 	/**
 	 * Launch the application.
@@ -47,12 +48,6 @@ public class DescriptionWindow implements Showable{
 		initialize();
 	}
 	
-	public static DescriptionWindow getInstance() {
-		if(instance == null)
-			instance = new DescriptionWindow();
-		
-		return instance;
-	}
 
 	public void showWindow() {
 		frame.setVisible(true);
@@ -63,6 +58,11 @@ public class DescriptionWindow implements Showable{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		try {
+			UIManager.setLookAndFeel("com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme");
+		} catch (Exception ex) {
+			System.err.println("Failed to initialize LaF");
+		}
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));

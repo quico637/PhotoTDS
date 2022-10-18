@@ -1,4 +1,4 @@
-package umu.tds.app.PhotoTDS.persistence.repositories;
+package umu.tds.app.PhotoTDS.model.repositories;
 
 import java.util.LinkedList;
 import java.util.List;

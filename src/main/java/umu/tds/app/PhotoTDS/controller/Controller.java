@@ -1,6 +1,6 @@
 package umu.tds.app.PhotoTDS.controller;
 
-import umu.tds.app.PhotoTDS.persistence.repositories.UserRepository;
+import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
 
 public class Controller {
 
