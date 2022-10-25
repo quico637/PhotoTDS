@@ -1,5 +1,6 @@
 package umu.tds.app.PhotoTDS.controller;
 
+import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
 
 public class Controller {
@@ -9,7 +10,7 @@ public class Controller {
 	private static Controller unicaInstancia = null;
 
 	private Controller() {
-			;
+			
 		}
 
 	public static Controller getInstancia() {
@@ -21,8 +22,16 @@ public class Controller {
 	}
 
 	public boolean login() {
-		System.out.println(UserRepository.getInstancia().getUsers());
+
 		return true;
+	}
+	
+	public void createUser(String nombre, String email) {
+		UserRepository.getInstancia().createrUser(new User(nombre, email));
+	}
+	
+	public void getAllusers() {
+		UserRepository.getInstancia().getAllUsers().stream().forEach(u -> System.out.println(u));
 	}
 
 }

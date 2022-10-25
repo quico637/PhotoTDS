@@ -49,8 +49,25 @@
 			<artifactId>flatlaf-intellij-themes</artifactId>
 			<version>2.5</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink -->
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>eclipselink</artifactId>
+		    <version>2.7.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
+		<dependency>
+		    <groupId>javax.persistence</groupId>
+		    <artifactId>javax.persistence-api</artifactId>
+		    <version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>umu.tds</groupId>
+			<artifactId>driverPersistencia</artifactId>
+			<version>2.0</version>
+		</dependency>
 	</dependencies>
+	
 
 	<build>
 		<plugins>

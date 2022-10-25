@@ -56,6 +56,8 @@ public class VentanaLogin {
 	private JTextField txtNombreDeUsuario;
 	private JLabel lblNewLabel_7;
 	private DescriptionWindow dw;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -221,6 +223,44 @@ public class VentanaLogin {
 		gbc_botonLogin.gridx = 2;
 		gbc_botonLogin.gridy = 3;
 		panelLogin.add(botonLogin, gbc_botonLogin);
+		
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		
+		JButton btnNewButton_2 = new JButton("send");
+		btnNewButton_2.addActionListener(e -> Controller.getInstancia().createUser(textField_1.getText(), textField_2.getText()));
+		
+		JButton btnNewButton_2_1 = new JButton("update");
+		btnNewButton_2_1.addActionListener(e -> Controller.getInstancia().getAllusers());
+		GridBagConstraints gbc_btnNewButton_2_1 = new GridBagConstraints();
+		gbc_btnNewButton_2_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton_2_1.gridx = 1;
+		gbc_btnNewButton_2_1.gridy = 4;
+		panelLogin.add(btnNewButton_2_1, gbc_btnNewButton_2_1);
+		
+		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
+		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_2.gridx = 3;
+		gbc_textField_2.gridy = 4;
+		panelLogin.add(textField_2, gbc_textField_2);
+		
+
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_1.gridx = 3;
+		gbc_textField_1.gridy = 5;
+		panelLogin.add(textField_1, gbc_textField_1);
+		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
+		gbc_btnNewButton_2.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_2.gridx = 3;
+		gbc_btnNewButton_2.gridy = 6;
+		panelLogin.add(btnNewButton_2, gbc_btnNewButton_2);
 
 		JPanel panelRegister = new JPanel();
 		panelCenterCardLayout.add(panelRegister, "panelRegister");

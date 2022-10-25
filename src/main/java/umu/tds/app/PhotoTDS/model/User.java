@@ -4,6 +4,7 @@ public class User {
 
 	private final String nombre;
 	private final String email;
+	private int codigo;
 	
 	public User(String nombre, String email) {
 		super();
@@ -11,6 +12,14 @@ public class User {
 		this.email = email;
 	}
 
+	public void setCodigo(int c) {
+		this.codigo = c;
+	}
+	
+	public int getCodigo() {
+		return this.codigo;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
