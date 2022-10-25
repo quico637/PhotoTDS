@@ -135,24 +135,20 @@ public class VentanaLogin {
 		panelBottom.add(lblNewLabel_8);
 		btnRegister.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/user-2.png")));
 		panelBottom.add(btnRegister);
-		btnRegister.addActionListener(new ActionListener() {
+		btnRegister.addActionListener(e -> {			
 			boolean login = true;
-
-			public void actionPerformed(ActionEvent e) {
-				if (login == true) {
-					CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
-					cl.show(panelCenterCardLayout, "panelRegister");
-					btnRegister.setText("Login");
-					lblNewLabel_8.setText("Do you have an account?");
-					login = false;
-				} else {
-					CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
-					cl.show(panelCenterCardLayout, "panelLogin");
-					btnRegister.setText("Register");
-					lblNewLabel_8.setText("Not registered?");
-					login = true;
-				}
-
+			if (login == true) {
+				CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
+				cl.show(panelCenterCardLayout, "panelRegister");
+				btnRegister.setText("Login");
+				lblNewLabel_8.setText("Do you have an account?");
+				login = false;
+			} else {
+				CardLayout cl = (CardLayout) (panelCenterCardLayout.getLayout());
+				cl.show(panelCenterCardLayout, "panelLogin");
+				btnRegister.setText("Register");
+				lblNewLabel_8.setText("Not registered?");
+				login = true;
 			}
 		});
 
