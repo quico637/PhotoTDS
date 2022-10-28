@@ -2,23 +2,45 @@ package umu.tds.app.PhotoTDS.controller;
 
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
+import umu.tds.app.PhotoTDS.persistence.DAOFactory;
+import umu.tds.app.PhotoTDS.persistence.InterfacesDAO.IUserDAO;
+import umu.tds.app.PhotoTDS.persistence.DAOException;
 
 public class Controller {
 
 	// Estoy en la rama controller
 
 	private static Controller unicaInstancia = null;
+	
+	UserRepository userRepo;
+	IUserDAO userAdapter;
 
 	private Controller() {
-			
+			inicializarCatalogos();
+			inicializarAdaptadores();
 		}
 
 	public static Controller getInstancia() {
 		if (unicaInstancia == null) {
 			unicaInstancia = new Controller();
 		}
-
+		
 		return unicaInstancia;
+	}
+	
+	private void inicializarAdaptadores() {
+		DAOFactory factoria = null;
+		try {
+			factoria = DAOFactory.getInstancia(DAOFactory.DAO_TDS);
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		userAdapter = factoria.getUserDAO();
+	}
+	
+
+	private void inicializarCatalogos() {
+		userRepo = userRepo.getInstancia();
 	}
 
 	public boolean login() {
@@ -27,11 +49,15 @@ public class Controller {
 	}
 	
 	public void createUser(String nombre, String email) {
-		UserRepository.getInstancia().createrUser(new User(nombre, email));
+		User u = new User(nombre, email);
+		userRepo.createrUser(u);
+		userAdapter.createrUser(u);	
+		
 	}
 	
 	public void getAllusers() {
-		UserRepository.getInstancia().getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
+		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
+		userAdapter.readAllUsers();
 	}
 
 }
