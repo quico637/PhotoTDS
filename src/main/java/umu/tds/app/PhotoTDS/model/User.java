@@ -2,6 +2,11 @@ package umu.tds.app.PhotoTDS.model;
 
 public class User {
 
+	@Override
+	public String toString() {
+		return "User [nombre=" + nombre + ", email=" + email + ", codigo=" + codigo + "]";
+	}
+
 	private final String nombre;
 	private final String email;
 	private int codigo;

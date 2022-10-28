@@ -31,7 +31,7 @@ public class Controller {
 	}
 	
 	public void getAllusers() {
-		UserRepository.getInstancia().getAllUsers().stream().forEach(u -> System.out.println(u));
+		UserRepository.getInstancia().getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
 	}
 
 }
