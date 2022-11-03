@@ -8,7 +8,7 @@ import java.util.Set;
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.persistence.DAOException;
 import umu.tds.app.PhotoTDS.persistence.DAOFactory;
-import umu.tds.app.PhotoTDS.persistence.InterfacesDAO.IUserDAO;
+import umu.tds.app.PhotoTDS.persistence.IUserDAO;
 
 
 public class UserRepository {
@@ -31,6 +31,7 @@ public class UserRepository {
   		}
 	}
 
+	// patron Singletone
 	public static UserRepository getInstancia() {
 		if (unicaInstancia == null) {
 			unicaInstancia = new UserRepository();
@@ -40,6 +41,7 @@ public class UserRepository {
 	}
 	
 	public void createrUser(User u) {
+		this.users.put(u.getEmail(), u);
 		this.userAdapter.createrUser(u);		
 	}
 	

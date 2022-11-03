@@ -1,7 +1,5 @@
 package umu.tds.app.PhotoTDS.persistence;
 
-import umu.tds.app.PhotoTDS.persistence.InterfacesDAO.IUserDAO;
-
 public abstract class DAOFactory {
 
 	private static DAOFactory unicaInstancia;

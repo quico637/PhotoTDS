@@ -10,7 +10,6 @@ import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import umu.tds.app.PhotoTDS.model.User;
-import umu.tds.app.PhotoTDS.persistence.InterfacesDAO.IUserDAO;
 
 public class UserAdapterTDS implements IUserDAO{
 	private static ServicioPersistencia servPersistencia;

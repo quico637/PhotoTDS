@@ -3,12 +3,10 @@ package umu.tds.app.PhotoTDS.controller;
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
 import umu.tds.app.PhotoTDS.persistence.DAOFactory;
-import umu.tds.app.PhotoTDS.persistence.InterfacesDAO.IUserDAO;
+import umu.tds.app.PhotoTDS.persistence.IUserDAO;
 import umu.tds.app.PhotoTDS.persistence.DAOException;
 
 public class Controller {
-
-	// Estoy en la rama controller
 
 	private static Controller unicaInstancia = null;
 	
@@ -40,7 +38,7 @@ public class Controller {
 	
 
 	private void inicializarCatalogos() {
-		userRepo = userRepo.getInstancia();
+		userRepo = UserRepository.getInstancia();
 	}
 
 	public boolean login() {
@@ -50,14 +48,11 @@ public class Controller {
 	
 	public void createUser(String nombre, String email) {
 		User u = new User(nombre, email);
-		userRepo.createrUser(u);
-		userAdapter.createrUser(u);	
-		
+		userRepo.createrUser(u);	
 	}
 	
 	public void getAllusers() {
 		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
-		userAdapter.readAllUsers();
 	}
 
 }
