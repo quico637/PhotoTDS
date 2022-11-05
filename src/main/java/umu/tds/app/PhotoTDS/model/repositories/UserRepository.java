@@ -19,7 +19,7 @@ public class UserRepository {
 	private DAOFactory dao;
 	private IUserDAO userAdapter;
 	
-	public UserRepository() {
+	private UserRepository() {
 		super();
 		try {
   			dao = DAOFactory.getInstancia(DAOFactory.DAO_TDS);
