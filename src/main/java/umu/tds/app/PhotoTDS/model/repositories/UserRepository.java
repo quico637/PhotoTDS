@@ -24,7 +24,7 @@ public class UserRepository {
 		try {
   			dao = DAOFactory.getInstancia(DAOFactory.DAO_TDS);
   			userAdapter = dao.getUserDAO();
-  			users = new HashMap<String,User>();
+  	 		users = new HashMap<String,User>();
   			this.cargarCatalogo();
   		} catch (DAOException eDAO) {
   			eDAO.printStackTrace();

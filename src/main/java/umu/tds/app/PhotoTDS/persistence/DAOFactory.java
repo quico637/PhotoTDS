@@ -14,7 +14,7 @@ public abstract class DAOFactory {
 		if (unicaInstancia == null)
 			try { unicaInstancia=(DAOFactory) Class.forName(tipo).newInstance();
 			} catch (Exception e) {	
-				throw new DAOException(e.getMessage());
+	  			throw new DAOException(e.getMessage());
 			} 
 		return unicaInstancia;
 	}

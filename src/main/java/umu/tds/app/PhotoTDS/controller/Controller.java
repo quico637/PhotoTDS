@@ -2,20 +2,15 @@ package umu.tds.app.PhotoTDS.controller;
 
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
-import umu.tds.app.PhotoTDS.persistence.DAOFactory;
-import umu.tds.app.PhotoTDS.persistence.IUserDAO;
-import umu.tds.app.PhotoTDS.persistence.DAOException;
 
 public class Controller {
 
 	private static Controller unicaInstancia = null;
 	
 	UserRepository userRepo;
-	IUserDAO userAdapter;
 
 	private Controller() {
 			inicializarCatalogos();
-			inicializarAdaptadores();
 		}
 
 	public static Controller getInstancia() {
@@ -24,18 +19,7 @@ public class Controller {
 		}
 		
 		return unicaInstancia;
-	}
-	
-	private void inicializarAdaptadores() {
-		DAOFactory factoria = null;
-		try {
-			factoria = DAOFactory.getInstancia(DAOFactory.DAO_TDS);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
-		userAdapter = factoria.getUserDAO();
-	}
-	
+	}	
 
 	private void inicializarCatalogos() {
 		userRepo = UserRepository.getInstancia();
