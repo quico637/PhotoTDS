@@ -22,6 +22,7 @@ import java.awt.Font;
 public class DescriptionWindow {
 
 	private JFrame frame;
+	private static DescriptionWindow unicaInstancia = null;
 	
 	/**
 	 * Launch the application.
@@ -42,7 +43,7 @@ public class DescriptionWindow {
 	/**
 	 * Create the application.
 	 */
-	public DescriptionWindow() {
+	private DescriptionWindow() {
 		initialize();
 	}
 	
@@ -51,6 +52,15 @@ public class DescriptionWindow {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
+	
+	public static DescriptionWindow getInstancia() {
+		if (unicaInstancia == null) {
+			unicaInstancia = new DescriptionWindow();
+		}
+
+		return unicaInstancia;
+	}
+
 	
 	/**
 	 * Initialize the contents of the frame.
