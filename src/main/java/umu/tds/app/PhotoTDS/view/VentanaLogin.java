@@ -20,10 +20,13 @@ import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import umu.tds.app.PhotoTDS.model.Utils;
 
 // import controller.AppPhotoController;
 
@@ -213,9 +216,11 @@ public class VentanaLogin {
 
 		JButton botonLogin = new JButton("Login");
 		botonLogin.addActionListener(e -> {
-			Controller.getInstancia().login();
-			VentanaInicio.getInstancia().showWindow();
-			this.hideWindow();
+			if(Controller.getInstancia().login(textField.getText(), passwordField.getText()) == true) {
+				VentanaInicio.getInstancia().showWindow();
+				this.hideWindow();
+			}
+			System.out.println("Moscas gordas");
 		});
 		// btnNewButton_1.addActionListener(event ->
 		// AppPhotoController.getInstancia().login());
@@ -283,9 +288,9 @@ public class VentanaLogin {
 		panelCenterCardLayout.add(panelRegister, "panelRegister");
 		GridBagLayout gbl_panelRegister = new GridBagLayout();
 		gbl_panelRegister.columnWidths = new int[] { 70, 15, 0, 80, 0 };
-		gbl_panelRegister.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_panelRegister.rowHeights = new int[] { 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_panelRegister.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_panelRegister.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelRegister.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelRegister.setLayout(gbl_panelRegister);
 
 		JLabel lblNewLabel = new JLabel("e-mail:");
@@ -355,24 +360,7 @@ public class VentanaLogin {
 		gbc_passwordField_1.gridx = 2;
 		gbc_passwordField_1.gridy = 4;
 		panelRegister.add(passwordField_1, gbc_passwordField_1);
-
-		JButton btnSubmitReg = new JButton("Register");
-		btnSubmitReg.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
-		btnSubmitReg.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnSubmitReg.setIcon(
-						new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter.png")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnSubmitReg.setIcon(
-						new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
-			}
-
-		});
-
+		
 		JDateChooser calendar = new JDateChooser();
 		IDateEditor dateEditor = calendar.getDateEditor();
 		JTextFieldDateEditor txtFld = (JTextFieldDateEditor) dateEditor;
@@ -403,7 +391,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_6.gridx = 1;
 		gbc_lblNewLabel_6.gridy = 6;
 		panelRegister.add(lblNewLabel_6, gbc_lblNewLabel_6);
-
+		
 		JButton btnNewButton = new JButton("Add");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -411,12 +399,33 @@ public class VentanaLogin {
 				DescriptionWindow.getInstancia().showWindow();
 			}
 		});
+		
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton.gridx = 2;
 		gbc_btnNewButton.gridy = 6;
 		panelRegister.add(btnNewButton, gbc_btnNewButton);
+
+		JButton btnSubmitReg = new JButton("Register");
+		btnSubmitReg.addActionListener(e -> {
+			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(), txtNombreCom.getText(), Utils.StringToDate(txtFld.getText()) ,"caca" , passwordField_1.getText());
+		});
+		btnSubmitReg.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
+		btnSubmitReg.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnSubmitReg.setIcon(
+						new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter.png")));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnSubmitReg.setIcon(
+						new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
+			}
+
+		});
 
 		lblNewLabel_7 = new JLabel("Profile Picture:");
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();

@@ -1,6 +1,7 @@
 package umu.tds.app.PhotoTDS.model.repositories;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,6 +39,13 @@ public class UserRepository {
 		}
 
 		return unicaInstancia;
+	}
+	
+	public User getUser(String username) {
+		if(users.containsKey(username)) {
+			return users.get(username);
+		}
+		return null;
 	}
 	
 	public void createrUser(User u) {
