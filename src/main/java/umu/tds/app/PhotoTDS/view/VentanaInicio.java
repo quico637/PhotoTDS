@@ -14,6 +14,9 @@ import javax.swing.SwingConstants;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
+
+import umu.tds.app.PhotoTDS.controller.Controller;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
@@ -100,7 +103,6 @@ public class VentanaInicio {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("feo");
 				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 				cl.show(panelCentralCardLayout, "panelPerfil");
 			}
@@ -125,7 +127,8 @@ public class VentanaInicio {
 		
 		JPanel panelPrincipal = new JPanel();
 		panelCentralCardLayout.add(panelPrincipal, "panelPrincipal");
-		
+		Controller.getInstancia().getAllusers();
+
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
 		panelPerfil.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));

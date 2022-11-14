@@ -110,7 +110,7 @@ public class VentanaLogin {
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
-		frame.setBounds(200, 200, 645, 445);
+		frame.setBounds(200, 200, 655, 475);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(5, 5));
 
@@ -148,6 +148,7 @@ public class VentanaLogin {
 		});
 		
 		JLabel lblNewLabel_8 = new JLabel("Not registered?");
+		lblNewLabel_8.setForeground(new Color(255, 255, 255));
 		panelBottom.add(lblNewLabel_8);
 		btnRegister.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/user-2.png")));
 		panelBottom.add(btnRegister);
@@ -179,7 +180,8 @@ public class VentanaLogin {
 		gbl_panelLogin.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelLogin.setLayout(gbl_panelLogin);
 
-		JLabel lblNewLabel_1 = new JLabel("User:");
+		JLabel lblNewLabel_1 = new JLabel("Username:");
+		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
@@ -198,6 +200,7 @@ public class VentanaLogin {
 		panelLogin.add(textField, gbc_textField);
 
 		JLabel lblNewLabel_2 = new JLabel("Password:");
+		lblNewLabel_2.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
@@ -220,7 +223,9 @@ public class VentanaLogin {
 				VentanaInicio.getInstancia().showWindow();
 				this.hideWindow();
 			}
-			System.out.println("Moscas gordas");
+			else {
+				System.out.println("moscas");
+			}
 		});
 		// btnNewButton_1.addActionListener(event ->
 		// AppPhotoController.getInstancia().login());
@@ -285,6 +290,7 @@ public class VentanaLogin {
 //		panelLogin.add(btnNewButton_2, gbc_btnNewButton_2);
 
 		JPanel panelRegister = new JPanel();
+		panelRegister.setForeground(new Color(255, 255, 255));
 		panelCenterCardLayout.add(panelRegister, "panelRegister");
 		GridBagLayout gbl_panelRegister = new GridBagLayout();
 		gbl_panelRegister.columnWidths = new int[] { 70, 15, 0, 80, 0 };
@@ -294,6 +300,7 @@ public class VentanaLogin {
 		panelRegister.setLayout(gbl_panelRegister);
 
 		JLabel lblNewLabel = new JLabel("e-mail:");
+		lblNewLabel.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -311,6 +318,7 @@ public class VentanaLogin {
 		txtEmail.setColumns(10);
 
 		JLabel lblNewLabel_3 = new JLabel("Name:");
+		lblNewLabel_3.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
@@ -328,6 +336,7 @@ public class VentanaLogin {
 		txtNombreCom.setColumns(10);
 
 		JLabel lblNewLabel_4 = new JLabel("Username:");
+		lblNewLabel_4.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
@@ -345,6 +354,7 @@ public class VentanaLogin {
 		txtNombreDeUsuario.setColumns(10);
 
 		JLabel lblNewLabel_5 = new JLabel("Password:");
+		lblNewLabel_5.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 		gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
@@ -367,6 +377,7 @@ public class VentanaLogin {
 		txtFld.addPropertyChangeListener(e -> txtFld.setForeground(Color.WHITE));
 		calendar.getCalendarButton().setForeground(new Color(0, 0, 0));
 		JLabel calendarLabel = new JLabel("Date:");
+		calendarLabel.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_calendarLabel = new GridBagConstraints();
 		gbc_calendarLabel.anchor = GridBagConstraints.EAST;
 		gbc_calendarLabel.insets = new Insets(0, 0, 5, 5);
@@ -385,6 +396,7 @@ public class VentanaLogin {
 		panelRegister.add(calendar, gbc_calendar);
 
 		JLabel lblNewLabel_6 = new JLabel("Description:");
+		lblNewLabel_6.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
 		gbc_lblNewLabel_6.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
@@ -409,7 +421,7 @@ public class VentanaLogin {
 
 		JButton btnSubmitReg = new JButton("Register");
 		btnSubmitReg.addActionListener(e -> {
-			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(), txtNombreCom.getText(), Utils.StringToDate(txtFld.getText()) ,"caca" , passwordField_1.getText());
+			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(), txtNombreCom.getText(), Utils.StringToDate(txtFld.getText()) , DescriptionWindow.getInstancia().getDescripcion() , passwordField_1.getText());
 		});
 		btnSubmitReg.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
 		btnSubmitReg.addMouseListener(new MouseAdapter() {
@@ -428,6 +440,7 @@ public class VentanaLogin {
 		});
 
 		lblNewLabel_7 = new JLabel("Profile Picture:");
+		lblNewLabel_7.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
 		gbc_lblNewLabel_7.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);

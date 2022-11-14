@@ -31,9 +31,11 @@ public class Controller {
 	public boolean login(String username, String constrasena) {
 		User usuario = UserRepository.getInstancia().getUser(username);
 		if (usuario == null) {
+			System.out.println("usuario null");
 			return false;
 		}
-		if(usuario.getContrasena().equals(EncryptDecrypt.encrypt(constrasena))) {
+		if(usuario.getContrasena().equals(EncryptDecrypt.decrypt(constrasena))) {
+			System.out.println("contraseña jodida");
 			return false;
 		}
 		return true;

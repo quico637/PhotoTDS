@@ -17,12 +17,15 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class DescriptionWindow {
 
 	private JFrame frame;
 	private static DescriptionWindow unicaInstancia = null;
+	private String descripcion;
 	
 	/**
 	 * Launch the application.
@@ -53,6 +56,11 @@ public class DescriptionWindow {
 		frame.setLocationRelativeTo(null);
 	}
 	
+	public void hideWindow() {
+		frame.setVisible(false);
+		frame.setLocationRelativeTo(null);
+	}
+	
 	public static DescriptionWindow getInstancia() {
 		if (unicaInstancia == null) {
 			unicaInstancia = new DescriptionWindow();
@@ -60,7 +68,12 @@ public class DescriptionWindow {
 
 		return unicaInstancia;
 	}
+	
+	
 
+	public String getDescripcion() {
+		return descripcion;
+	}
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -107,6 +120,12 @@ public class DescriptionWindow {
 		panel_2.add(textArea, gbc_textArea);
 		textArea.setBackground(new Color(20, 32, 49));
 		textArea.setForeground(Color.WHITE);
+		
+		btnNewButton.addActionListener(e -> {
+			this.hideWindow();
+			this.descripcion = textArea.getText();
+		});
 	}
+
 
 }

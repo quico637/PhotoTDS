@@ -64,10 +64,12 @@ public class User {
 	public void setPremium(boolean premium) {
 		this.premium = premium;
 	}
-		
+
 	@Override
 	public String toString() {
-		return "User [usuario=" + username + ", email=" + email + "]";
+		return "User [codigo=" + codigo + ", username=" + username + ", email=" + email + ", nombreCompleto="
+				+ nombreCompleto + ", fechaNacimiento=" + fechaNacimiento + ", descripcion=" + descripcion
+				+ ", contrasena=" + contrasena + ", premium=" + premium + "]";
 	}
-	
+		
 }

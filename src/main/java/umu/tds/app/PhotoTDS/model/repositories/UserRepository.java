@@ -49,14 +49,14 @@ public class UserRepository {
 	}
 	
 	public void createrUser(User u) {
-		this.users.put(u.getEmail(), u);
+		this.users.put(u.getUsername(), u);
 		this.userAdapter.createrUser(u);		
 	}
 	
 	private void cargarCatalogo() throws DAOException {
 		 List<User> usersDB = userAdapter.readAllUsers();
 		 for (User u: usersDB) 
-			     users.put(u.getEmail(),u);
+			     users.put(u.getUsername(),u);
 	}
 		
 	public Set<User> getAllUsers() {
