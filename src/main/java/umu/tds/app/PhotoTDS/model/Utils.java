@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Utils {
 	
-	private final static String FORMAT = "DD MMM yyyy";
+	private final static String FORMAT = "d MMM y";
 
 	public static Date StringToDate(String fecha) {
 		try {

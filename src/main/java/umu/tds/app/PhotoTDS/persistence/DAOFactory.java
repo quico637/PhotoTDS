@@ -31,6 +31,8 @@ public abstract class DAOFactory {
 		
 	// Metodos factoria que devuelven adaptadores que implementen estos interfaces
 	public abstract IUserDAO getUserDAO();
+	
+	public abstract IPublicationDAO getPublicationDAO();
 
 	
 }

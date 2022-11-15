@@ -8,4 +8,9 @@ public class DAOFactoryTDS extends DAOFactory{
 	public IUserDAO getUserDAO() {
 		return UserAdapterTDS.getInstance();
 	}
+	
+	@Override
+	public IPublicationDAO getPublicationDAO() {
+		return PublicationAdapterTDS.getInstance();
+	}
 }

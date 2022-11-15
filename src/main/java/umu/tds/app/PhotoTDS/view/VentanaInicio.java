@@ -2,7 +2,10 @@ package umu.tds.app.PhotoTDS.view;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
@@ -19,6 +22,10 @@ import umu.tds.app.PhotoTDS.controller.Controller;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import javax.swing.JMenuBar;
@@ -31,7 +38,7 @@ import java.awt.FlowLayout;
 public class VentanaInicio {
 
 	private JFrame frame;
-	
+
 	private final static int X_BORDER = 500;
 	private final static int Y_BORDER = 700;
 	private static VentanaInicio unicaInstancia = null;
@@ -59,12 +66,12 @@ public class VentanaInicio {
 	private VentanaInicio() {
 		initialize();
 	}
-	
+
 	public void showWindow() {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 	}
-	
+
 	public static VentanaInicio getInstancia() {
 		if (unicaInstancia == null) {
 			unicaInstancia = new VentanaInicio();
@@ -88,7 +95,7 @@ public class VentanaInicio {
 		panelNorte.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		frame.getContentPane().add(panelNorte, BorderLayout.NORTH);
 		panelNorte.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panelCentralCardLayout = new JPanel();
 		frame.getContentPane().add(panelCentralCardLayout, BorderLayout.CENTER);
 		panelCentralCardLayout.setLayout(new CardLayout(0, 0));
@@ -111,27 +118,35 @@ public class VentanaInicio {
 				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/profileInicio.png")));
 		lblNewLabel.setFont(new Font("Segoe Script", Font.BOLD, 16));
 		panelNorte.add(lblNewLabel, BorderLayout.EAST);
-		
+
 		JPanel panel_1 = new JPanel();
 		panelNorte.add(panel_1, BorderLayout.CENTER);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setIcon(new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/buscar.png")));
+		lblNewLabel_1
+				.setIcon(new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/buscar.png")));
 		panel_1.add(lblNewLabel_1);
-		
+
 		textField = new JTextField();
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(textField);
 		textField.setColumns(10);
-		
+
 		JPanel panelPrincipal = new JPanel();
 		panelCentralCardLayout.add(panelPrincipal, "panelPrincipal");
+
+		ImageIcon icon = new ImageIcon("C:/Users/JotaCe/Desktop/cobete.png");
+		JLabel lblNewLabel_2 = new JLabel();
+		lblNewLabel_2.setIcon(icon);
+		panelPrincipal.add(lblNewLabel_2);
+		
 		Controller.getInstancia().getAllusers();
 
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
 		panelPerfil.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
 	}
 
 }
