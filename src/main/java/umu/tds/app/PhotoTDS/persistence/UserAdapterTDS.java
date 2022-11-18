@@ -46,7 +46,7 @@ public class UserAdapterTDS implements IUserDAO {
 
 		// crear entidad Cliente
 		eUser = new Entidad();
-		eUser.setNombre("cliente");
+		eUser.setNombre("user");
 		eUser.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("email", u.getEmail()),
 				new Propiedad("username", u.getUsername()), new Propiedad("nombreCompleto", u.getNombreCompleto()),
 				new Propiedad("fechaNacimiento", Utils.DateToString(u.getFechaNacimiento())),
@@ -63,7 +63,7 @@ public class UserAdapterTDS implements IUserDAO {
 	public User readUser(int codigo) {
 
 		// si no, la recupera de la base de datos
-		Entidad eCliente;
+		Entidad eUser;
 
 		String email;
 		String username;
@@ -73,15 +73,15 @@ public class UserAdapterTDS implements IUserDAO {
 		String contrasena;
 
 		// recuperar entidad
-		eCliente = servPersistencia.recuperarEntidad(codigo);
+		eUser = servPersistencia.recuperarEntidad(codigo);
 
 		// recuperar propiedades que no son objetos
-		email = servPersistencia.recuperarPropiedadEntidad(eCliente, "email");
-		username = servPersistencia.recuperarPropiedadEntidad(eCliente, "username");
-		nombreCompleto = servPersistencia.recuperarPropiedadEntidad(eCliente, "nombreCompleto");
-		fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eCliente, "fechaNacimiento");
-		descripcion = servPersistencia.recuperarPropiedadEntidad(eCliente, "descripcion");
-		contrasena = servPersistencia.recuperarPropiedadEntidad(eCliente, "contrasena");
+		email = servPersistencia.recuperarPropiedadEntidad(eUser, "email");
+		username = servPersistencia.recuperarPropiedadEntidad(eUser, "username");
+		nombreCompleto = servPersistencia.recuperarPropiedadEntidad(eUser, "nombreCompleto");
+		fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUser, "fechaNacimiento");
+		descripcion = servPersistencia.recuperarPropiedadEntidad(eUser, "descripcion");
+		contrasena = servPersistencia.recuperarPropiedadEntidad(eUser, "contrasena");
 
 		User u;
 		u = new User(username, email, nombreCompleto, Utils.StringToDate(fechaNacimiento), descripcion, contrasena);
@@ -90,20 +90,39 @@ public class UserAdapterTDS implements IUserDAO {
 	}
 
 	public void updateUser(User u) {
+		Entidad ePublication = servPersistencia.recuperarEntidad(u.getCodigo());
 
+		for (Propiedad prop : ePublication.getPropiedades()) {
+			if (prop.getNombre().equals("username")) {
+				prop.setValor(String.valueOf(u.getUsername()));
+			} else if (prop.getNombre().equals("email")) {
+				prop.setValor(u.getEmail());
+			} else if (prop.getNombre().equals("nombreCompleto")) {
+				prop.setValor(u.getNombreCompleto());
+			} else if (prop.getNombre().equals("fechaNacimiento")) {
+				prop.setValor(Utils.DateToString(u.getFechaNacimiento()));
+			}else if (prop.getNombre().equals("descripcion")) {
+				prop.setValor(u.getDescripcion());
+			}else if (prop.getNombre().equals("contrasena")) {
+				prop.setValor(u.getContrasena());
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
 	}
 
 	public void deleteUser(User u) {
+		Entidad eUser = servPersistencia.recuperarEntidad(u.getCodigo());
 
+		servPersistencia.borrarEntidad(eUser);
 	}
 
 	public List<User> readAllUsers() {
-		List<Entidad> eClientes = servPersistencia.recuperarEntidades("cliente");
-		List<User> clientes = new LinkedList<User>();
+		List<Entidad> eUser = servPersistencia.recuperarEntidades("user");
+		List<User> users = new LinkedList<User>();
 
-		for (Entidad eCliente : eClientes) {
-			clientes.add(readUser(eCliente.getId()));
+		for (Entidad eCliente : eUser) {
+			users.add(readUser(eCliente.getId()));
 		}
-		return clientes;
+		return users;
 	}
 }

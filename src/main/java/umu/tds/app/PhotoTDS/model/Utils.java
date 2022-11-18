@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Utils {
 	
@@ -25,5 +26,15 @@ public class Utils {
 		String strDate = dateFormat.format(fecha);
 		return strDate;
 	}
+	
+//	public static String listToString(List<String> lista) {
+//		String stringLista = "";
+//		for(String s : lista) {
+//			stringLista = stringLista = "&&" + s;
+//		}
+//		return stringLista;
+//	}
 
 }
+
+ 
