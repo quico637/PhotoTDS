@@ -20,7 +20,6 @@ import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -40,7 +39,6 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
-import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
 
 import java.awt.Font;
 

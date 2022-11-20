@@ -11,6 +11,7 @@ public class Publication {
 	private Date fechaPublicacion;
 	private String descripcion;
 	private int likes;
+	private List<HashTag> hashtags;	
 	private List<Comentario> comentarios;
 	
 	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
@@ -19,17 +20,19 @@ public class Publication {
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
 		this.likes = likes;
+		this.hashtags = new LinkedList<>();
 		this.comentarios = new LinkedList<>();
 
 	}
 
 	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes,
-			List<Comentario> comentarios) {
+			List<HashTag> hashtags, List<Comentario> comentarios) {
 		super();
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
 		this.likes = likes;
+		this.hashtags = hashtags;
 		this.comentarios = comentarios;
 
 	}
@@ -64,6 +67,11 @@ public class Publication {
 	
 	public List<Comentario> getComentarios() {
 		return comentarios;
+	}
+	
+
+	public List<HashTag> getHashTags() {
+		return hashtags;
 	}
 
 	public void anadirComentarios(Comentario comentario) {

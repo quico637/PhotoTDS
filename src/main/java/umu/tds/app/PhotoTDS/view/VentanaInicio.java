@@ -2,35 +2,20 @@ package umu.tds.app.PhotoTDS.view;
 
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
-import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;

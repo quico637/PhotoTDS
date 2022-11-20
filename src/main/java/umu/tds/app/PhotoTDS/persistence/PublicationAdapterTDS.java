@@ -2,7 +2,6 @@ package umu.tds.app.PhotoTDS.persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -12,7 +11,7 @@ import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import umu.tds.app.PhotoTDS.model.Comentario;
-import umu.tds.app.PhotoTDS.model.Notification;
+import umu.tds.app.PhotoTDS.model.HashTag;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.Utils;
 
@@ -51,7 +50,8 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 				new Propiedad("titulo", p.getTitulo()),
 				new Propiedad("fechaPublicacion", Utils.DateToString(p.getFechaPublicacion())), 
 				new Propiedad("descripcion", p.getDescripcion()),
-				new Propiedad("likes", String.valueOf(p.getLikes())), 
+				new Propiedad("likes", String.valueOf(p.getLikes())),
+				new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
 				new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios()))
 				)));
 
@@ -64,6 +64,11 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 	}
 
 	public Publication readPublication(int codigo) {
+		
+		// Si la entidad esta en el pool la devuelve directamente
+		if (PoolDAO.getUnicaInstancia().contiene(codigo))
+			return (Publication) PoolDAO.getUnicaInstancia().getObjeto(codigo);
+
 
 		// si no, la recupera de la base de datos
 		Entidad ePublication;
@@ -73,6 +78,7 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 		String descripcion;
 		String likes;
 		
+		String hashtags;
 		String comentarios;
 
 		// recuperar entidad
@@ -83,10 +89,12 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 		fechaPublicacion = servPersistencia.recuperarPropiedadEntidad(ePublication, "fechaPublicacion");
 		descripcion = servPersistencia.recuperarPropiedadEntidad(ePublication, "descripcion");
 		likes = servPersistencia.recuperarPropiedadEntidad(ePublication, "likes");
+		hashtags = servPersistencia.recuperarPropiedadEntidad(ePublication, "hashtags");
 		comentarios = servPersistencia.recuperarPropiedadEntidad(ePublication, "comentarios");
 
 		Publication p;
-		p = new Publication(titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes), obtenerComentariosDesdeCodigos(comentarios));
+		p = new Publication(titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes),
+				obtenerHashTagsDesdeCodigos(hashtags), obtenerComentariosDesdeCodigos(comentarios));
 		p.setCodigo(codigo);
 		return p;
 	}
@@ -100,7 +108,9 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
 				prop.setValor(Utils.DateToString(p.getFechaPublicacion()));
 			} else if (prop.getNombre().equals("descripcion")) {
-				prop.setValor(p.getDescripcion());
+				prop.setValor(p.getDescripcion());	
+			}else if (prop.getNombre().equals("hashtags")) {
+				prop.setValor(obtenerCodigosHashTags(p.getHashTags()));
 			}else if (prop.getNombre().equals("comentarios")) {
 				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
 			}
@@ -145,6 +155,27 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 		IComentarioDAO adaptador = ComentarioAdapterTDS.getInstance();
 		while (strTok.hasMoreTokens()) {
 			l.add(adaptador.readComentario(Integer.valueOf((String) strTok.nextElement())));
+		}
+		return l;
+	}
+	
+	// 	HASHTAGS 
+	
+	private String obtenerCodigosHashTags(List<HashTag> listaH) {
+		String aux = "";
+		for (HashTag n : listaH) {
+			aux += n.getCodigo() + " ";
+		}
+		return aux.trim();
+	}
+
+	private List<HashTag> obtenerHashTagsDesdeCodigos(String hashtags) {
+
+		List<HashTag> l = new LinkedList<>();
+		StringTokenizer strTok = new StringTokenizer(hashtags, " ");
+		IHashTagDAO adaptador = HashTagAdapterTDS.getInstance();
+		while (strTok.hasMoreTokens()) {
+			l.add(adaptador.readHashTag(Integer.valueOf((String) strTok.nextElement())));
 		}
 		return l;
 	}

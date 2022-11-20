@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import umu.tds.app.PhotoTDS.model.Publication;
-import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.persistence.DAOException;
 import umu.tds.app.PhotoTDS.persistence.DAOFactory;
 import umu.tds.app.PhotoTDS.persistence.IPublicationDAO;
-import umu.tds.app.PhotoTDS.persistence.IUserDAO;
 
 public class PublicationRepository {
 
