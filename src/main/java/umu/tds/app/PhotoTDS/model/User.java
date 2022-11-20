@@ -1,7 +1,8 @@
 package umu.tds.app.PhotoTDS.model;
 
 import java.util.Date;
-import umu.tds.app.PhotoTDS.model.EncryptDecrypt;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class User {
@@ -14,7 +15,26 @@ public class User {
 	private final String descripcion;
 	private final String contrasena;
 	private boolean premium;
+	private List<Notification> notifications;
+	private List<Publication> publications;
+	private List<User> usuariosSeguidores;
 	
+	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
+			String contrasena, boolean premium, List<Notification> notifications, List<Publication> publications,
+			List<User> usuariosSeguidores) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.nombreCompleto = nombreCompleto;
+		this.fechaNacimiento = fechaNacimiento;
+		this.descripcion = descripcion;
+		this.contrasena = contrasena;
+		this.premium = premium;
+		this.notifications = notifications;
+		this.publications = publications;
+		this.usuariosSeguidores = usuariosSeguidores;
+	}
+
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena) {
 		super();
 		this.username = username;
@@ -23,6 +43,22 @@ public class User {
 		this.fechaNacimiento = fechaNacimiento;
 		this.descripcion = descripcion;
 		this.contrasena = EncryptDecrypt.encrypt(contrasena);
+		this.premium = false;
+		this.notifications = new LinkedList<>();
+		this.publications = new LinkedList<>();
+		this.usuariosSeguidores = new LinkedList<>();
+	}
+	
+	public List<Notification> getNotifications() {
+		return new LinkedList<>(notifications);
+	}
+
+	public List<Publication> getPublications() {
+		return new LinkedList<>(publications);
+	}
+
+	public List<User> getUsuariosSeguidores() {
+		return new LinkedList<>(usuariosSeguidores);
 	}
 	
 	public void setCodigo(int c) {

@@ -2,13 +2,17 @@ package umu.tds.app.PhotoTDS.persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import umu.tds.app.PhotoTDS.model.Comentario;
+import umu.tds.app.PhotoTDS.model.Notification;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.Utils;
 
@@ -39,7 +43,7 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 		}
 		if (ePublication != null)
 			return;
-
+		
 		// crear entidad Cliente
 		ePublication = new Entidad();
 		ePublication.setNombre("publication");
@@ -48,9 +52,8 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 				new Propiedad("fechaPublicacion", Utils.DateToString(p.getFechaPublicacion())), 
 				new Propiedad("descripcion", p.getDescripcion()),
 				new Propiedad("likes", String.valueOf(p.getLikes())), 
-				/*new Propiedad("hashtags", p.getHashtags()), */
-				/*new Propiedad("comentarios", p.getComentarios())*/
-				new Propiedad("ruta", p.getRuta()))));
+				new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios()))
+				)));
 
 		// registrar entidad cliente
 		ePublication = servPersistencia.registrarEntidad(ePublication);
@@ -69,9 +72,8 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 		String fechaPublicacion;
 		String descripcion;
 		String likes;
-		//String hashtags;
-		//String comentarios;
-		String ruta;
+		
+		String comentarios;
 
 		// recuperar entidad
 		ePublication = servPersistencia.recuperarEntidad(codigo);
@@ -81,12 +83,10 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 		fechaPublicacion = servPersistencia.recuperarPropiedadEntidad(ePublication, "fechaPublicacion");
 		descripcion = servPersistencia.recuperarPropiedadEntidad(ePublication, "descripcion");
 		likes = servPersistencia.recuperarPropiedadEntidad(ePublication, "likes");
-		//hashtags = servPersistencia.recuperarPropiedadEntidad(ePublication, "hashtags");
-		//comentarios = servPersistencia.recuperarPropiedadEntidad(ePublication, "comentarios");
-		ruta = servPersistencia.recuperarPropiedadEntidad(ePublication, "ruta");
+		comentarios = servPersistencia.recuperarPropiedadEntidad(ePublication, "comentarios");
 
 		Publication p;
-		p = new Publication(titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes), /*hashtags, comentarios*/ ruta);
+		p = new Publication(titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes), obtenerComentariosDesdeCodigos(comentarios));
 		p.setCodigo(codigo);
 		return p;
 	}
@@ -101,12 +101,8 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 				prop.setValor(Utils.DateToString(p.getFechaPublicacion()));
 			} else if (prop.getNombre().equals("descripcion")) {
 				prop.setValor(p.getDescripcion());
-			} /*else if (prop.getNombre().equals("hashtags")) {
-				prop.setValor(p.gethashtags());
 			}else if (prop.getNombre().equals("comentarios")) {
-				prop.setValor(p.getComentarios());
-			}*/else if (prop.getNombre().equals("ruta")) {
-				prop.setValor(p.getRuta());
+				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
@@ -127,6 +123,30 @@ public class PublicationAdapterTDS implements IPublicationDAO{
 			publicaciones.add(readPublication(eCliente.getId()));
 		}
 		return publicaciones;
+	}
+	
+	
+	// -------------------Funciones auxiliares-----------------------------
+	
+	// 	NOTIFICATIONS 
+	
+	private String obtenerCodigosComentarios(List<Comentario> listaCom) {
+		String aux = "";
+		for (Comentario n : listaCom) {
+			aux += n.getCodigo() + " ";
+		}
+		return aux.trim();
+	}
+
+	private List<Comentario> obtenerComentariosDesdeCodigos(String coms) {
+
+		List<Comentario> l = new LinkedList<>();
+		StringTokenizer strTok = new StringTokenizer(coms, " ");
+		IComentarioDAO adaptador = ComentarioAdapterTDS.getInstance();
+		while (strTok.hasMoreTokens()) {
+			l.add(adaptador.readComentario(Integer.valueOf((String) strTok.nextElement())));
+		}
+		return l;
 	}
 
 }

@@ -1,6 +1,7 @@
 package umu.tds.app.PhotoTDS.model;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Publication {
@@ -10,20 +11,26 @@ public class Publication {
 	private Date fechaPublicacion;
 	private String descripcion;
 	private int likes;
-	private List<String> hashtags;
 	private List<Comentario> comentarios;
-	private String ruta;
-
-	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes, /*List<String> hashtags,
-			List<Comentario> comentarios,*/ String ruta) {
+	
+	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
 		super();
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
 		this.likes = likes;
-		//this.hashtags = hashtags;
-		//this.comentarios = comentarios;
-		this.ruta = ruta;
+		this.comentarios = new LinkedList<>();
+
+	}
+
+	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes,
+			List<Comentario> comentarios) {
+		super();
+		this.titulo = titulo;
+		this.fechaPublicacion = fechaPublicacion;
+		this.descripcion = descripcion;
+		this.likes = likes;
+		this.comentarios = comentarios;
 
 	}
 	
@@ -54,11 +61,7 @@ public class Publication {
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-
-	public List<String> getHashtags() {
-		return hashtags;
-	}
-
+	
 	public List<Comentario> getComentarios() {
 		return comentarios;
 	}
@@ -67,15 +70,10 @@ public class Publication {
 		this.comentarios.add(comentario);
 	}
 
-	public String getRuta() {
-		return ruta;
-	}
-
 	@Override
 	public String toString() {
 		return "Publication [titulo=" + titulo + ", fechaPublicacion=" + fechaPublicacion + ", descripcion="
-				+ descripcion + ", likes=" + likes + ", hashtags=" + hashtags + ", comentarios=" + comentarios
-				+ ", ruta=" + ruta + "]";
+				+ descripcion + ", likes=" + likes + ", comentarios=" + comentarios + "]";
 	}
 
 }
