@@ -406,7 +406,7 @@ public class VentanaLogin {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DescriptionWindow.getInstancia().showWindow();
+				DescriptionWindow.getInstancia().showWindow(frame);
 			}
 		});
 		

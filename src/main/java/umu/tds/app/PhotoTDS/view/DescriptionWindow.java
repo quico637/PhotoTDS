@@ -6,9 +6,12 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Panel;
 import javax.swing.JLabel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.TextArea;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -17,13 +20,14 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
 import java.awt.Font;
+import javax.swing.JList;
 
 public class DescriptionWindow {
 
 	private JFrame frame;
 	private static DescriptionWindow unicaInstancia = null;
 	private String descripcion;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -46,18 +50,17 @@ public class DescriptionWindow {
 	private DescriptionWindow() {
 		initialize();
 	}
-	
 
-	public void showWindow() {
+	public void showWindow(Component c) {
 		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(c);
 	}
-	
+
 	public void hideWindow() {
 		frame.setVisible(false);
 		frame.setLocationRelativeTo(null);
 	}
-	
+
 	public static DescriptionWindow getInstancia() {
 		if (unicaInstancia == null) {
 			unicaInstancia = new DescriptionWindow();
@@ -65,13 +68,11 @@ public class DescriptionWindow {
 
 		return unicaInstancia;
 	}
-	
-	
 
 	public String getDescripcion() {
 		return descripcion;
 	}
-	
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -84,30 +85,44 @@ public class DescriptionWindow {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		Panel panel = new Panel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
-		
+
 		JLabel lblNewLabel = new JLabel("Add your presentation card");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		panel.add(lblNewLabel);
-		
+
 		Panel panel_1 = new Panel();
 		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
-		
+
 		JButton btnNewButton = new JButton("Send");
 		panel_1.add(btnNewButton);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		frame.getContentPane().add(panel_2, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_panel_2.rowHeights = new int[]{0, 106, 0, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWidths = new int[] { 0, 0, 0, 0 };
+		gbl_panel_2.rowHeights = new int[] { 0, 106, 0, 0 };
+		gbl_panel_2.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_panel_2.rowWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
-				
+
+		JList<String> list = new JList<>();
+		DefaultListModel<String> model = new DefaultListModel<>();
+		model.addElement("Alumno 1");
+		model.addElement("Alumno 2");
+		model.addElement("Alumno 3");
+		list.setModel(model);
+		
+		GridBagConstraints gbc_list = new GridBagConstraints();
+		gbc_list.insets = new Insets(0, 0, 5, 5);
+		gbc_list.fill = GridBagConstraints.BOTH;
+		gbc_list.gridx = 1;
+		gbc_list.gridy = 0;
+		panel_2.add(list, gbc_list);
+
 		TextArea textArea = new TextArea();
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
 		gbc_textArea.fill = GridBagConstraints.HORIZONTAL;
@@ -117,12 +132,11 @@ public class DescriptionWindow {
 		panel_2.add(textArea, gbc_textArea);
 		textArea.setBackground(new Color(20, 32, 49));
 		textArea.setForeground(Color.WHITE);
-		
+
 		btnNewButton.addActionListener(e -> {
 			this.hideWindow();
 			this.descripcion = textArea.getText();
 		});
 	}
-
 
 }
