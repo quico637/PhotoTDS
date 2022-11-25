@@ -69,7 +69,10 @@ public class HashTagAdapterTDS implements IHashTagDAO {
 		// recuperar propiedades que no son objetos
 		name = servPersistencia.recuperarPropiedadEntidad(eHashTag, "name");
 		HashTag c;
-		c = new HashTag(name);
+		c = HashTag.createHashtag(name);
+		if(c == null) {
+			return null;
+		}
 		c.setCodigo(codigo);
 		return c;
 	}

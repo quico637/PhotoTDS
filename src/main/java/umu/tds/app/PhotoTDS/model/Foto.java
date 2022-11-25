@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Foto extends Publication {
 	private String path;
+	private static final int MAX_NUM_HASHTAG = 4;
 
 	public Foto(String titulo, Date fechaPublicacion, String descripcion, int likes,  String path) {
 		super(titulo, fechaPublicacion, descripcion, likes);
@@ -42,7 +43,7 @@ public class Foto extends Publication {
 
 	@Override
 	public String toString() {
-		return "Foto [path=" + path + "]";
+		return super.toString() + "[Path:" + getPath() + "]";
 	}
 	
 }

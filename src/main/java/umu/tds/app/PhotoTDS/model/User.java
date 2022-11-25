@@ -20,9 +20,6 @@ public class User {
 	private List<User> usuariosSeguidores;
 	private List<User> usuariosSeguidos;
 	
-	private static final int MAX_NUM_HASHTAG = 4;
-	private static final int MAX_HASTAG_LENGTH = 15;
-	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, boolean premium, List<Notification> notifications, List<Publication> publications,
 			List<User> usuariosSeguidores, List<User> usuariosSeguidos) {

@@ -16,9 +16,15 @@ import umu.tds.app.PhotoTDS.controller.Controller;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.util.Date;
+
 import javax.swing.JTextField;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaInicio {
 
@@ -122,6 +128,16 @@ public class VentanaInicio {
 		panelCentralCardLayout.add(panelPrincipal, "panelPrincipal");
 
 		ImageIcon icon = new ImageIcon("C:/Users/JotaCe/Desktop/cobete.png");
+		//
+		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
+		//
+		JButton btnNewButton = new JButton("Elquecko");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.getInstancia().getAllPublications();
+			}
+		});
+		panelPrincipal.add(btnNewButton);
 		JLabel lblNewLabel_2 = new JLabel();
 		lblNewLabel_2.setIcon(icon);
 		panelPrincipal.add(lblNewLabel_2);

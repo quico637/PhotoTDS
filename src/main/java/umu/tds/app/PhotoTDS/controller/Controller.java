@@ -32,6 +32,7 @@ public class Controller {
 
 	private void inicializarCatalogos() {
 		userRepo = UserRepository.getInstancia();
+		pubRepo = PublicationRepository.getInstancia();
 	}
 
 	public boolean login(String username, String constrasena) {
@@ -55,9 +56,22 @@ public class Controller {
 		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
 	}
 	
+	public void getAllPublications() {
+		pubRepo.getAllPublications().stream().forEach(u -> System.out.println(u.toString()));
+	}
 	
 	private List<HashTag> getHashTagsFromText(String text) {
-		return null;
+		List<HashTag> lh = new LinkedList<>();
+		String[] listaPalabras = text.split(" "); 
+		for(String palabra : listaPalabras) {
+			if(palabra.charAt(0) == '#') {
+				HashTag has = HashTag.createHashtag(palabra);
+				if(has != null) {
+					lh.add(has);
+				}
+			}
+		}
+		return lh;
 	}
 	
 	public void createFoto(String titulo, Date fechaPublicacion, String descripcion,  String path) {

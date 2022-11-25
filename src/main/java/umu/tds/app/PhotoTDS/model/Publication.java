@@ -94,8 +94,9 @@ public class Publication {
 
 	@Override
 	public String toString() {
-		return "Publication [titulo=" + titulo + ", fechaPublicacion=" + fechaPublicacion + ", descripcion="
-				+ descripcion + ", likes=" + likes + ", comentarios=" + comentarios + "]";
+		return this.getClass().getName() + "[codigo=" + codigo + ", titulo=" + titulo + ", fechaPublicacion=" + fechaPublicacion
+				+ ", descripcion=" + descripcion + ", likes=" + likes + ", hashtags=" + hashtags + ", comentarios="
+				+ comentarios + "]";
 	}
-
+	
 }
