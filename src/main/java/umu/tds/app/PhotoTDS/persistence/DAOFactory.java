@@ -5,7 +5,7 @@ public abstract class DAOFactory {
 	private static DAOFactory unicaInstancia;
 	
 	public static final String DAO_TDS = "umu.tds.app.PhotoTDS.persistence.DAOFactoryTDS";
-		
+	
 	/** 
 	 * Crea un tipo de factoria DAO.
 	 * Solo existe el tipo TDSFactoriaDAO

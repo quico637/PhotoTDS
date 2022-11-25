@@ -14,15 +14,19 @@ public class Publication {
 	private List<HashTag> hashtags;	
 	private List<Comentario> comentarios;
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
+	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes, List<HashTag> hashtags) {
 		super();
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
 		this.likes = likes;
-		this.hashtags = new LinkedList<>();
+		this.hashtags = hashtags;
 		this.comentarios = new LinkedList<>();
 
+	}
+	
+	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
+		this(titulo, fechaPublicacion, descripcion, likes, new LinkedList<HashTag>());
 	}
 
 	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes,
@@ -35,6 +39,16 @@ public class Publication {
 		this.hashtags = hashtags;
 		this.comentarios = comentarios;
 
+	}
+	
+	public Publication(String titulo, Date fechaPublicacion, String descripcion,
+			List<HashTag> hashtags, List<Comentario> comentarios) {
+		this(titulo, fechaPublicacion, descripcion, 0, hashtags, comentarios);
+
+	}
+	
+	public Publication(String titulo, Date fechaPublicacion, String descripcion) {
+		this(titulo, fechaPublicacion, descripcion, 0);
 	}
 	
 	public int getCodigo() {

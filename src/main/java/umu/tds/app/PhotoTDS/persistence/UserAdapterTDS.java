@@ -56,7 +56,8 @@ public class UserAdapterTDS implements IUserDAO {
 				new Propiedad("premium", String.valueOf(u.isPremium())),
 				new Propiedad("notifications", obtenerCodigosNotificaciones(u.getNotifications())),
 				new Propiedad("publications", obtenerCodigosPublications(u.getPublications())),
-				new Propiedad("usuariosSeguidores", obtenerCodigosSeguidores(u.getUsuariosSeguidores()))
+				new Propiedad("usuariosSeguidores", obtenerCodigosSeguidores(u.getUsuariosSeguidores())),
+				new Propiedad("usuariosSeguidos", obtenerCodigosSeguidores(u.getUsuariosSeguidos()))
 				)));
 
 		// registrar entidad cliente
@@ -86,6 +87,7 @@ public class UserAdapterTDS implements IUserDAO {
 		String notifications;
 		String publications;
 		String usuariosSeguidores;
+		String usuariosSeguidos;
 		
 
 		// recuperar entidad
@@ -103,12 +105,15 @@ public class UserAdapterTDS implements IUserDAO {
 		notifications = servPersistencia.recuperarPropiedadEntidad(eUser, "notifications");
 		publications = servPersistencia.recuperarPropiedadEntidad(eUser, "publications");
 		usuariosSeguidores = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
+		usuariosSeguidos = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
 
 		User u;
 		u = new User(username, email, nombreCompleto, Utils.StringToDate(fechaNacimiento), descripcion, contrasena
 				,Boolean.parseBoolean(premium), obtenerNotificationsDesdeCodigos(notifications), 
 				obtenerPublicationsDesdeCodigos(publications),
-				obtenerSeguidoresDesdeCodigos(usuariosSeguidores));
+				obtenerSeguidoresDesdeCodigos(usuariosSeguidores),
+				obtenerSeguidoresDesdeCodigos(usuariosSeguidos)
+				);
 		u.setCodigo(codigo);
 		return u;
 	}

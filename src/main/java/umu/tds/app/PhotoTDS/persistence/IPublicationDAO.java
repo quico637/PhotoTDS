@@ -12,3 +12,4 @@ public interface IPublicationDAO {
 	public void deletePublication(Publication u);
 	public List<Publication> readAllPublications();
 }
+

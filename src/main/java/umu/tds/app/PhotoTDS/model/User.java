@@ -18,10 +18,14 @@ public class User {
 	private List<Notification> notifications;
 	private List<Publication> publications;
 	private List<User> usuariosSeguidores;
+	private List<User> usuariosSeguidos;
+	
+	private static final int MAX_NUM_HASHTAG = 4;
+	private static final int MAX_HASTAG_LENGTH = 15;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, boolean premium, List<Notification> notifications, List<Publication> publications,
-			List<User> usuariosSeguidores) {
+			List<User> usuariosSeguidores, List<User> usuariosSeguidos) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -33,6 +37,7 @@ public class User {
 		this.notifications = notifications;
 		this.publications = publications;
 		this.usuariosSeguidores = usuariosSeguidores;
+		this.usuariosSeguidos = usuariosSeguidos;
 	}
 
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena) {
@@ -47,6 +52,7 @@ public class User {
 		this.notifications = new LinkedList<>();
 		this.publications = new LinkedList<>();
 		this.usuariosSeguidores = new LinkedList<>();
+		this.usuariosSeguidos = new LinkedList<>();
 	}
 	
 	public List<Notification> getNotifications() {
@@ -60,7 +66,12 @@ public class User {
 	public List<User> getUsuariosSeguidores() {
 		return new LinkedList<>(usuariosSeguidores);
 	}
-	
+
+
+	public List<User> getUsuariosSeguidos() {
+		return new LinkedList<>(usuariosSeguidos);
+	}
+
 	public void setCodigo(int c) {
 		this.codigo = c;
 	}

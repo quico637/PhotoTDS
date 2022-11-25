@@ -1,6 +1,6 @@
 package umu.tds.app.PhotoTDS.persistence;
 
-public class DAOFactoryTDS extends DAOFactory{
+public class DAOFactoryTDS extends DAOFactory {
 	public DAOFactoryTDS () {
 	}
 	
