@@ -6,21 +6,31 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Panel;
 import javax.swing.JLabel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.TextArea;
+import java.util.List;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.Font;
 import javax.swing.JList;
+
+import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.User;
 
 public class DescriptionWindow {
 
@@ -109,19 +119,25 @@ public class DescriptionWindow {
 		gbl_panel_2.rowWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
 
-		JList<String> list = new JList<>();
-		DefaultListModel<String> model = new DefaultListModel<>();
-		model.addElement("Alumno 1");
-		model.addElement("Alumno 2");
-		model.addElement("Alumno 3");
-		list.setModel(model);
+//		JList<String> list = new JList<>();
+//		DefaultListModel<String> model = new DefaultListModel<>();
+//		model.addElement("Alumno 1");
+//		model.addElement("Alumno 2");
+//		model.addElement("Alumno 3");
+//		list.setModel(model);
+		
+		List<User> employees = Controller.getInstancia().getAllusers();
+	    JList<User> jList = new JList<>(employees.toArray(new User[employees.size()]));
+	    jList.setCellRenderer(createListRenderer());
+	    jList.addListSelectionListener(createListSelectionListener(jList));
 		
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 5);
 		gbc_list.fill = GridBagConstraints.BOTH;
 		gbc_list.gridx = 1;
 		gbc_list.gridy = 0;
-		panel_2.add(list, gbc_list);
+//		panel_2.add(list, gbc_list);
+		panel_2.add(jList);
 
 		TextArea textArea = new TextArea();
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
@@ -138,5 +154,48 @@ public class DescriptionWindow {
 			this.descripcion = textArea.getText();
 		});
 	}
+	
+	private static ListSelectionListener createListSelectionListener(JList list) {
+	      return e -> {
+	          if (!e.getValueIsAdjusting()) {
+	              System.out.println(list.getSelectedValue());
+	          }
+	      };
+	  }
+
+	  private static ListCellRenderer<? super User> createListRenderer() {
+	      return new DefaultListCellRenderer() {
+	          /**
+			 * º
+			 */
+			private static final long serialVersionUID = 1L;
+			private Color background = new Color(0, 100, 255, 15);
+	          private Color defaultBackground = (Color) UIManager.get("List.background");
+
+	          @Override
+	          public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+	                                                        boolean isSelected, boolean cellHasFocus) {
+	              Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	              if (c instanceof JLabel) {
+	                  JLabel label = (JLabel) c;
+	                  User u = (User) value;
+	                  label.setText(String.format("%s [%s]", u.getUsername(), u.getEmail()));
+	                  if (!isSelected) {
+	                      label.setBackground(index % 2 == 0 ? background : defaultBackground);
+	                  }
+	                  label.setIcon(new ImageIcon(DescriptionWindow.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
+	                  
+	              }
+	              return c;
+	          }
+	      };
+	  }
+
+	  private static JFrame createFrame() {
+	      JFrame frame = new JFrame("JList Example");
+	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      frame.setSize(new Dimension(600, 300));
+	      return frame;
+	  }
 
 }

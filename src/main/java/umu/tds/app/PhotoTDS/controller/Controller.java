@@ -52,8 +52,9 @@ public class Controller {
 		userRepo.createrUser(u);
 	}
 
-	public void getAllusers() {
+	public List<User> getAllusers() {
 		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
+		return new LinkedList<>(userRepo.getAllUsers());
 	}
 	
 	public void getAllPublications() {
