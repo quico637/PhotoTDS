@@ -126,10 +126,10 @@ public class DescriptionWindow {
 //		model.addElement("Alumno 3");
 //		list.setModel(model);
 		
-		List<User> employees = Controller.getInstancia().getAllusers();
-	    JList<User> jList = new JList<>(employees.toArray(new User[employees.size()]));
-	    jList.setCellRenderer(createListRenderer());
-	    jList.addListSelectionListener(createListSelectionListener(jList));
+//		List<User> employees = Controller.getInstancia().getAllusers();
+//	    JList<User> jList = new JList<>(employees.toArray(new User[employees.size()]));
+//	    jList.setCellRenderer(createListRenderer());
+//	    jList.addListSelectionListener(createListSelectionListener(jList));
 		
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 5);
@@ -137,7 +137,7 @@ public class DescriptionWindow {
 		gbc_list.gridx = 1;
 		gbc_list.gridy = 0;
 //		panel_2.add(list, gbc_list);
-		panel_2.add(jList);
+//		panel_2.add(jList);
 
 		TextArea textArea = new TextArea();
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
@@ -155,47 +155,6 @@ public class DescriptionWindow {
 		});
 	}
 	
-	private static ListSelectionListener createListSelectionListener(JList list) {
-	      return e -> {
-	          if (!e.getValueIsAdjusting()) {
-	              System.out.println(list.getSelectedValue());
-	          }
-	      };
-	  }
 
-	  private static ListCellRenderer<? super User> createListRenderer() {
-	      return new DefaultListCellRenderer() {
-	          /**
-			 * º
-			 */
-			private static final long serialVersionUID = 1L;
-			private Color background = new Color(0, 100, 255, 15);
-	          private Color defaultBackground = (Color) UIManager.get("List.background");
-
-	          @Override
-	          public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-	                                                        boolean isSelected, boolean cellHasFocus) {
-	              Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	              if (c instanceof JLabel) {
-	                  JLabel label = (JLabel) c;
-	                  User u = (User) value;
-	                  label.setText(String.format("%s [%s]", u.getUsername(), u.getEmail()));
-	                  if (!isSelected) {
-	                      label.setBackground(index % 2 == 0 ? background : defaultBackground);
-	                  }
-	                  label.setIcon(new ImageIcon(DescriptionWindow.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
-	                  
-	              }
-	              return c;
-	          }
-	      };
-	  }
-
-	  private static JFrame createFrame() {
-	      JFrame frame = new JFrame("JList Example");
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      frame.setSize(new Dimension(600, 300));
-	      return frame;
-	  }
 
 }
