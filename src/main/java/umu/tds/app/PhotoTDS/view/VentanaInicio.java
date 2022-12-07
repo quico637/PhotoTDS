@@ -149,11 +149,11 @@ public class VentanaInicio {
 		});
 		panelPrincipal.add(btnNewButton);
 		
-		List<User> employees = Controller.getInstancia().getAllusers();
-	    JList<User> jList = new JList<>(employees.toArray(new User[employees.size()]));
-	    jList.setCellRenderer(createListRenderer());
-	    jList.addListSelectionListener(createListSelectionListener(jList));
-		panelPrincipal.add(jList);
+//		List<User> employees = Controller.getInstancia().getAllusers();
+//	    JList<User> jList = new JList<>(employees.toArray(new User[employees.size()]));
+//	    jList.setCellRenderer(createListRenderer());
+//	    jList.addListSelectionListener(createListSelectionListener(jList));
+//		panelPrincipal.add(jList);
 		
 //		Controller.getInstancia().getAllusers();
 
