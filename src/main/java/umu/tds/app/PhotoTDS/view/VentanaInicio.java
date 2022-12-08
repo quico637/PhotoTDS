@@ -2,7 +2,6 @@ package umu.tds.app.PhotoTDS.view;
 
 import java.awt.EventQueue;
 import java.awt.Font;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -171,7 +170,7 @@ public class VentanaInicio {
 	      };
 	  }
 
-	  private static ListCellRenderer<? super User> createListRenderer() {
+	  private static ListCellRenderer<? super PanelPublicacion> createListRenderer() {
 	      return new DefaultListCellRenderer() {
 	          /**
 			 * º
@@ -184,16 +183,8 @@ public class VentanaInicio {
 	          public Component getListCellRendererComponent(JList<?> list, Object value, int index,
 	                                                        boolean isSelected, boolean cellHasFocus) {
 	              Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	              if (c instanceof JLabel) {
-	                  JLabel label = (JLabel) c;
-	                  User u = (User) value;
-	                  label.setText(String.format("%s [%s]", u.getUsername(), u.getEmail()));
-	                  if (!isSelected) {
-	                      label.setBackground(index % 2 == 0 ? background : defaultBackground);
-	                  }
-	                  label.setIcon(new ImageIcon(DescriptionWindow.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
-	           
-	                  
+	              if (c instanceof JFrame) {
+	            	  
 	              }
 	              return c;
 	          }
