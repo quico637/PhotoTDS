@@ -17,13 +17,21 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.ImageIcon;
 
-public class PanelPublicacion extends JFrame{
+public class PanelPublicacion {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private final static int MAX_ALTO = 625;
 	private final static int MAX_ANCHO = 275;
 	private String perfil;
 	private String comentario;
+	
+	public JFrame getFrame() {
+		return this.frame;
+	}
 
 	/**
 	 * Launch the application.
@@ -56,7 +64,7 @@ public class PanelPublicacion extends JFrame{
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 500, 625);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel seccionFoto = new JPanel();
@@ -104,7 +112,7 @@ public class PanelPublicacion extends JFrame{
 		gbl_seccionUsuario.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		seccionUsuario.setLayout(gbl_seccionUsuario);
 		
-		JLabel lblNewLabel_1 = new JLabel("PERFIL");
+		JLabel lblNewLabel_1 = new JLabel("PERFIL: " + this.perfil);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.gridx = 0;
 		gbc_lblNewLabel_1.gridy = 0;
@@ -119,7 +127,7 @@ public class PanelPublicacion extends JFrame{
 		gbl_seccionComentario.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		seccionComentario.setLayout(gbl_seccionComentario);
 		
-		JLabel lblNewLabel_2 = new JLabel("Comentario");
+		JLabel lblNewLabel_2 = new JLabel("Comentario: " + this.comentario);
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 0;

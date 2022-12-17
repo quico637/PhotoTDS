@@ -22,6 +22,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -30,6 +31,7 @@ import javax.swing.ListCellRenderer;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -148,13 +150,17 @@ public class VentanaInicio {
 		});
 		panelPrincipal.add(btnNewButton);
 		
-//		List<User> employees = Controller.getInstancia().getAllusers();
-//	    JList<User> jList = new JList<>(employees.toArray(new User[employees.size()]));
-//	    jList.setCellRenderer(createListRenderer());
-//	    jList.addListSelectionListener(createListSelectionListener(jList));
-//		panelPrincipal.add(jList);
+		List<Component> paneles = new LinkedList<>();
+		for( User u : Controller.getInstancia().getAllusers()) {
+			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion()).getFrame().getContentPane());
+		}
 		
-//		Controller.getInstancia().getAllusers();
+	    JList<Component> jList = new JList<>(paneles.toArray(new Container[paneles.size()]));
+	    jList.setCellRenderer(createListRenderer());
+	    jList.addListSelectionListener(createListSelectionListener(jList));
+		panelPrincipal.add(jList);
+		
+		Controller.getInstancia().getAllusers();
 
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
@@ -170,7 +176,7 @@ public class VentanaInicio {
 	      };
 	  }
 
-	  private static ListCellRenderer<? super PanelPublicacion> createListRenderer() {
+	  private static ListCellRenderer<? super Component> createListRenderer() {
 	      return new DefaultListCellRenderer() {
 	          /**
 			 * º
@@ -182,11 +188,11 @@ public class VentanaInicio {
 	          @Override
 	          public Component getListCellRendererComponent(JList<?> list, Object value, int index,
 	                                                        boolean isSelected, boolean cellHasFocus) {
-	              Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	              if (c instanceof JFrame) {
-	            	  
-	              }
-	              return c;
+	        	  	        	  
+	        	  Component renderer = (Component) value;
+	    
+	        	  renderer.setBackground(index % 2 == 0 ? background : defaultBackground);
+	        	  return renderer;
 	          }
 	      };
 	  }
