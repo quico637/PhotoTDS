@@ -53,6 +53,7 @@ public class UserAdapterTDS implements IUserDAO {
 				new Propiedad("fechaNacimiento", Utils.DateToString(u.getFechaNacimiento())),
 				new Propiedad("descripcion", u.getDescripcion()),
 				new Propiedad("contrasena", u.getContrasena()),
+				new Propiedad("profilePic", u.getProfilePic()),
 				new Propiedad("premium", String.valueOf(u.isPremium())),
 				new Propiedad("notifications", obtenerCodigosNotificaciones(u.getNotifications())),
 				new Propiedad("publications", obtenerCodigosPublications(u.getPublications())),
@@ -82,6 +83,7 @@ public class UserAdapterTDS implements IUserDAO {
 		String fechaNacimiento;
 		String descripcion;
 		String contrasena;
+		String profilePic;
 		String premium;
 		
 		String notifications;
@@ -100,6 +102,7 @@ public class UserAdapterTDS implements IUserDAO {
 		fechaNacimiento = servPersistencia.recuperarPropiedadEntidad(eUser, "fechaNacimiento");
 		descripcion = servPersistencia.recuperarPropiedadEntidad(eUser, "descripcion");
 		contrasena = servPersistencia.recuperarPropiedadEntidad(eUser, "contrasena");
+		profilePic = servPersistencia.recuperarPropiedadEntidad(eUser, "profilePic");
 		premium = servPersistencia.recuperarPropiedadEntidad(eUser, "premium");
 		
 		notifications = servPersistencia.recuperarPropiedadEntidad(eUser, "notifications");
@@ -108,7 +111,7 @@ public class UserAdapterTDS implements IUserDAO {
 		usuariosSeguidos = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
 
 		User u;
-		u = new User(username, email, nombreCompleto, Utils.StringToDate(fechaNacimiento), descripcion, contrasena
+		u = new User(username, email, nombreCompleto, Utils.StringToDate(fechaNacimiento), descripcion, contrasena, profilePic
 				,Boolean.parseBoolean(premium), obtenerNotificationsDesdeCodigos(notifications), 
 				obtenerPublicationsDesdeCodigos(publications),
 				obtenerSeguidoresDesdeCodigos(usuariosSeguidores),
@@ -134,6 +137,8 @@ public class UserAdapterTDS implements IUserDAO {
 				prop.setValor(u.getDescripcion());
 			else if (prop.getNombre().equals("contrasena")) 
 				prop.setValor(u.getContrasena());
+			else if(prop.getNombre().equals("profilePic"))
+				prop.setValor(u.getProfilePic());
 			else if (prop.getNombre().equals("premium"))
 				prop.setValor(String.valueOf(u.isPremium()));
 			

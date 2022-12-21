@@ -28,6 +28,7 @@ public class PanelPublicacion {
 	private final static int MAX_ANCHO = 275;
 	private String perfil;
 	private String comentario;
+	private String path;
 	
 	public JFrame getFrame() {
 		return this.frame;
@@ -52,9 +53,10 @@ public class PanelPublicacion {
 	/**
 	 * Create the application.
 	 */
-	public PanelPublicacion(String perfil, String comentario) {
+	public PanelPublicacion(String perfil, String comentario, String path) {
 		this.perfil = perfil;
 		this.comentario = comentario;
+		this.path = path;
 		initialize();
 	}
 
@@ -96,7 +98,7 @@ public class PanelPublicacion {
 //
 //		Image image = imageIcon.getImage().getScaledInstance(Math.round(imageIcon.getIconWidth()*redimension), Math.round(imageIcon.getIconHeight()*redimension), Image.SCALE_SMOOTH);
 //		imageIcon = new ImageIcon(image);
-		lblNewLabel.setIcon(new ImageIcon(PanelPublicacion.class.getResource("/umu/tds/app/PhotoTDS/images/take-a-photo (2).png")));
+		lblNewLabel.setIcon(new ImageIcon(path));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 1;

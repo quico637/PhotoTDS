@@ -47,8 +47,8 @@ public class Controller {
 	}
 
 	public void createUser(String username, String email, String nombreCompleto, Date fechaNacimiento,
-			String descripcion, String contrasena) {
-		User u = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, contrasena);
+			String descripcion, String contrasena, String profilePic) {
+		User u = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, contrasena, profilePic);
 		userRepo.createrUser(u);
 	}
 

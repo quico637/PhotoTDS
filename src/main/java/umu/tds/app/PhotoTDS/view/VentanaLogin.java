@@ -57,6 +57,7 @@ public class VentanaLogin {
 	private JTextField txtNombreCom;
 	private JTextField txtNombreDeUsuario;
 	private JLabel lblNewLabel_7;
+	private String profilePic;
 	private static VentanaLogin unicaInstancia = null;
 
 	/**
@@ -419,7 +420,9 @@ public class VentanaLogin {
 
 		JButton btnSubmitReg = new JButton("Register");
 		btnSubmitReg.addActionListener(e -> {
-			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(), txtNombreCom.getText(), Utils.StringToDate(txtFld.getText()) , DescriptionWindow.getInstancia().getDescripcion() , passwordField_1.getText());
+			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(),
+					txtNombreCom.getText(), Utils.StringToDate(txtFld.getText()) , DescriptionWindow.getInstancia().getDescripcion(),
+					passwordField_1.getText(), profilePic);
 		});
 		btnSubmitReg.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
 		btnSubmitReg.addMouseListener(new MouseAdapter() {
@@ -446,6 +449,7 @@ public class VentanaLogin {
 		gbc_lblNewLabel_7.gridy = 7;
 		panelRegister.add(lblNewLabel_7, gbc_lblNewLabel_7);
 
+		
 		JButton btnNewButton_1 = new JButton("Select");
 		btnNewButton_1.addActionListener(e -> {
 			JFileChooser chooser = new JFileChooser();
@@ -453,7 +457,8 @@ public class VentanaLogin {
 			chooser.setFileFilter(filter);
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
+				System.out.println("You chose to open this file: " + chooser.getSelectedFile());
+				profilePic = chooser.getSelectedFile().getName();
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();

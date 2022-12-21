@@ -14,6 +14,7 @@ public class User {
 	private final Date fechaNacimiento;
 	private final String descripcion;
 	private final String contrasena;
+	private String profilePic;
 	private boolean premium;
 	private List<Notification> notifications;
 	private List<Publication> publications;
@@ -21,7 +22,7 @@ public class User {
 	private List<User> usuariosSeguidos;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
-			String contrasena, boolean premium, List<Notification> notifications, List<Publication> publications,
+			String contrasena, String profilePic, boolean premium, List<Notification> notifications, List<Publication> publications,
 			List<User> usuariosSeguidores, List<User> usuariosSeguidos) {
 		super();
 		this.username = username;
@@ -30,6 +31,7 @@ public class User {
 		this.fechaNacimiento = fechaNacimiento;
 		this.descripcion = descripcion;
 		this.contrasena = contrasena;
+		this.profilePic = profilePic;
 		this.premium = premium;
 		this.notifications = notifications;
 		this.publications = publications;
@@ -37,7 +39,7 @@ public class User {
 		this.usuariosSeguidos = usuariosSeguidos;
 	}
 
-	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena) {
+	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena, String profilePic) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -45,11 +47,16 @@ public class User {
 		this.fechaNacimiento = fechaNacimiento;
 		this.descripcion = descripcion;
 		this.contrasena = EncryptDecrypt.encrypt(contrasena);
+		this.profilePic = profilePic;
 		this.premium = false;
 		this.notifications = new LinkedList<>();
 		this.publications = new LinkedList<>();
 		this.usuariosSeguidores = new LinkedList<>();
 		this.usuariosSeguidos = new LinkedList<>();
+		
+//		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
+//				contrasena, profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
+//				new LinkedList<User>(), new LinkedList<User>());
 	}
 	
 	public List<Notification> getNotifications() {
@@ -77,6 +84,10 @@ public class User {
 		return this.codigo;
 	}
 
+	public String getProfilePic() {
+		return this.profilePic;
+	}
+	
 	public String getUsername() {
 		return username;
 	}

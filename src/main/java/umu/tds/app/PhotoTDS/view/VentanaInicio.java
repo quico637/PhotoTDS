@@ -141,18 +141,10 @@ public class VentanaInicio {
 
 		//
 		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
-		//
-		JButton btnNewButton = new JButton("Elquecko");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Controller.getInstancia().getAllPublications();
-			}
-		});
-		panelPrincipal.add(btnNewButton);
-		
+				
 		List<Component> paneles = new LinkedList<>();
 		for( User u : Controller.getInstancia().getAllusers()) {
-			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion()).getFrame().getContentPane());
+			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic()).getFrame().getContentPane());
 		}
 		
 	    JList<Component> jList = new JList<>(paneles.toArray(new Container[paneles.size()]));
