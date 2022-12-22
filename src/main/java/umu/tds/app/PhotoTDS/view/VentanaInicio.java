@@ -126,13 +126,7 @@ public class VentanaInicio {
 		panelNorte.add(photoApp, BorderLayout.WEST);
 
 		JLabel lblNewLabel = new JLabel("Profile");
-		lblNewLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
-				cl.show(panelCentralCardLayout, "panelPerfil");
-			}
-		});
+		
 		lblNewLabel.setIcon(
 				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/profileInicio.png")));
 		lblNewLabel.setFont(new Font("Segoe Script", Font.BOLD, 16));
@@ -155,6 +149,8 @@ public class VentanaInicio {
 		
 //		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
 
+
+		
 		List<Component> paneles = new LinkedList<>();
 		for (User u : Controller.getInstancia().getAllusers()) {
 			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), 
@@ -167,18 +163,39 @@ public class VentanaInicio {
 
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
 		demoList.addAll(paneles);
-		JList<Component> jList = new JList<>(demoList);
-		paneles.stream().forEach(p -> jList.add(p));
-		jList.setCellRenderer(createListRenderer());
-		jList.addListSelectionListener(createListSelectionListener(jList));
 		
 
 		Controller.getInstancia().getAllusers();
 		
-			
+		JPanel panelPublications = new JPanel();
+		panelCentralCardLayout.add(panelPublications, "panelPublications");
+		JList<Component> jList = new JList<>(demoList);
+		panelPublications.add(jList);
+		jList.setCellRenderer(createListRenderer());
+		jList.addListSelectionListener(createListSelectionListener(jList));
 		
-		panelCentralCardLayout.add(jList);
-	
+		JPanel panelPerfil = new JPanel();
+		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
+		
+		JLabel lblNewLabel_2 = new JLabel("New label");
+		panelPerfil.add(lblNewLabel_2);
+		
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+				cl.show(panelCentralCardLayout, "panelPerfil");
+			}
+		});
+		
+		photoApp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+				cl.show(panelCentralCardLayout, "panelPublications");
+			}
+		});
+		
 
 	}
 
