@@ -3,11 +3,13 @@ package umu.tds.app.PhotoTDS.view;
 import java.awt.EventQueue;
 import java.awt.Font;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
@@ -42,6 +44,8 @@ public class VentanaInicio {
 
 	private JFrame frame;
 
+	private final static int X = 100;
+	private final static int Y = 100;
 	private final static int X_BORDER = 500;
 	private final static int Y_BORDER = 700;
 	private static VentanaInicio unicaInstancia = null;
@@ -61,6 +65,16 @@ public class VentanaInicio {
 				}
 			}
 		});
+	}
+
+	protected ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
 	}
 
 	/**
@@ -90,7 +104,7 @@ public class VentanaInicio {
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
-		frame.setBounds(100, 100, X_BORDER, Y_BORDER);
+		frame.setBounds(X, Y, X_BORDER, Y_BORDER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -105,6 +119,8 @@ public class VentanaInicio {
 
 		JLabel photoApp = new JLabel("PhotoApp");
 		photoApp.setFont(new Font("Segoe Script", Font.PLAIN, 20));
+
+
 		photoApp.setIcon(
 				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/iconoPequeno.png")));
 		panelNorte.add(photoApp, BorderLayout.WEST);
@@ -139,61 +155,70 @@ public class VentanaInicio {
 		JPanel panelPrincipal = new JPanel();
 		panelCentralCardLayout.add(panelPrincipal, "panelPrincipal");
 
-		//
-		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
-				
+		
+//		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
+
 		List<Component> paneles = new LinkedList<>();
-		for( User u : Controller.getInstancia().getAllusers()) {
-			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic()).getFrame().getContentPane());
+		for (User u : Controller.getInstancia().getAllusers()) {
+			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), 
+					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
+					.getContentPane());
+			System.out.println("PERSON: " + u.getUsername());
 		}
 		
-	    JList<Component> jList = new JList<>(paneles.toArray(new Container[paneles.size()]));
-	    jList.setCellRenderer(createListRenderer());
-	    jList.addListSelectionListener(createListSelectionListener(jList));
-		panelPrincipal.add(jList);
 		
+
+		DefaultListModel<Component> demoList = new DefaultListModel<>();
+		demoList.addAll(paneles);
+		JList<Component> jList = new JList<>(demoList);
+		paneles.stream().forEach(p -> jList.add(p));
+		jList.setCellRenderer(createListRenderer());
+		jList.addListSelectionListener(createListSelectionListener(jList));
+		panelPrincipal.add(jList);
+
 		Controller.getInstancia().getAllusers();
 
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
-		panelPerfil.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-	}
-	
-	private static ListSelectionListener createListSelectionListener(JList list) {
-	      return e -> {
-	          if (!e.getValueIsAdjusting()) {
-	              System.out.println(list.getSelectedValue());
-	          }
-	      };
-	  }
+		panelPerfil.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-	  private static ListCellRenderer<? super Component> createListRenderer() {
-	      return new DefaultListCellRenderer() {
-	          /**
+	}
+
+	private static ListSelectionListener createListSelectionListener(JList list) {
+		return e -> {
+			if (!e.getValueIsAdjusting()) {
+				System.out.println(list.getSelectedValue());
+			}
+		};
+	}
+
+	private static ListCellRenderer<? super Component> createListRenderer() {
+		return new DefaultListCellRenderer() {
+			/**
 			 * º
 			 */
 			private static final long serialVersionUID = 1L;
 			private Color background = new Color(0, 100, 255, 15);
-	          private Color defaultBackground = (Color) UIManager.get("List.background");
+			private Color defaultBackground = (Color) UIManager.get("List.background");
 
-	          @Override
-	          public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-	                                                        boolean isSelected, boolean cellHasFocus) {
-	        	  	        	  
-	        	  Component renderer = (Component) value;
-	    
-	        	  renderer.setBackground(index % 2 == 0 ? background : defaultBackground);
-	        	  return renderer;
-	          }
-	      };
-	  }
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
 
-	  private static JFrame createFrame() {
-	      JFrame frame = new JFrame("JList Example");
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      frame.setSize(new Dimension(600, 300));
-	      return frame;
-	  }
+				Component renderer = (Component) value;
+
+				renderer.setBackground(index % 2 == 0 ? background : defaultBackground);
+				return renderer;
+			}
+		};
+	}
+
+	private static JFrame createFrame() {
+		JFrame frame = new JFrame("JList Example");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(new Dimension(600, 300));
+		return frame;
+	}
 
 }

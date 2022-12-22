@@ -458,7 +458,7 @@ public class VentanaLogin {
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				System.out.println("You chose to open this file: " + chooser.getSelectedFile());
-				profilePic = chooser.getSelectedFile().getName();
+				profilePic = chooser.getSelectedFile().getPath();
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();

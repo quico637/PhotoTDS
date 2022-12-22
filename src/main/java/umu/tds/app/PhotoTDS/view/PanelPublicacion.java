@@ -24,8 +24,11 @@ public class PanelPublicacion {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
-	private final static int MAX_ALTO = 625;
-	private final static int MAX_ANCHO = 275;
+	private final int MAX_ALTO;
+	private final int MAX_ANCHO;
+	private final int X;
+	private final int Y;
+	
 	private String perfil;
 	private String comentario;
 	private String path;
@@ -49,14 +52,38 @@ public class PanelPublicacion {
 //			}
 //		});
 //	}
+	
+	protected ImageIcon createImageIcon(String path) {
+		if(path == null) {
+			System.err.println("Path is null!!!.");
+			return null;
+		}
+		java.net.URL imgURL = getClass().getResource(path);
+		
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		}
+		ImageIcon img = new ImageIcon(path);
+		if(img != null)
+			return img;
+			
+		System.err.println("Couldn't find file: " + path);
+		return null;
+		
+	}
+
 
 	/**
 	 * Create the application.
 	 */
-	public PanelPublicacion(String perfil, String comentario, String path) {
+	public PanelPublicacion(String perfil, String comentario, String path, int x, int y, int maxAlto, int maxAncho) {
 		this.perfil = perfil;
 		this.comentario = comentario;
 		this.path = path;
+		this.X = x;
+		this.Y = y;
+		this.MAX_ALTO = maxAlto;
+		this.MAX_ANCHO = maxAncho;
 		initialize();
 	}
 
@@ -79,26 +106,13 @@ public class PanelPublicacion {
 		seccionFoto.setLayout(gbl_seccionFoto);
 		
 		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(0, 0, MAX_ANCHO, MAX_ALTO);
 		ImageIcon imageIcon = new ImageIcon(PanelPublicacion.class.getResource("/umu/tds/app/PhotoTDS/images/maxresdefault.jpg"));
 		float redimension = 1;
-//		if(imageIcon.getIconHeight() > imageIcon.getIconWidth()) {
-//			redimension = (100 * MAX_ALTO) / imageIcon.getIconHeight();
-//		}else {
-//			redimension = (100 * MAX_ANCHO) / imageIcon.getIconWidth();
-//		}
-//		
-//		
-//		if(imageIcon.getIconWidth() > MAX_ANCHO) {
-//			redimension = (100 * MAX_ANCHO) / imageIcon.getIconHeight();
-//		} else if (imageIcon.getIconHeight() > MAX_ALTO) {
-//			redimension = (100 * MAX_ALTO) / imageIcon.getIconWidth();
-//		}
-//		redimension /=  100;
-//		System.out.println(redimension);
-//
-//		Image image = imageIcon.getImage().getScaledInstance(Math.round(imageIcon.getIconWidth()*redimension), Math.round(imageIcon.getIconHeight()*redimension), Image.SCALE_SMOOTH);
-//		imageIcon = new ImageIcon(image);
-		lblNewLabel.setIcon(new ImageIcon(path));
+
+		Image img = createImageIcon(path).getImage().getScaledInstance(lblNewLabel.getHeight(), lblNewLabel.getWidth(), Image.SCALE_SMOOTH);
+		ImageIcon icon = new ImageIcon(img);
+		lblNewLabel.setIcon(icon);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 1;
