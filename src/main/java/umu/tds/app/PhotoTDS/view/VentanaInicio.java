@@ -152,9 +152,6 @@ public class VentanaInicio {
 		panel_1.add(textField);
 		textField.setColumns(10);
 
-		JPanel panelPrincipal = new JPanel();
-		panelCentralCardLayout.add(panelPrincipal, "panelPrincipal");
-
 		
 //		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
 
@@ -174,14 +171,14 @@ public class VentanaInicio {
 		paneles.stream().forEach(p -> jList.add(p));
 		jList.setCellRenderer(createListRenderer());
 		jList.addListSelectionListener(createListSelectionListener(jList));
-		panelPrincipal.add(jList);
+		
 
 		Controller.getInstancia().getAllusers();
-
-		JPanel panelPerfil = new JPanel();
-		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
 		
-		panelPerfil.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+			
+		
+		panelCentralCardLayout.add(jList);
+	
 
 	}
 

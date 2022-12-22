@@ -26,9 +26,7 @@ public class PanelPublicacion {
 	private JFrame frame;
 	private final int MAX_ALTO;
 	private final int MAX_ANCHO;
-	private final int X;
-	private final int Y;
-	
+		
 	private String perfil;
 	private String comentario;
 	private String path;
@@ -80,8 +78,6 @@ public class PanelPublicacion {
 		this.perfil = perfil;
 		this.comentario = comentario;
 		this.path = path;
-		this.X = x;
-		this.Y = y;
 		this.MAX_ALTO = maxAlto;
 		this.MAX_ANCHO = maxAncho;
 		initialize();
@@ -108,7 +104,6 @@ public class PanelPublicacion {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(0, 0, MAX_ANCHO, MAX_ALTO);
 		ImageIcon imageIcon = new ImageIcon(PanelPublicacion.class.getResource("/umu/tds/app/PhotoTDS/images/maxresdefault.jpg"));
-		float redimension = 1;
 
 		Image img = createImageIcon(path).getImage().getScaledInstance(lblNewLabel.getHeight(), lblNewLabel.getWidth(), Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(img);
@@ -122,17 +117,31 @@ public class PanelPublicacion {
 		JPanel seccionUsuario = new JPanel();
 		frame.getContentPane().add(seccionUsuario, BorderLayout.NORTH);
 		GridBagLayout gbl_seccionUsuario = new GridBagLayout();
-		gbl_seccionUsuario.columnWidths = new int[]{0, 0};
+		gbl_seccionUsuario.columnWidths = new int[]{0, 0, 0};
 		gbl_seccionUsuario.rowHeights = new int[]{0, 0};
-		gbl_seccionUsuario.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_seccionUsuario.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		gbl_seccionUsuario.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		seccionUsuario.setLayout(gbl_seccionUsuario);
 		
-		JLabel lblNewLabel_1 = new JLabel("PERFIL: " + this.perfil);
+		JLabel profilePic = new JLabel("");
+		
+		profilePic.setBounds(0, 0, 25, 25);
+
+		img = createImageIcon(path).getImage().getScaledInstance(profilePic.getHeight(), profilePic.getWidth(), Image.SCALE_SMOOTH);
+		icon = new ImageIcon(img);
+		profilePic.setIcon(icon);
+		
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
 		gbc_lblNewLabel_1.gridx = 0;
 		gbc_lblNewLabel_1.gridy = 0;
-		seccionUsuario.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		seccionUsuario.add(profilePic, gbc_lblNewLabel_1);
+		
+		JLabel lblNewLabel_3 = new JLabel("PERFIL: " + this.perfil);
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.gridx = 1;
+		gbc_lblNewLabel_3.gridy = 0;
+		seccionUsuario.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		JPanel seccionComentario = new JPanel();
 		frame.getContentPane().add(seccionComentario, BorderLayout.SOUTH);
