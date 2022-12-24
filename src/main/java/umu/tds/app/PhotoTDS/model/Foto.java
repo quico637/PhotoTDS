@@ -10,23 +10,24 @@ import java.util.List;
  */
 public class Foto extends Publication {
 	private String path;
+	
 	private static final int MAX_NUM_HASHTAG = 4;
 
-	public Foto(String titulo, Date fechaPublicacion, String descripcion, int likes,  String path) {
-		super(titulo, fechaPublicacion, descripcion, likes);
+	public Foto(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes,  String path) {
+		super(creator, titulo, fechaPublicacion, descripcion, likes);
 		this.path = path;
 	}
 	
-	public Foto(String titulo, Date fechaPublicacion, String descripcion,  String path) {
-			super(titulo, fechaPublicacion, descripcion);
+	public Foto(String creator, String titulo, Date fechaPublicacion, String descripcion,  String path) {
+			super(creator, titulo, fechaPublicacion, descripcion);
 			this.path = path;
 	}
 	
 	
-	public Foto(String titulo, Date fechaPublicacion, String descripcion, int likes,
+	public Foto(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes,
 			List<HashTag> hashtags, List<Comentario> comentarios, String path) {
 		
-		super(titulo, fechaPublicacion, descripcion, likes, hashtags, comentarios);
+		super(creator, titulo, fechaPublicacion, descripcion, likes, hashtags, comentarios);
 		this.path = path;
 	}
 

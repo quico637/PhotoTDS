@@ -31,6 +31,8 @@ public class PanelPublicacion {
 	private String comentario;
 	private String path;
 	
+	private String pathProfilePic;
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}
@@ -74,10 +76,11 @@ public class PanelPublicacion {
 	/**
 	 * Create the application.
 	 */
-	public PanelPublicacion(String perfil, String comentario, String path, int x, int y, int maxAlto, int maxAncho) {
+	public PanelPublicacion(String perfil, String comentario, String path, String pathProfilePic, int x, int y, int maxAlto, int maxAncho) {
 		this.perfil = perfil;
 		this.comentario = comentario;
 		this.path = path;
+		this.pathProfilePic = pathProfilePic;
 		this.MAX_ALTO = maxAlto;
 		this.MAX_ANCHO = maxAncho;
 		initialize();
@@ -105,7 +108,7 @@ public class PanelPublicacion {
 		lblNewLabel.setBounds(0, 0, MAX_ANCHO, MAX_ALTO);
 		ImageIcon imageIcon = new ImageIcon(PanelPublicacion.class.getResource("/umu/tds/app/PhotoTDS/images/maxresdefault.jpg"));
 
-		Image img = createImageIcon(path).getImage().getScaledInstance(lblNewLabel.getHeight(), lblNewLabel.getWidth(), Image.SCALE_SMOOTH);
+		Image img = createImageIcon(pathProfilePic).getImage().getScaledInstance(lblNewLabel.getHeight(), lblNewLabel.getWidth(), Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(img);
 		lblNewLabel.setIcon(icon);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();

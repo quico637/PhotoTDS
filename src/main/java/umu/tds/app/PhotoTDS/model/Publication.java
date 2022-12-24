@@ -16,23 +16,26 @@ public class Publication {
 	private Date fechaPublicacion;
 	private String descripcion;
 	private int likes;
+	private String creator;
 	private List<HashTag> hashtags;	
 	private List<Comentario> comentarios;
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
+	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes) {
 		super();
+		this.creator = creator;
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
-		this.likes = likes;
+		this.likes = 0;
 		this.hashtags = getHashTagsFromText(descripcion);
 		this.comentarios = new LinkedList<>();
 
 	}
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes,
+	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes,
 			List<HashTag> hashtags, List<Comentario> comentarios) {
 		super();
+		this.creator = creator;
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
@@ -42,29 +45,30 @@ public class Publication {
 
 	}
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion,
+	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion,
 			List<HashTag> hashtags, List<Comentario> comentarios) {
-		this(titulo, fechaPublicacion, descripcion, 0, hashtags, comentarios);
+		this(creator, titulo, fechaPublicacion, descripcion, 0, hashtags, comentarios);
 
 	}
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion) {
-		this(titulo, fechaPublicacion, descripcion, 0);
+	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion) {
+		this(creator, titulo, fechaPublicacion, descripcion, 0);
 	}
 	
 	
 	private List<HashTag> getHashTagsFromText(String text) {
 		List<HashTag> lh = new LinkedList<>();
-		String[] listaPalabras = text.split(" "); 
-		for(String palabra : listaPalabras) {
-			if(palabra.charAt(0) == '#') {
-				HashTag has = HashTag.createHashtag(palabra);
-				if(has != null) {
-					lh.add(has);
-				}
-			}
-		}
 		return lh;
+//		String[] listaPalabras = text.split(" "); 
+//		for(String palabra : listaPalabras) {
+//			if(palabra.charAt(0) == '#') {
+//				HashTag has = HashTag.createHashtag(palabra);
+//				if(has != null) {
+//					lh.add(has);
+//				}
+//			}
+//		}
+//		return lh;
 	}
 	
 	
@@ -74,6 +78,10 @@ public class Publication {
 	
 	public int getCodigo() {
 		return codigo;
+	}
+	
+	public String getCreator() {
+		return this.creator;
 	}
 	
 	public void setCodigo(int codigo) {

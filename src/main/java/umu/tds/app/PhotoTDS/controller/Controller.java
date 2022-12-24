@@ -1,5 +1,6 @@
 package umu.tds.app.PhotoTDS.controller;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.swing.ImageIcon;
 import umu.tds.app.PhotoTDS.model.EncryptDecrypt;
 import umu.tds.app.PhotoTDS.model.Foto;
 import umu.tds.app.PhotoTDS.model.HashTag;
+import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.repositories.PublicationRepository;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
@@ -60,8 +62,11 @@ public class Controller {
 		if(usuario.isEmpty())
 			return false;
 		User u = usuario.get();
-
-		return u.getContrasena().equals(EncryptDecrypt.encrypt(constrasena));
+		
+		if(!u.getContrasena().equals(EncryptDecrypt.encrypt(constrasena)))
+			return false;
+		this.currentUser = Optional.of(u);
+		return true;
  
 	}
 
@@ -90,6 +95,11 @@ public class Controller {
 		this.currentUser = Optional.of(userNew);
 		return true;
 	}
+	
+	public Optional<User> getUser(String username) {
+		
+		return this.userRepo.getUser(username);		
+	}
 
 	public List<User> getAllusers() {
 		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
@@ -98,8 +108,9 @@ public class Controller {
 		return new LinkedList<>(userRepo.getAllUsers());
 	}
 	
-	public void getAllPublications() {
-		pubRepo.getAllPublications().stream().forEach(u -> System.out.println(u.toString()));
+	public List<Publication> getAllPublications() {
+		this.pubRepo.getAllPublications().stream().forEach(p -> System.out.println(p));
+		return new LinkedList<>(pubRepo.getAllPublications());
 	}
 
 	
@@ -144,9 +155,16 @@ public class Controller {
 		return u.changePassword(passwd);
 	}
 
-	public void createFoto(String titulo, Date fechaPublicacion, String descripcion,  String path) {
-		Foto f = new Foto(titulo, fechaPublicacion, descripcion, path);
+	public boolean createFoto(String titulo, String descripcion,  String path) {
+		
+		System.out.println("pre creating foto");
+		if (this.currentUser.isEmpty())
+			return false;
+		
+		System.out.println("creating foto");
+		Foto f = new Foto(this.currentUser.get().getUsername(), titulo, new Date(), descripcion, path);
 		pubRepo.createPublication(f);
+		return true;
 	}
 
 }

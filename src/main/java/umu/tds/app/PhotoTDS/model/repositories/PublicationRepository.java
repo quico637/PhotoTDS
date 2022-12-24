@@ -39,7 +39,7 @@ public class PublicationRepository {
 		return unicaInstancia;
 	}
 
-	public Publication getPublications(String title) {
+	public Publication getPublication(String title) {
 		if (publications.containsKey(title)) {
 			return publications.get(title);
 		}

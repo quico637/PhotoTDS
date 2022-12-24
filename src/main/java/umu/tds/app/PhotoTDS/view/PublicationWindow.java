@@ -8,12 +8,25 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import umu.tds.app.PhotoTDS.controller.Controller;
+
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PublicationWindow {
 
 	private JFrame frame;
 	private static PublicationWindow unicaInstancia = null;
-	private String descripcion;
+	private String path;
+	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -56,8 +69,8 @@ public class PublicationWindow {
 		return unicaInstancia;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public String getPath() {
+		return this.path;
 	}
 
 	/**
@@ -72,6 +85,48 @@ public class PublicationWindow {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		
+		JLabel lblNewLabel = new JLabel("Description: ");
+		panel.add(lblNewLabel);
+		
+		textField = new JTextField();
+		panel.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Select");
+		btnNewButton.addActionListener(e -> {
+			JFileChooser chooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+			chooser.setFileFilter(filter);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				System.out.println("You chose to open this file: " + chooser.getSelectedFile());
+				path = chooser.getSelectedFile().getPath();
+			}
+		});
+		panel.add(btnNewButton);
+		
+		
+		JButton btnNewButton_2 = new JButton("Check");
+		btnNewButton_2.addActionListener(e -> Controller.getInstancia().getAllPublications().stream().forEach(r -> System.out.println(r)));
+		panel.add(btnNewButton_2);
+		
+		JLabel lblNewLabel_1 = new JLabel("Titulo:");
+		panel.add(lblNewLabel_1);
+		
+		textField_1 = new JTextField();
+		panel.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JButton btnNewButton_1 = new JButton("Send");
+		btnNewButton_1.addActionListener(e -> {
+			this.hideWindow();
+			Controller.getInstancia().createFoto(textField_1.getText(), textField.getText(), path);
+		});
+		panel.add(btnNewButton_1);
 
 		
 	}

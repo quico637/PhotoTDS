@@ -18,7 +18,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionListener;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
+import umu.tds.app.PhotoTDS.model.Foto;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -152,14 +154,22 @@ public class VentanaInicio {
 
 
 		
+//		List<Component> paneles = new LinkedList<>();
+//		for (User u : Controller.getInstancia().getAllusers()) {
+//			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), "",
+//					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
+//					.getContentPane());
+//			System.out.println("PERSON: " + u.getUsername());
+//		}
+
 		List<Component> paneles = new LinkedList<>();
-		for (User u : Controller.getInstancia().getAllusers()) {
-			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), 
+		for (Publication p : Controller.getInstancia().getAllPublications()) {
+			User u = Controller.getInstancia().getUser(p.getCreator()).get();
+			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
 					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
 					.getContentPane());
 			System.out.println("PERSON: " + u.getUsername());
 		}
-		
 		
 
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
