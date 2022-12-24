@@ -1,6 +1,10 @@
 package umu.tds.app.PhotoTDS.model;
 
-
+/**
+ * 
+ * @author quico y JC
+ *
+ */
 public class HashTag {
 	private int codigo;
 	private String name;

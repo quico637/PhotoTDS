@@ -2,7 +2,9 @@ package umu.tds.app.PhotoTDS.model.repositories;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import umu.tds.app.PhotoTDS.model.User;
@@ -40,11 +42,22 @@ public class UserRepository {
 		return unicaInstancia;
 	}
 	
-	public User getUser(String username) {
-		if(users.containsKey(username)) {
-			return users.get(username);
+	public Optional<User> getUser(String username) {
+//		if(users.containsKey(username)) {
+//			return users.get(username);
+//		}
+//		return null;
+		
+		return Optional.ofNullable(users.get(username));
+	}
+	
+	public List<String> getAllEmails() {
+		List<String> l = new LinkedList<>();
+		for (String u : this.users.keySet()) {
+			// Es un optional
+			l.add(this.getUser(u).get().getEmail());
 		}
-		return null;
+		return l;
 	}
 	
 	public void createrUser(User u) {

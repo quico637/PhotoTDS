@@ -5,11 +5,11 @@ import java.awt.Font;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
@@ -22,8 +22,6 @@ import umu.tds.app.PhotoTDS.model.User;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,13 +31,7 @@ import javax.swing.ListCellRenderer;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class VentanaInicio {
 
 	private JFrame frame;
@@ -117,6 +109,7 @@ public class VentanaInicio {
 		frame.getContentPane().add(panelCentralCardLayout, BorderLayout.CENTER);
 		panelCentralCardLayout.setLayout(new CardLayout(0, 0));
 
+				
 		JLabel photoApp = new JLabel("PhotoApp");
 		photoApp.setFont(new Font("Segoe Script", Font.PLAIN, 20));
 
@@ -135,6 +128,14 @@ public class VentanaInicio {
 		JPanel panel_1 = new JPanel();
 		panelNorte.add(panel_1, BorderLayout.CENTER);
 
+		
+		JButton addPhoto = new JButton("+");
+		addPhoto.setFont(new Font("Segoe Script", Font.PLAIN, 20));
+		panel_1.add(addPhoto);
+		
+		addPhoto.addActionListener(e -> PublicationWindow.getInstancia().showWindow(frame));
+		
+		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1
@@ -199,7 +200,7 @@ public class VentanaInicio {
 
 	}
 
-	private static ListSelectionListener createListSelectionListener(JList list) {
+	private static ListSelectionListener createListSelectionListener(JList<Component> list) {
 		return e -> {
 			if (!e.getValueIsAdjusting()) {
 				System.out.println(list.getSelectedValue());
@@ -228,11 +229,11 @@ public class VentanaInicio {
 		};
 	}
 
-	private static JFrame createFrame() {
-		JFrame frame = new JFrame("JList Example");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(new Dimension(600, 300));
-		return frame;
-	}
+//	private static JFrame createFrame() {
+//		JFrame frame = new JFrame("JList Example");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setSize(new Dimension(600, 300));
+//		return frame;
+//	}
 
 }

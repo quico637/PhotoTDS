@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 
+ * @author quico y JC
+ *
+ */
 public class Album extends Publication {
 	
 	private List<Foto> fotos;

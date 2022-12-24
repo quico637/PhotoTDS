@@ -10,6 +10,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+/**
+ * 
+ * @author quico y JC
+ *
+ */
 public class EncryptDecrypt {
 	private static final String SECRET_KEY = "my_super_secret_key";
 	private static final String SALT = "ssshhhhhhhhhhh!!!!";

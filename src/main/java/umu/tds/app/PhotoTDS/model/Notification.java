@@ -2,6 +2,11 @@ package umu.tds.app.PhotoTDS.model;
 
 import java.util.Date;
 
+/**
+ * 
+ * @author quico y JC
+ *
+ */
 public class Notification {
 	
 	private int codigo;

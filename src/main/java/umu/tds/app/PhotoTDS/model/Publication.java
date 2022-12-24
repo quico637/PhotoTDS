@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 
+ * @author quico y JC
+ *
+ */
 public class Publication {
 
 	private int codigo;
@@ -14,21 +19,17 @@ public class Publication {
 	private List<HashTag> hashtags;	
 	private List<Comentario> comentarios;
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes, List<HashTag> hashtags) {
+	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
 		super();
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
 		this.likes = likes;
-		this.hashtags = hashtags;
+		this.hashtags = getHashTagsFromText(descripcion);
 		this.comentarios = new LinkedList<>();
 
 	}
 	
-	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes) {
-		this(titulo, fechaPublicacion, descripcion, likes, new LinkedList<HashTag>());
-	}
-
 	public Publication(String titulo, Date fechaPublicacion, String descripcion, int likes,
 			List<HashTag> hashtags, List<Comentario> comentarios) {
 		super();
@@ -36,7 +37,7 @@ public class Publication {
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
 		this.likes = likes;
-		this.hashtags = hashtags;
+		this.hashtags = getHashTagsFromText(descripcion);
 		this.comentarios = comentarios;
 
 	}
@@ -50,6 +51,26 @@ public class Publication {
 	public Publication(String titulo, Date fechaPublicacion, String descripcion) {
 		this(titulo, fechaPublicacion, descripcion, 0);
 	}
+	
+	
+	private List<HashTag> getHashTagsFromText(String text) {
+		List<HashTag> lh = new LinkedList<>();
+		String[] listaPalabras = text.split(" "); 
+		for(String palabra : listaPalabras) {
+			if(palabra.charAt(0) == '#') {
+				HashTag has = HashTag.createHashtag(palabra);
+				if(has != null) {
+					lh.add(has);
+				}
+			}
+		}
+		return lh;
+	}
+	
+	
+	
+	// GETTERS AND SETTERS
+	
 	
 	public int getCodigo() {
 		return codigo;

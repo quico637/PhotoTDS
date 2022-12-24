@@ -12,14 +12,16 @@ public class User {
 	private final String email;
 	private final String nombreCompleto;
 	private final Date fechaNacimiento;
-	private final String descripcion;
-	private final String contrasena;
+	private String descripcion;
+	private String contrasena;
 	private String profilePic;
 	private boolean premium;
 	private List<Notification> notifications;
 	private List<Publication> publications;
 	private List<User> usuariosSeguidores;
 	private List<User> usuariosSeguidos;
+	
+	private final static int MIN_PASSWD_LENGTH = 6;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, String profilePic, boolean premium, List<Notification> notifications, List<Publication> publications,
@@ -58,6 +60,30 @@ public class User {
 //				contrasena, profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
 //				new LinkedList<User>(), new LinkedList<User>());
 	}
+	
+	
+	public boolean changePassword(String passwd) {
+		if(passwd.length() < MIN_PASSWD_LENGTH)
+			return false;
+		
+		
+		this.contrasena = passwd;
+		return true;
+	}
+	
+	public boolean updateDescription(String desc) {
+		if(this.descripcion.equals(desc))
+			return false;
+		this.descripcion = desc;
+		return true;
+	}
+	
+	public void updateProfilePic(String path) {
+		this.profilePic = path;
+	}
+	
+	
+	// GETTERS AND SETTERS
 	
 	public List<Notification> getNotifications() {
 		return new LinkedList<>(notifications);
@@ -112,13 +138,12 @@ public class User {
 		return contrasena;
 	}
 	
+	
 	public boolean isPremium() {
 		return premium;
 	}
 	
-	public void setPremium(boolean premium) {
-		this.premium = premium;
-	}
+
 
 	@Override
 	public String toString() {
