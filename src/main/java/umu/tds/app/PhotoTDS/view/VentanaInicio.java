@@ -44,22 +44,24 @@ public class VentanaInicio {
 	private final static int Y_BORDER = 700;
 	private static VentanaInicio unicaInstancia = null;
 	private JTextField textField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaInicio window = new VentanaInicio();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+	private String user;
+	
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					VentanaInicio window = new VentanaInicio();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	protected ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
@@ -74,7 +76,8 @@ public class VentanaInicio {
 	/**
 	 * Create the application.
 	 */
-	private VentanaInicio() {
+	private VentanaInicio(String u) {
+		this.user = u;
 		initialize();
 	}
 
@@ -83,9 +86,9 @@ public class VentanaInicio {
 		frame.setLocationRelativeTo(null);
 	}
 
-	public static VentanaInicio getInstancia() {
+	public static VentanaInicio getInstancia(String u) {
 		if (unicaInstancia == null) {
-			unicaInstancia = new VentanaInicio();
+			unicaInstancia = new VentanaInicio(u);
 		}
 
 		return unicaInstancia;
@@ -135,7 +138,7 @@ public class VentanaInicio {
 		addPhoto.setFont(new Font("Segoe Script", Font.PLAIN, 20));
 		panel_1.add(addPhoto);
 		
-		addPhoto.addActionListener(e -> PublicationWindow.getInstancia().showWindow(frame));
+		addPhoto.addActionListener(e -> PublicationWindow.getInstancia(this.user).showWindow(frame));
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("");

@@ -12,7 +12,6 @@ import umu.tds.app.PhotoTDS.persistence.DAOException;
 import umu.tds.app.PhotoTDS.persistence.DAOFactory;
 import umu.tds.app.PhotoTDS.persistence.IUserDAO;
 
-
 public class UserRepository {
 
 	private HashMap<String, User> users;
@@ -20,17 +19,17 @@ public class UserRepository {
 
 	private DAOFactory dao;
 	private IUserDAO userAdapter;
-	
+
 	private UserRepository() {
 		super();
 		try {
-  			dao = DAOFactory.getInstancia(DAOFactory.DAO_TDS);
-  			userAdapter = dao.getUserDAO();
-  	 		users = new HashMap<String,User>();
-  			this.cargarCatalogo();
-  		} catch (DAOException eDAO) {
-  			eDAO.printStackTrace();
-  		}
+			dao = DAOFactory.getInstancia(DAOFactory.DAO_TDS);
+			userAdapter = dao.getUserDAO();
+			users = new HashMap<String, User>();
+			this.cargarCatalogo();
+		} catch (DAOException eDAO) {
+			eDAO.printStackTrace();
+		}
 	}
 
 	// patron Singletone
@@ -41,16 +40,16 @@ public class UserRepository {
 
 		return unicaInstancia;
 	}
-	
+
 	public Optional<User> getUser(String username) {
 //		if(users.containsKey(username)) {
 //			return users.get(username);
 //		}
 //		return null;
-		
+
 		return Optional.ofNullable(users.get(username));
 	}
-	
+
 	public List<String> getAllEmails() {
 		List<String> l = new LinkedList<>();
 		for (String u : this.users.keySet()) {
@@ -59,20 +58,32 @@ public class UserRepository {
 		}
 		return l;
 	}
-	
+
+	public Optional<User> getUserByEmail(String email) {
+		Optional<User> user;
+		for (String u : this.users.keySet()) {
+			user = getUser(u);
+			if (user.isEmpty())
+				continue;
+			if(user.get().getEmail().equals(email))
+				return user;
+		}
+		return user = Optional.empty();
+	}
+
 	public void createrUser(User u) {
 		this.users.put(u.getUsername(), u);
-		this.userAdapter.createrUser(u);		
+		this.userAdapter.createrUser(u);
 	}
-	
+
 	private void cargarCatalogo() throws DAOException {
-		 List<User> usersDB = userAdapter.readAllUsers();
-		 for (User u: usersDB) 
-			     users.put(u.getUsername(),u);
+		List<User> usersDB = userAdapter.readAllUsers();
+		for (User u : usersDB)
+			users.put(u.getUsername(), u);
 	}
-		
+
 	public Set<User> getAllUsers() {
 		return new LinkedHashSet<>(this.users.values());
 	}
-	
+
 }

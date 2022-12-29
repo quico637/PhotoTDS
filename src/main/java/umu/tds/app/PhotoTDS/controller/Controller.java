@@ -2,6 +2,7 @@ package umu.tds.app.PhotoTDS.controller;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,8 @@ import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
 public class Controller {
 
 	private static Controller unicaInstancia = null;
-	private Optional<User> currentUser;
+		
+	private HashMap<String, Date> logins;
 	
 	UserRepository userRepo;
 	PublicationRepository pubRepo;
@@ -32,7 +34,7 @@ public class Controller {
 	
 
 	private Controller() {
-		this.currentUser = Optional.empty();
+		this.logins = new HashMap<>();
 		inicializarCatalogos();
 	}
 
@@ -53,7 +55,7 @@ public class Controller {
 	 * 
 	 * @param username
 	 * @param constrasena
-	 * @return true if encrypted password is equal to stored password.
+	 * @return true if encrypted password is equal to stored password, if used is stored, and username / email is correct.
 	 */
 	public boolean login(String username, String constrasena) {
 		Optional<User> usuario = UserRepository.getInstancia().getUser(username);
@@ -63,9 +65,14 @@ public class Controller {
 			return false;
 		User u = usuario.get();
 		
+		List<String> emails = this.userRepo.getAllEmails();
+		if(!emails.contains(username) && !username.equals(u.getUsername()))
+			return false;
+		
+		
 		if(!u.getContrasena().equals(EncryptDecrypt.encrypt(constrasena)))
 			return false;
-		this.currentUser = Optional.of(u);
+		this.logins.put(username, new Date());
 		return true;
  
 	}
@@ -92,15 +99,25 @@ public class Controller {
 		
 		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, contrasena, profilePic);
 		userRepo.createrUser(userNew);
-		this.currentUser = Optional.of(userNew);
+	
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param username
+	 * @return Optional value containing user corresponding to the given username.
+	 */
 	public Optional<User> getUser(String username) {
 		
 		return this.userRepo.getUser(username);		
 	}
 
+	
+	/**
+	 * 
+	 * @return all users from app
+	 */
 	public List<User> getAllusers() {
 		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
 		
@@ -108,6 +125,10 @@ public class Controller {
 		return new LinkedList<>(userRepo.getAllUsers());
 	}
 	
+	/**
+	 * 
+	 * @return all publications, including photos and albums.
+	 */
 	public List<Publication> getAllPublications() {
 		this.pubRepo.getAllPublications().stream().forEach(p -> System.out.println(p));
 		return new LinkedList<>(pubRepo.getAllPublications());
@@ -142,27 +163,65 @@ public class Controller {
 	}
 	
 	/**
+	 * checks if user has logged in, and returns its User instance from username / email String
+	 * @param user
+	 * @return
+	 */
+	private Optional<User> checkLoginAndGetUser(String user) {
+		if(!this.logins.containsKey(user))
+			return Optional.empty();
+		
+		Optional<User> u = this.userRepo.getUser(user);
+		if(u.isPresent())
+			return u;
+		u = this.userRepo.getUserByEmail(user);
+		return u;
+	}
+	
+	/**
+	 * leaves the app.
+	 * @param u
+	 */
+	public void logout(String u) {
+		this.logins.remove(u);
+	}
+	
+	/**
 	 * 
 	 * @param user
 	 * @param passwd
 	 * @return false if prev passwd is equal to new passwd or if it doesnt meet minimal passwd requirements.
 	 */
-	public boolean changePassword(String passwd) {
-		User u = currentUser.get();
+	public boolean changePassword(String user, String passwd) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty())
+			return false;
+		
+		User u = userOpt.get();
 		if(EncryptDecrypt.encrypt(passwd).equals(u.getContrasena()))
 			return false;
 		
 		return u.changePassword(passwd);
 	}
 
-	public boolean createFoto(String titulo, String descripcion,  String path) {
+	/**
+	 * creates a photo in the PhotoTDS domain and returns its object.
+	 * @param titulo
+	 * @param descripcion
+	 * @param path
+	 * @return boolean
+	 */
+	public boolean createFoto(String user, String titulo, String descripcion,  String path) {
 		
 		System.out.println("pre creating foto");
-		if (this.currentUser.isEmpty())
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty())
 			return false;
 		
+		User u = userOpt.get();
+		
 		System.out.println("creating foto");
-		Foto f = new Foto(this.currentUser.get().getUsername(), titulo, new Date(), descripcion, path);
+		Foto f = new Foto(u.getUsername(), titulo, new Date(), descripcion, path);
 		pubRepo.createPublication(f);
 		return true;
 	}

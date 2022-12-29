@@ -11,7 +11,6 @@ import java.util.List;
 public class Foto extends Publication {
 	private String path;
 	
-	private static final int MAX_NUM_HASHTAG = 4;
 
 	public Foto(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes,  String path) {
 		super(creator, titulo, fechaPublicacion, descripcion, likes);

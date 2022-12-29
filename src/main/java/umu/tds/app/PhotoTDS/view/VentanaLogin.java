@@ -219,7 +219,7 @@ public class VentanaLogin {
 		JButton botonLogin = new JButton("Login");
 		botonLogin.addActionListener(e -> {
 			if(Controller.getInstancia().login(textField.getText(), passwordField.getText()) == true) {
-				VentanaInicio.getInstancia().showWindow();
+				VentanaInicio.getInstancia(textField.getText()).showWindow();
 				this.hideWindow();
 			}
 			else {

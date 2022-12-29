@@ -12,6 +12,7 @@ import java.util.List;
 public class Album extends Publication {
 	
 	private List<Foto> fotos;
+	private static final int MAX_NUM_PHOTOS = 16;
 
 	public Album(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes, List<Foto> fotos) {
 		super(creator, titulo, fechaPublicacion, descripcion, likes);

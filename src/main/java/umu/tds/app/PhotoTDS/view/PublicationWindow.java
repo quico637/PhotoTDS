@@ -27,27 +27,31 @@ public class PublicationWindow {
 	private String path;
 	private JTextField textField;
 	private JTextField textField_1;
+	
+	private String user;
+	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PublicationWindow window = new PublicationWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					PublicationWindow window = new PublicationWindow();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
 	 */
-	private PublicationWindow() {
+	private PublicationWindow(String u) {
+		this.user = u;
 		initialize();
 	}
 
@@ -61,9 +65,9 @@ public class PublicationWindow {
 		frame.setLocationRelativeTo(null);
 	}
 
-	public static PublicationWindow getInstancia() {
+	public static PublicationWindow getInstancia(String u) {
 		if (unicaInstancia == null) {
-			unicaInstancia = new PublicationWindow();
+			unicaInstancia = new PublicationWindow(u);
 		}
 
 		return unicaInstancia;
@@ -124,7 +128,7 @@ public class PublicationWindow {
 		JButton btnNewButton_1 = new JButton("Send");
 		btnNewButton_1.addActionListener(e -> {
 			this.hideWindow();
-			Controller.getInstancia().createFoto(textField_1.getText(), textField.getText(), path);
+			Controller.getInstancia().createFoto(this.user, textField_1.getText(), textField.getText(), path);
 		});
 		panel.add(btnNewButton_1);
 

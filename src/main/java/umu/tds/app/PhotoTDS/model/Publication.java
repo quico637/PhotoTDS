@@ -20,6 +20,9 @@ public class Publication {
 	private List<HashTag> hashtags;	
 	private List<Comentario> comentarios;
 	
+	private static final int MAX_NUM_HASHTAG = 4;
+	private static final int MAX_NUM_LETRAS = 15;
+	
 	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes) {
 		super();
 		this.creator = creator;

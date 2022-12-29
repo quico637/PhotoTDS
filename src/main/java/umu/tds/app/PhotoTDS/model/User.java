@@ -82,8 +82,19 @@ public class User {
 		this.profilePic = path;
 	}
 	
+	// CALCULATED PROPERTIES.
+	
+	public int getNumFollowers() {
+		return this.usuariosSeguidores.size();
+	}
+	
+	public int getNumFollowing() {
+		return this.usuariosSeguidos.size();
+	}
+	
 	
 	// GETTERS AND SETTERS
+	
 	
 	public List<Notification> getNotifications() {
 		return new LinkedList<>(notifications);
