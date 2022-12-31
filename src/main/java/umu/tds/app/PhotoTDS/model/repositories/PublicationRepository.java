@@ -2,6 +2,7 @@ package umu.tds.app.PhotoTDS.model.repositories;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -54,6 +55,15 @@ public class PublicationRepository {
 	public void removePublication(Publication p) {
 		this.publications.remove(p.getTitulo());
 		this.publicationAdapter.deletePublication(p);
+	}
+	
+	public List<Publication> getPublicationsFromHtg(String text) {
+		List<Publication> l = new LinkedList<>();
+		for(Publication p : this.publications.values()) {
+			if(p.getHashTags().stream().anyMatch(h -> h.getName().equals(text)))
+				l.add(p);
+		}
+		return l;
 	}
 
 	private void cargarCatalogo() throws DAOException {

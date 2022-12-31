@@ -42,13 +42,10 @@ public class UserRepository {
 	}
 
 	public Optional<User> getUser(String username) {
-//		if(users.containsKey(username)) {
-//			return users.get(username);
-//		}
-//		return null;
 
 		return Optional.ofNullable(users.get(username));
 	}
+	
 
 	public List<String> getAllEmails() {
 		List<String> l = new LinkedList<>();
@@ -66,6 +63,18 @@ public class UserRepository {
 			if (user.isEmpty())
 				continue;
 			if(user.get().getEmail().equals(email))
+				return user;
+		}
+		return user = Optional.empty();
+	}
+	
+	public Optional<User> getUserFullName(String name) {
+		Optional<User> user;
+		for (String u : this.users.keySet()) {
+			user = getUser(u);
+			if (user.isEmpty())
+				continue;
+			if(user.get().getNombreCompleto().equals(name))
 				return user;
 		}
 		return user = Optional.empty();

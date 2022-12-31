@@ -293,5 +293,37 @@ public class Controller {
 		return l;
 	}
 
+	public List<Object> getBusqueda(String user, String b) {
+		
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty())
+			return null;
+		
+		List<Object> l = new LinkedList<>();
+		
+		if(b.charAt(0) == '#')
+			l.addAll(this.pubRepo.getPublicationsFromHtg(b));
+		else {
+			Optional<User> u = this.userRepo.getUser(b);
+			if(u.isPresent()) {
+				l.add(u.get());
+				return l;
+			}
+			
+			u = this.userRepo.getUserByEmail(b);
+			if(u.isPresent()) {
+				l.add(u.get());
+				return l;
+			}
+			
+			u = this.userRepo.getUserFullName(b);
+			if(u.isPresent()) {
+				l.add(u.get());
+				return l;
+			}
+			
+		}
+		return null;
+	}
 
 }
