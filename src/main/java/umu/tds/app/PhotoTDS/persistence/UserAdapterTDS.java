@@ -50,7 +50,7 @@ public class UserAdapterTDS implements IUserDAO {
 				new Propiedad("username", u.getUsername()), 
 				new Propiedad("email", u.getEmail()),
 				new Propiedad("nombreCompleto", u.getNombreCompleto()),
-				new Propiedad("fechaNacimiento", Utils.DateToString(u.getFechaNacimiento())),
+				new Propiedad("fechaNacimiento", Utils.DateToStringNoHour(u.getFechaNacimiento())),
 				new Propiedad("descripcion", u.getDescripcion()),
 				new Propiedad("contrasena", u.getContrasena()),
 				new Propiedad("profilePic", u.getProfilePic()),
@@ -58,7 +58,8 @@ public class UserAdapterTDS implements IUserDAO {
 				new Propiedad("notifications", obtenerCodigosNotificaciones(u.getNotifications())),
 				new Propiedad("publications", obtenerCodigosPublications(u.getPublications())),
 				new Propiedad("usuariosSeguidores", obtenerCodigosSeguidores(u.getUsuariosSeguidores())),
-				new Propiedad("usuariosSeguidos", obtenerCodigosSeguidores(u.getUsuariosSeguidos()))
+				new Propiedad("usuariosSeguidos", obtenerCodigosSeguidores(u.getUsuariosSeguidos())),
+				new Propiedad("ultimoLogin", Utils.DateToString(u.getUltimoLogin()))
 				)));
 
 		// registrar entidad cliente
@@ -90,6 +91,7 @@ public class UserAdapterTDS implements IUserDAO {
 		String publications;
 		String usuariosSeguidores;
 		String usuariosSeguidos;
+		String ultimoLogin;
 		
 
 		// recuperar entidad
@@ -109,13 +111,15 @@ public class UserAdapterTDS implements IUserDAO {
 		publications = servPersistencia.recuperarPropiedadEntidad(eUser, "publications");
 		usuariosSeguidores = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
 		usuariosSeguidos = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
+		ultimoLogin = servPersistencia.recuperarPropiedadEntidad(eUser, "ultimoLogin");
 
 		User u;
-		u = new User(username, email, nombreCompleto, Utils.StringToDate(fechaNacimiento), descripcion, contrasena, profilePic
+		u = new User(username, email, nombreCompleto, Utils.StringToDateNoHour(fechaNacimiento), descripcion, contrasena, profilePic
 				,Boolean.parseBoolean(premium), obtenerNotificationsDesdeCodigos(notifications), 
 				obtenerPublicationsDesdeCodigos(publications),
 				obtenerSeguidoresDesdeCodigos(usuariosSeguidores),
-				obtenerSeguidoresDesdeCodigos(usuariosSeguidos)
+				obtenerSeguidoresDesdeCodigos(usuariosSeguidos),
+				Utils.StringToDate(ultimoLogin)
 				);
 		u.setCodigo(codigo);
 		return u;
@@ -132,7 +136,7 @@ public class UserAdapterTDS implements IUserDAO {
 			else if (prop.getNombre().equals("nombreCompleto")) 
 				prop.setValor(u.getNombreCompleto());
 			else if (prop.getNombre().equals("fechaNacimiento")) 
-				prop.setValor(Utils.DateToString(u.getFechaNacimiento()));
+				prop.setValor(Utils.DateToStringNoHour(u.getFechaNacimiento()));
 			else if (prop.getNombre().equals("descripcion")) 
 				prop.setValor(u.getDescripcion());
 			else if (prop.getNombre().equals("contrasena")) 
@@ -148,6 +152,8 @@ public class UserAdapterTDS implements IUserDAO {
 				prop.setValor(obtenerCodigosPublications(u.getPublications()));
 			else if (prop.getNombre().equals("usuariosSeguidores"))
 				prop.setValor(obtenerCodigosSeguidores(u.getUsuariosSeguidores()));
+			else if (prop.getNombre().equals("ultimoLogin"))
+				prop.setValor(Utils.DateToString(u.getUltimoLogin()));
 
 			servPersistencia.modificarPropiedad(prop);
 		}

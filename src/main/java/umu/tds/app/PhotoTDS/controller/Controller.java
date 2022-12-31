@@ -89,6 +89,8 @@ public class Controller {
 		}
 		this.valids.put(username, true);
 		System.out.println(this.logins);
+		
+		
 		return true;
  
 	}
@@ -113,7 +115,7 @@ public class Controller {
 		if (this.userRepo.getAllEmails().stream().anyMatch(e -> e.equals(email)))
 			return false;
 		
-		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, contrasena, profilePic);
+		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, contrasena, profilePic, new Date());
 		userRepo.createrUser(userNew);
 	
 		return true;
@@ -202,8 +204,14 @@ public class Controller {
 	 * leaves the app.
 	 * @param u
 	 */
-	public void logout(String u) {
-		this.valids.put(u, false);
+	public Boolean logout(String user) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty()) return false;
+		User u = userOpt.get();
+		u.setUltimoLogin(new Date());
+		this.userRepo.updateUser(u);
+		this.valids.put(user, false);
+		return true;
 	}
 	
 	/**
@@ -287,7 +295,7 @@ public class Controller {
 		System.out.println(d);
 		// pillo la vez anterior que entro.
 		List<Publication> l = new LinkedList<>(this.pubRepo.getAllPublications().stream().
-				filter(p -> p.getFechaPublicacion().after(d.get(index))).
+				filter(p -> p.getFechaPublicacion().after(userOpt.get().getUltimoLogin())).
 				collect(Collectors.toList()));
 		System.out.println("l: " + l);
 		return l;

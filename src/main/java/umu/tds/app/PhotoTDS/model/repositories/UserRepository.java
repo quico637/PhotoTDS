@@ -94,5 +94,10 @@ public class UserRepository {
 	public Set<User> getAllUsers() {
 		return new LinkedHashSet<>(this.users.values());
 	}
+	
+	public void updateUser(User u) {
+		this.users.put(u.getUsername(), u);
+		this.userAdapter.updateUser(u);
+	}
 
 }

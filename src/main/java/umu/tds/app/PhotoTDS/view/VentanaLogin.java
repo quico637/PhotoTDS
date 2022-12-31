@@ -389,7 +389,7 @@ public class VentanaLogin {
 		JButton btnSubmitReg = new JButton("Register");
 		btnSubmitReg.addActionListener(e -> {
 			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(),
-					txtNombreCom.getText(), Utils.StringToDate(txtFld.getText()) , DescriptionWindow.getInstancia().getDescripcion(),
+					txtNombreCom.getText(), Utils.StringToDateNoHour(txtFld.getText()) , DescriptionWindow.getInstancia().getDescripcion(),
 					passwordField_1.getText(), profilePic);
 		});
 		btnSubmitReg.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));

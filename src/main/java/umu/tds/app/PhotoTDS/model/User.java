@@ -20,12 +20,13 @@ public class User {
 	private List<Publication> publications;
 	private List<User> usuariosSeguidores;
 	private List<User> usuariosSeguidos;
+	private Date ultimoLogin;
 	
 	private final static int MIN_PASSWD_LENGTH = 6;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, String profilePic, boolean premium, List<Notification> notifications, List<Publication> publications,
-			List<User> usuariosSeguidores, List<User> usuariosSeguidos) {
+			List<User> usuariosSeguidores, List<User> usuariosSeguidos, Date ultimoLogin) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -39,9 +40,10 @@ public class User {
 		this.publications = publications;
 		this.usuariosSeguidores = usuariosSeguidores;
 		this.usuariosSeguidos = usuariosSeguidos;
+		this.ultimoLogin = ultimoLogin;
 	}
 
-	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena, String profilePic) {
+	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena, String profilePic, Date ultimoLogin) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -55,6 +57,7 @@ public class User {
 		this.publications = new LinkedList<>();
 		this.usuariosSeguidores = new LinkedList<>();
 		this.usuariosSeguidos = new LinkedList<>();
+		this.ultimoLogin = ultimoLogin;
 		
 //		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
 //				contrasena, profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
@@ -154,13 +157,22 @@ public class User {
 		return premium;
 	}
 	
-
+	public Date getUltimoLogin() {
+		return ultimoLogin;
+	}
+	
+	public void setUltimoLogin(Date ultimoLogin) {
+		this.ultimoLogin = ultimoLogin;
+	}
 
 	@Override
 	public String toString() {
 		return "User [codigo=" + codigo + ", username=" + username + ", email=" + email + ", nombreCompleto="
 				+ nombreCompleto + ", fechaNacimiento=" + fechaNacimiento + ", descripcion=" + descripcion
-				+ ", contrasena=" + contrasena + ", premium=" + premium + "]";
+				+ ", contrasena=" + contrasena + ", profilePic=" + profilePic + ", premium=" + premium
+				+ ", notifications=" + notifications + ", publications=" + publications + ", usuariosSeguidores="
+				+ usuariosSeguidores + ", usuariosSeguidos=" + usuariosSeguidos + ", ultimoLogin=" + ultimoLogin + "]";
 	}
+
 		
 }

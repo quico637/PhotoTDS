@@ -173,7 +173,7 @@ public class VentanaInicio {
 		JLabel lblNewLabel_3_1_1 = new JLabel("Etiqueta o Pub");
 		panelBusquedaClicked.add(lblNewLabel_3_1_1);
 		logout.addActionListener(e -> {
-			Controller.getInstancia().logout(user);
+			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
 			this.frame.setVisible(false);
 			VentanaLogin.getInstancia().showWindow();
 		});
