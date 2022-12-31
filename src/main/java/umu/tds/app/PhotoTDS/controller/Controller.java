@@ -247,6 +247,21 @@ public class Controller {
 	}
 	
 	/**
+	 * Must be logged in.
+	 * @param user
+	 * @param p
+	 * @return
+	 */
+	public boolean removeFoto(String user, Publication p) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty())
+			return false;
+		
+		this.pubRepo.removePublication(p);
+		return true;
+	}
+	
+	/**
 	 * We implement notification system through last logins.
 	 * @param user
 	 * @return
@@ -277,5 +292,6 @@ public class Controller {
 		System.out.println("l: " + l);
 		return l;
 	}
+
 
 }

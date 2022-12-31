@@ -50,6 +50,11 @@ public class PublicationRepository {
 		this.publications.put(p.getTitulo(), p);
 		this.publicationAdapter.createPublication(p);
 	}
+	
+	public void removePublication(Publication p) {
+		this.publications.remove(p.getTitulo());
+		this.publicationAdapter.deletePublication(p);
+	}
 
 	private void cargarCatalogo() throws DAOException {
 		List<Publication> publicationDB = publicationAdapter.readAllPublications();
