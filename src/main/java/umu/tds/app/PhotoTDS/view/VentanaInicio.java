@@ -43,7 +43,8 @@ public class VentanaInicio {
 	private final static int Y_BORDER = 700;
 	private static VentanaInicio unicaInstancia = null;
 	private JTextField textField;
-	private static JPanel panelBusquedaCardLayout;
+	
+	private static JPanel panelCentralCardLayout;
 	
 	private String user;
 	
@@ -63,7 +64,6 @@ public class VentanaInicio {
 	 */
 	public VentanaInicio(String u) {
 		this.user = u;
-		this.panelBusquedaCardLayout = new JPanel();
 		initialize();
 	}
 
@@ -88,12 +88,9 @@ public class VentanaInicio {
 		frame.getContentPane().add(panelNorte, BorderLayout.NORTH);
 		panelNorte.setLayout(new BorderLayout(0, 0));
 
-		JPanel panelCentralCardLayout = new JPanel();
+		panelCentralCardLayout = new JPanel();
 		frame.getContentPane().add(panelCentralCardLayout, BorderLayout.CENTER);
 		panelCentralCardLayout.setLayout(new CardLayout(0, 0));
-		
-		frame.getContentPane().add(panelBusquedaCardLayout, BorderLayout.CENTER);
-		panelBusquedaCardLayout.setLayout(new CardLayout(0, 0));
 
 				
 		JLabel photoApp = new JLabel("PhotoApp");
@@ -161,21 +158,20 @@ public class VentanaInicio {
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
 		
-
-		JPanel panelBusqueda = new JPanel();
-		panelBusquedaCardLayout.add(panelBusqueda, "panelBusqueda");
-		
-		JPanel panelBusquedaClicked = new JPanel();
-		panelBusquedaCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");
-		
-		JLabel lblNewLabel_3 = new JLabel("Etiqueta o Pub");
-		panelBusquedaClicked.add(lblNewLabel_3);
-		
 		JLabel lblNewLabel_2 = new JLabel("New label");
 		panelPerfil.add(lblNewLabel_2);
 		
 		JButton logout = new JButton("Logout");
 		panelPerfil.add(logout);
+		
+		JPanel panelBusqueda = new JPanel();
+		panelCentralCardLayout.add(panelBusqueda, "panelBusqueda");
+		
+		JPanel panelBusquedaClicked = new JPanel();
+		panelCentralCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");
+		
+		JLabel lblNewLabel_3_1_1 = new JLabel("Etiqueta o Pub");
+		panelBusquedaClicked.add(lblNewLabel_3_1_1);
 		logout.addActionListener(e -> {
 			Controller.getInstancia().logout(user);
 			this.frame.setVisible(false);
@@ -203,8 +199,8 @@ public class VentanaInicio {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				initializeBusquedaPanel(textField.getText(), panelBusqueda);
-				CardLayout cl = (CardLayout) panelBusquedaCardLayout.getLayout();
-				cl.show(panelBusquedaCardLayout, "panelBusqueda");
+				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+				cl.show(panelCentralCardLayout, "panelBusqueda");
 			}
 		});
 		
@@ -230,12 +226,6 @@ public class VentanaInicio {
 				labelsBusqueda.add(label);
 			}
 			
-			label.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					System.out.println("CLICKED!!");
-				}
-			});
 		}
 		
 		DefaultListModel<Component> demoBusqueda = new DefaultListModel<>();
@@ -285,8 +275,8 @@ public class VentanaInicio {
 	}
 	
 	private static void showBusquedaClicked() {
-		CardLayout cl = (CardLayout) panelBusquedaCardLayout.getLayout();
-		cl.show(panelBusquedaCardLayout, "panelBusquedaClicked");
+		CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+		cl.show(panelCentralCardLayout, "panelBusquedaClicked");
 	}
 
 //	private static JFrame createFrame() {
