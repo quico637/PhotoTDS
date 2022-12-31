@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 
@@ -26,7 +28,8 @@ public class Controller {
 
 	private static Controller unicaInstancia = null;
 		
-	private HashMap<String, Date> logins;
+	private Map<String, List<Date>> logins;
+	private Map<String, Boolean> valids;
 	
 	UserRepository userRepo;
 	PublicationRepository pubRepo;
@@ -35,6 +38,7 @@ public class Controller {
 
 	private Controller() {
 		this.logins = new HashMap<>();
+		this.valids = new HashMap<>();
 		inicializarCatalogos();
 	}
 
@@ -72,7 +76,19 @@ public class Controller {
 		
 		if(!u.getContrasena().equals(EncryptDecrypt.encrypt(constrasena)))
 			return false;
-		this.logins.put(username, new Date());
+		
+		List<Date> dates = this.logins.get(username);
+		if(dates == null) {
+			List<Date> l = new LinkedList<>();
+			l.add(new Date());
+			this.logins.put(username, l);
+		}
+		else {
+			dates.add(new Date());
+			this.logins.put(username, dates);
+		}
+		this.valids.put(username, true);
+		System.out.println(this.logins);
 		return true;
  
 	}
@@ -171,9 +187,13 @@ public class Controller {
 		if(!this.logins.containsKey(user))
 			return Optional.empty();
 		
+		if(!this.valids.get(user))
+			return Optional.empty();
+		
 		Optional<User> u = this.userRepo.getUser(user);
 		if(u.isPresent())
 			return u;
+		
 		u = this.userRepo.getUserByEmail(user);
 		return u;
 	}
@@ -183,7 +203,7 @@ public class Controller {
 	 * @param u
 	 */
 	public void logout(String u) {
-		this.logins.remove(u);
+		this.valids.put(u, false);
 	}
 	
 	/**
@@ -224,6 +244,38 @@ public class Controller {
 		Foto f = new Foto(u.getUsername(), titulo, new Date(), descripcion, path);
 		pubRepo.createPublication(f);
 		return true;
+	}
+	
+	/**
+	 * We implement notification system through last logins.
+	 * @param user
+	 * @return
+	 */
+	public List<Publication> getPublicationsToShow(String user) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty())
+			return null;
+		
+		String u = userOpt.get().getUsername();
+		
+		
+		List<Date> d = this.logins.get(u);
+		int index;
+		if(d.size() < 2)
+			index = d.size() - 1;
+		else {
+			index = d.size() - 2;
+			System.out.println("Es mayorq 2");
+		}
+		
+		System.out.println("index: " + index);
+		System.out.println(d);
+		// pillo la vez anterior que entro.
+		List<Publication> l = new LinkedList<>(this.pubRepo.getAllPublications().stream().
+				filter(p -> p.getFechaPublicacion().after(d.get(index))).
+				collect(Collectors.toList()));
+		System.out.println("l: " + l);
+		return l;
 	}
 
 }

@@ -89,6 +89,11 @@ public class VentanaLogin {
 		frame.setLocationRelativeTo(null);
 	}
 	
+	public void showWindow() {
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+	}
+	
 	public static VentanaLogin getInstancia() {
 		if (unicaInstancia == null) {
 			unicaInstancia = new VentanaLogin();
@@ -219,7 +224,8 @@ public class VentanaLogin {
 		JButton botonLogin = new JButton("Login");
 		botonLogin.addActionListener(e -> {
 			if(Controller.getInstancia().login(textField.getText(), passwordField.getText()) == true) {
-				VentanaInicio.getInstancia(textField.getText()).showWindow();
+				VentanaInicio v = new VentanaInicio(textField.getText());
+				v.showWindow();
 				this.hideWindow();
 			}
 			else {

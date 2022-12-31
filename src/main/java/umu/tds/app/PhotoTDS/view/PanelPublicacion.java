@@ -36,22 +36,6 @@ public class PanelPublicacion {
 	public JFrame getFrame() {
 		return this.frame;
 	}
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					PanelPublicacion window = new PanelPublicacion();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 	
 	protected ImageIcon createImageIcon(String path) {
 		if(path == null) {

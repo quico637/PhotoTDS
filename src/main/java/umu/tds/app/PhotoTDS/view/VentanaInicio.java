@@ -21,6 +21,7 @@ import umu.tds.app.PhotoTDS.controller.Controller;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.Foto;
+import umu.tds.app.PhotoTDS.model.Publication;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -76,7 +77,7 @@ public class VentanaInicio {
 	/**
 	 * Create the application.
 	 */
-	private VentanaInicio(String u) {
+	public VentanaInicio(String u) {
 		this.user = u;
 		initialize();
 	}
@@ -84,14 +85,6 @@ public class VentanaInicio {
 	public void showWindow() {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-	}
-
-	public static VentanaInicio getInstancia(String u) {
-		if (unicaInstancia == null) {
-			unicaInstancia = new VentanaInicio(u);
-		}
-
-		return unicaInstancia;
 	}
 
 	/**
@@ -138,7 +131,10 @@ public class VentanaInicio {
 		addPhoto.setFont(new Font("Segoe Script", Font.PLAIN, 20));
 		panel_1.add(addPhoto);
 		
-		addPhoto.addActionListener(e -> PublicationWindow.getInstancia(this.user).showWindow(frame));
+		addPhoto.addActionListener(e -> {
+			PublicationWindow pw = new PublicationWindow(this.user);
+			pw.showWindow(frame);
+		});
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("");
@@ -152,34 +148,20 @@ public class VentanaInicio {
 		panel_1.add(textField);
 		textField.setColumns(10);
 
-		
-//		Controller.getInstancia().createFoto("Elquici", new Date(), "Madre mia el quico #marica", "/C");
-
-
-		
-//		List<Component> paneles = new LinkedList<>();
-//		for (User u : Controller.getInstancia().getAllusers()) {
-//			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), "",
-//					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
-//					.getContentPane());
-//			System.out.println("PERSON: " + u.getUsername());
-//		}
-
 		List<Component> paneles = new LinkedList<>();
-		for (Publication p : Controller.getInstancia().getAllPublications()) {
+		List<Publication> l = Controller.getInstancia().getPublicationsToShow(user);
+		System.out.println("l2: " + l);
+		for (Publication p : l) {
 			User u = Controller.getInstancia().getUser(p.getCreator()).get();
-			paneles.add(new PanelPublicacion(u.getUsername(), u.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
+			paneles.add(new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
 					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
 					.getContentPane());
 			System.out.println("PERSON: " + u.getUsername());
 		}
 		
-
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
 		demoList.addAll(paneles);
 		
-
-		Controller.getInstancia().getAllusers();
 		
 		JPanel panelPublications = new JPanel();
 		panelCentralCardLayout.add(panelPublications, "panelPublications");
@@ -193,6 +175,15 @@ public class VentanaInicio {
 		
 		JLabel lblNewLabel_2 = new JLabel("New label");
 		panelPerfil.add(lblNewLabel_2);
+		
+		JButton logout = new JButton("Logout");
+		panelPerfil.add(logout);
+		logout.addActionListener(e -> {
+			Controller.getInstancia().logout(user);
+			this.frame.setVisible(false);
+			VentanaLogin.getInstancia().showWindow();
+		});
+		
 		
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override

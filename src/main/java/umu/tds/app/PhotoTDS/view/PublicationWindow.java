@@ -29,28 +29,11 @@ public class PublicationWindow {
 	private JTextField textField_1;
 	
 	private String user;
-	
-
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					PublicationWindow window = new PublicationWindow();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the application.
 	 */
-	private PublicationWindow(String u) {
+	public PublicationWindow(String u) {
 		this.user = u;
 		initialize();
 	}
@@ -65,13 +48,6 @@ public class PublicationWindow {
 		frame.setLocationRelativeTo(null);
 	}
 
-	public static PublicationWindow getInstancia(String u) {
-		if (unicaInstancia == null) {
-			unicaInstancia = new PublicationWindow(u);
-		}
-
-		return unicaInstancia;
-	}
 
 	public String getPath() {
 		return this.path;
@@ -128,7 +104,8 @@ public class PublicationWindow {
 		JButton btnNewButton_1 = new JButton("Send");
 		btnNewButton_1.addActionListener(e -> {
 			this.hideWindow();
-			Controller.getInstancia().createFoto(this.user, textField_1.getText(), textField.getText(), path);
+			if(Controller.getInstancia().createFoto(this.user, textField_1.getText(), textField.getText(), path))
+				System.out.println("NOOO");
 		});
 		panel.add(btnNewButton_1);
 
