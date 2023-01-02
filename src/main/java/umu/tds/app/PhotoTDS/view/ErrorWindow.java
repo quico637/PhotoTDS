@@ -31,16 +31,19 @@ import javax.swing.JList;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
 import umu.tds.app.PhotoTDS.model.User;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class DescriptionWindow {
+public class ErrorWindow {
 
 	private JFrame frame;
-	private String descripcion;
+	private String msg;
 
 	/**
 	 * Create the application.
 	 */
-	public DescriptionWindow() {
+	public ErrorWindow(String msg) {
+		this.msg = msg;
 		initialize();
 	}
 
@@ -54,8 +57,10 @@ public class DescriptionWindow {
 		frame.setLocationRelativeTo(null);
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	// GETTERS AND SETTERS
+
+	public String getMsg() {
+		return msg;
 	}
 
 	/**
@@ -68,20 +73,26 @@ public class DescriptionWindow {
 			System.err.println("Failed to initialize LaF");
 		}
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 350, 200);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
 		Panel panel = new Panel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 
-		JLabel lblNewLabel = new JLabel("Add your presentation card");
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		JLabel lblNewLabel = new JLabel("ERROR!");
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 		panel.add(lblNewLabel);
 
 		Panel panel_1 = new Panel();
 		frame.getContentPane().add(panel_1, BorderLayout.SOUTH);
 
-		JButton btnNewButton = new JButton("Send");
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				hideWindow();
+			}
+		});
 		panel_1.add(btnNewButton);
 
 		JPanel panel_2 = new JPanel();
@@ -93,27 +104,22 @@ public class DescriptionWindow {
 		gbl_panel_2.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_panel_2.rowWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
-	
+		
+		JLabel lblNewLabel_1 = new JLabel(this.msg);
+		
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 1;
+		gbc_lblNewLabel_1.gridy = 1;
+		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
+
+		
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 5);
 		gbc_list.fill = GridBagConstraints.BOTH;
 		gbc_list.gridx = 1;
 		gbc_list.gridy = 0;
 
-		TextArea textArea = new TextArea();
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textArea.insets = new Insets(0, 0, 5, 5);
-		gbc_textArea.gridx = 1;
-		gbc_textArea.gridy = 1;
-		panel_2.add(textArea, gbc_textArea);
-		textArea.setBackground(new Color(20, 32, 49));
-		textArea.setForeground(Color.WHITE);
-
-		btnNewButton.addActionListener(e -> {
-			this.hideWindow();
-			this.descripcion = textArea.getText();
-		});
 	}
 	
 

@@ -20,6 +20,10 @@ import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -59,6 +63,10 @@ public class VentanaLogin {
 	private JLabel lblNewLabel_7;
 	private String profilePic;
 	private static VentanaLogin unicaInstancia = null;
+	
+	private final static int MIN_PASSWD_LENGTH = 4;
+	
+	DescriptionWindow dw;
 
 	/**
 	 * Launch the application.
@@ -81,6 +89,7 @@ public class VentanaLogin {
 	 * Create the application.
 	 */
 	private VentanaLogin() {
+		this.dw =  new DescriptionWindow();
 		initialize();
 	}
 	
@@ -223,7 +232,7 @@ public class VentanaLogin {
 
 		JButton botonLogin = new JButton("Login");
 		botonLogin.addActionListener(e -> {
-			if(Controller.getInstancia().login(textField.getText(), passwordField.getText()) == true) {
+			if(Controller.getInstancia().login(textField.getText(), String.valueOf(passwordField.getPassword())) == true) {
 				VentanaInicio v = new VentanaInicio(textField.getText());
 				v.showWindow();
 				this.hideWindow();
@@ -266,7 +275,7 @@ public class VentanaLogin {
 		gbl_panelRegister.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelRegister.setLayout(gbl_panelRegister);
 
-		JLabel lblNewLabel = new JLabel("e-mail:");
+		JLabel lblNewLabel = new JLabel("* e-mail:");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
@@ -284,7 +293,7 @@ public class VentanaLogin {
 		panelRegister.add(txtEmail, gbc_txtEmail);
 		txtEmail.setColumns(10);
 
-		JLabel lblNewLabel_3 = new JLabel("Name:");
+		JLabel lblNewLabel_3 = new JLabel("* Name:");
 		lblNewLabel_3.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
@@ -302,7 +311,7 @@ public class VentanaLogin {
 		panelRegister.add(txtNombreCom, gbc_txtNombreCom);
 		txtNombreCom.setColumns(10);
 
-		JLabel lblNewLabel_4 = new JLabel("Username:");
+		JLabel lblNewLabel_4 = new JLabel("* Username:");
 		lblNewLabel_4.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
@@ -320,7 +329,7 @@ public class VentanaLogin {
 		panelRegister.add(txtNombreDeUsuario, gbc_txtNombreDeUsuario);
 		txtNombreDeUsuario.setColumns(10);
 
-		JLabel lblNewLabel_5 = new JLabel("Password:");
+		JLabel lblNewLabel_5 = new JLabel("* Password:");
 		lblNewLabel_5.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 		gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
@@ -343,7 +352,7 @@ public class VentanaLogin {
 		JTextFieldDateEditor txtFld = (JTextFieldDateEditor) dateEditor;
 		txtFld.addPropertyChangeListener(e -> txtFld.setForeground(Color.WHITE));
 		calendar.getCalendarButton().setForeground(new Color(0, 0, 0));
-		JLabel calendarLabel = new JLabel("Date:");
+		JLabel calendarLabel = new JLabel("* Date:");
 		calendarLabel.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_calendarLabel = new GridBagConstraints();
 		gbc_calendarLabel.anchor = GridBagConstraints.EAST;
@@ -375,7 +384,7 @@ public class VentanaLogin {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DescriptionWindow.getInstancia().showWindow(frame);
+				dw.showWindow(frame);
 			}
 		});
 		
@@ -388,9 +397,34 @@ public class VentanaLogin {
 
 		JButton btnSubmitReg = new JButton("Register");
 		btnSubmitReg.addActionListener(e -> {
-			Controller.getInstancia().createUser(txtNombreDeUsuario.getText(), txtEmail.getText(),
-					txtNombreCom.getText(), Utils.StringToDateNoHour(txtFld.getText()) , DescriptionWindow.getInstancia().getDescripcion(),
-					passwordField_1.getText(), profilePic);
+			
+			
+			String username = txtNombreDeUsuario.getText();
+			String email = txtEmail.getText();
+			String fullname = txtNombreCom.getText();
+			String fechaNac = txtFld.getText();
+			String passwd = String.valueOf(passwordField_1.getPassword());
+			
+			if(!checkFields(username, email, fullname, fechaNac, passwd, profilePic)) {
+				ErrorWindow ew = new ErrorWindow("Some required fields are missing...");
+				ew.showWindow(frame);
+			} else if(Utils.StringToDateNoHour(fechaNac) == null) {
+				ErrorWindow ew = new ErrorWindow("Birthday date is not in the correct format.");
+				ew.showWindow(frame);				
+			} else if (passwd.length() < MIN_PASSWD_LENGTH){
+				ErrorWindow ew = new ErrorWindow("Password is too short.");
+				ew.showWindow(frame);	
+			} else if(!checkAge(Utils.StringToDateNoHour(fechaNac))) {
+				ErrorWindow ew = new ErrorWindow("You must be over 18 to use PhotoApp.");
+				ew.showWindow(frame);
+			} else {
+				if(!Controller.getInstancia().createUser(username, email,
+						fullname, Utils.StringToDateNoHour(fechaNac) , dw.getDescripcion(),passwd, profilePic)) {
+					ErrorWindow ew = new ErrorWindow("User already exists!.");
+					ew.showWindow(frame);	
+				}
+			}
+				
 		});
 		btnSubmitReg.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/enter-2.png")));
 		btnSubmitReg.addMouseListener(new MouseAdapter() {
@@ -408,7 +442,7 @@ public class VentanaLogin {
 
 		});
 
-		lblNewLabel_7 = new JLabel("Profile Picture:");
+		lblNewLabel_7 = new JLabel("* Profile Picture:");
 		lblNewLabel_7.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
 		gbc_lblNewLabel_7.anchor = GridBagConstraints.EAST;
@@ -441,6 +475,16 @@ public class VentanaLogin {
 		gbc_btnLogin.gridx = 2;
 		gbc_btnLogin.gridy = 8;
 		panelRegister.add(btnSubmitReg, gbc_btnLogin);
+	}
+	
+	private boolean checkFields(String username, String email, String fullname, 
+			String fechaNac, String passwd, String profilePic) {
+		
+		return username != null && email != null && fullname != null && fechaNac != null && passwd != null && profilePic != null;			
+	}
+	
+	private boolean checkAge(Date d) {
+		return Period.between(d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears() >= 18;
 	}
 
 }

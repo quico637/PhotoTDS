@@ -43,25 +43,26 @@ public class User {
 		this.ultimoLogin = ultimoLogin;
 	}
 
-	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, String contrasena, String profilePic, Date ultimoLogin) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.nombreCompleto = nombreCompleto;
-		this.fechaNacimiento = fechaNacimiento;
-		this.descripcion = descripcion;
-		this.contrasena = EncryptDecrypt.encrypt(contrasena);
-		this.profilePic = profilePic;
-		this.premium = false;
-		this.notifications = new LinkedList<>();
-		this.publications = new LinkedList<>();
-		this.usuariosSeguidores = new LinkedList<>();
-		this.usuariosSeguidos = new LinkedList<>();
-		this.ultimoLogin = ultimoLogin;
+	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, 
+			String contrasena, String profilePic, Date ultimoLogin) {
+//		super();
+//		this.username = username;
+//		this.email = email;
+//		this.nombreCompleto = nombreCompleto;
+//		this.fechaNacimiento = fechaNacimiento;
+//		this.descripcion = descripcion;
+//		this.contrasena = EncryptDecrypt.encrypt(contrasena);
+//		this.profilePic = profilePic;
+//		this.premium = false;
+//		this.notifications = new LinkedList<>();
+//		this.publications = new LinkedList<>();
+//		this.usuariosSeguidores = new LinkedList<>();
+//		this.usuariosSeguidos = new LinkedList<>();
+//		this.ultimoLogin = ultimoLogin;
 		
-//		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
-//				contrasena, profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
-//				new LinkedList<User>(), new LinkedList<User>());
+		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
+				EncryptDecrypt.encrypt(contrasena), profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
+				new LinkedList<User>(), new LinkedList<User>(), ultimoLogin);
 	}
 	
 	

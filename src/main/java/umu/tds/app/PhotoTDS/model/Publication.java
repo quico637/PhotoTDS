@@ -21,7 +21,6 @@ public class Publication {
 	private List<Comentario> comentarios;
 	
 	private static final int MAX_NUM_HASHTAG = 4;
-	private static final int MAX_NUM_LETRAS = 15;
 	
 	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes) {
 		super();
@@ -61,17 +60,20 @@ public class Publication {
 	
 	private List<HashTag> getHashTagsFromText(String text) {
 		List<HashTag> lh = new LinkedList<>();
+			
+		String[] listaPalabras = text.split(" "); 
+		for(String palabra : listaPalabras) {
+			
+			if(lh.size() == MAX_NUM_HASHTAG)
+				return lh;
+			
+			if(Utils.isHashtag(palabra)) {
+				HashTag has = HashTag.createHashtag(palabra);
+				if(has != null)
+					lh.add(has);
+			}
+		}
 		return lh;
-//		String[] listaPalabras = text.split(" "); 
-//		for(String palabra : listaPalabras) {
-//			if(palabra.charAt(0) == '#') {
-//				HashTag has = HashTag.createHashtag(palabra);
-//				if(has != null) {
-//					lh.add(has);
-//				}
-//			}
-//		}
-//		return lh;
 	}
 	
 	

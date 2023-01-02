@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import umu.tds.app.PhotoTDS.model.HashTag;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.persistence.DAOException;
 import umu.tds.app.PhotoTDS.persistence.DAOFactory;
@@ -40,11 +42,8 @@ public class PublicationRepository {
 		return unicaInstancia;
 	}
 
-	public Publication getPublication(String title) {
-		if (publications.containsKey(title)) {
-			return publications.get(title);
-		}
-		return null;
+	public Optional<Publication> getPublication(String title) {
+		return Optional.ofNullable(publications.get(title));
 	}
 
 	public void createPublication(Publication p) {
@@ -57,10 +56,10 @@ public class PublicationRepository {
 		this.publicationAdapter.deletePublication(p);
 	}
 	
-	public List<Publication> getPublicationsFromHtg(String text) {
+	public List<Publication> getPublicationsFromHtg(HashTag hashtag) {
 		List<Publication> l = new LinkedList<>();
 		for(Publication p : this.publications.values()) {
-			if(p.getHashTags().stream().anyMatch(h -> h.getName().equals(text)))
+			if(p.getHashTags().stream().anyMatch(h -> h.getName().equals(hashtag.getName())))
 				l.add(p);
 		}
 		return l;

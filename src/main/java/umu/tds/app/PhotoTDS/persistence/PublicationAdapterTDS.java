@@ -44,6 +44,11 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		if (ePublication != null)
 			return;
 
+		for(HashTag htg : p.getHashTags()) {
+			HashTagAdapterTDS.getInstance().createHashTag(htg);
+		}
+		
+		
 		// crear entidad Cliente
 		ePublication = new Entidad();
 		if (p instanceof Foto) {

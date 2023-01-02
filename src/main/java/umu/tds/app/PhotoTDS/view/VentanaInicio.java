@@ -19,6 +19,7 @@ import javax.swing.event.ListSelectionListener;
 import umu.tds.app.PhotoTDS.controller.Controller;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
+import umu.tds.app.PhotoTDS.model.Album;
 import umu.tds.app.PhotoTDS.model.Foto;
 
 import java.awt.event.MouseAdapter;
@@ -210,19 +211,27 @@ public class VentanaInicio {
 	private void initializeBusquedaPanel(String b, JPanel panelBusqueda) {
 		
 		List<Component> labelsBusqueda = new LinkedList<>();
-		for (Object o : Controller.getInstancia().getBusqueda(this.user, b)) {
+		List<Object> l = Controller.getInstancia().getBusqueda(this.user, b);
+		if(l == null)
+			return;
+		
+		for (Object o : l) {
 			JLabel label = new JLabel("");
 			if(o instanceof User) {
 				User u = ((User)o);
-//				label = new JLabel("[User] " + u.getUsername());
 				label.setText("[User] " + u.getUsername());
 				labelsBusqueda.add(label);
 			}
 				
-			else if (o instanceof Publication) {
-				Publication p = ((Publication)o);
-//				label = new JLabel("[Pub]" + p.getTitulo());
-				label.setText("[Pub]" + p.getTitulo());
+			else if (o instanceof Foto) {
+				Foto p = ((Foto)o);
+				label.setText("[Foto] " + p.getTitulo());
+				labelsBusqueda.add(label);
+			}
+			
+			else if (o instanceof Album) {
+				Album p = ((Album)o);
+				label.setText("[Album] " + p.getTitulo());
 				labelsBusqueda.add(label);
 			}
 			
@@ -279,11 +288,5 @@ public class VentanaInicio {
 		cl.show(panelCentralCardLayout, "panelBusquedaClicked");
 	}
 
-//	private static JFrame createFrame() {
-//		JFrame frame = new JFrame("JList Example");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setSize(new Dimension(600, 300));
-//		return frame;
-//	}
 
 }

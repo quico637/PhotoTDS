@@ -1,6 +1,6 @@
 package umu.tds.app.PhotoTDS.controller;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.swing.ImageIcon;
-
+import umu.tds.app.PhotoTDS.model.Comentario;
 import umu.tds.app.PhotoTDS.model.EncryptDecrypt;
 import umu.tds.app.PhotoTDS.model.Foto;
 import umu.tds.app.PhotoTDS.model.HashTag;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
+import umu.tds.app.PhotoTDS.model.Utils;
 import umu.tds.app.PhotoTDS.model.repositories.PublicationRepository;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
 
@@ -73,7 +73,9 @@ public class Controller {
 		if(!emails.contains(username) && !username.equals(u.getUsername()))
 			return false;
 		
-		
+		System.out.println("moscas22222");
+		System.out.println(constrasena);
+		System.out.println(EncryptDecrypt.decrypt(u.getContrasena()));
 		if(!u.getContrasena().equals(EncryptDecrypt.encrypt(constrasena)))
 			return false;
 		
@@ -108,6 +110,8 @@ public class Controller {
 	 */
 	public boolean createUser(String username, String email, String nombreCompleto, Date fechaNacimiento,
 			String descripcion, String contrasena, String profilePic) {
+		
+		
 		Optional<User> user = this.userRepo.getUser(username);
 		if(user.isPresent())
 			return false;
@@ -293,14 +297,28 @@ public class Controller {
 		
 		System.out.println("index: " + index);
 		System.out.println(d);
-		// pillo la vez anterior que entro.
+		
+				// pillo la vez anterior que entro.
 		List<Publication> l = new LinkedList<>(this.pubRepo.getAllPublications().stream().
 				filter(p -> p.getFechaPublicacion().after(userOpt.get().getUltimoLogin())).
 				collect(Collectors.toList()));
+		
+		for(Publication p : l) {
+			System.out.println("[PUB]: " + p.getTitulo() + p.getHashTags());
+		}
+		
 		System.out.println("l: " + l);
 		return l;
 	}
 
+	// TBD busqueda hashtags
+	
+	/**
+	 * Method for finding people or hashtags
+	 * @param user
+	 * @param b
+	 * @return
+	 */
 	public List<Object> getBusqueda(String user, String b) {
 		
 		Optional<User> userOpt = checkLoginAndGetUser(user);
@@ -309,8 +327,13 @@ public class Controller {
 		
 		List<Object> l = new LinkedList<>();
 		
-		if(b.charAt(0) == '#')
-			l.addAll(this.pubRepo.getPublicationsFromHtg(b));
+		if(Utils.isHashtag(b)) {
+			for(HashTag h : Utils.getHashTagFromFinder(b) )
+				l.addAll(this.pubRepo.getPublicationsFromHtg(h));
+			System.out.println("Hashtags: " + l);
+			return l;
+		}
+			
 		else {
 			Optional<User> u = this.userRepo.getUser(b);
 			if(u.isPresent()) {
@@ -332,6 +355,28 @@ public class Controller {
 			
 		}
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @param u
+	 * @param fotoTitle
+	 * @param comment
+	 * @return
+	 */
+	public boolean addComment(String u, String fotoTitle, String comment) {
+		
+		
+		Optional<Publication> pub = this.pubRepo.getPublication(fotoTitle);
+		Optional<User> user = this.userRepo.getUser(u);
+		
+		if(pub.isEmpty() || user.isEmpty())
+			return false;
+		
+		Publication p = pub.get();
+		p.anadirComentarios(new Comentario(comment, new Date(), user.get()));
+		
+		return true;
 	}
 
 }

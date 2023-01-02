@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Utils {
 	
@@ -32,9 +34,8 @@ public class Utils {
 			return (Date) new SimpleDateFormat(FORMAT).parse(fecha);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
-		return null;
 
 	}
 
@@ -45,13 +46,24 @@ public class Utils {
 	}
 	
 	
-//	public static String listToString(List<String> lista) {
-//		String stringLista = "";
-//		for(String s : lista) {
-//			stringLista = stringLista = "&&" + s;
-//		}
-//		return stringLista;
-//	}
+	public static boolean isHashtag(String s) {
+		return s.charAt(0) == '#';
+	}
+	
+	public static List<HashTag> getHashTagFromFinder(String text) {
+		List<HashTag> lh = new LinkedList<>();
+		
+		String[] listaPalabras = text.split(" "); 
+		for(String palabra : listaPalabras) {
+			
+			if(Utils.isHashtag(palabra)) {
+				HashTag has = HashTag.createHashtag(palabra);
+				if(has != null)
+					lh.add(has);
+			}
+		}
+		return lh;
+	}
 
 }
 
