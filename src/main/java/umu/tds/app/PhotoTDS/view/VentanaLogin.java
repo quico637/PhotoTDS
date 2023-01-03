@@ -238,6 +238,8 @@ public class VentanaLogin {
 				this.hideWindow();
 			}
 			else {
+				ErrorWindow ew = new ErrorWindow("Username/email or password are incorrect.");
+				ew.showWindow(frame);
 				System.out.println("moscas");
 			}
 		});

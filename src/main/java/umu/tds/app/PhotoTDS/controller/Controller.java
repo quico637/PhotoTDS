@@ -378,5 +378,16 @@ public class Controller {
 		
 		return true;
 	}
+	
+	public boolean goPremium(String user) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if(userOpt.isEmpty())
+			return false;
+		
+		User u = userOpt.get();
+		u.goPremium();
+		return true;
+		
+	}
 
 }

@@ -1,8 +1,16 @@
 package umu.tds.app.PhotoTDS.model;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import umu.tds.app.PhotoTDS.model.discounts.AgeDiscount;
+import umu.tds.app.PhotoTDS.model.discounts.CompoundDiscount;
+import umu.tds.app.PhotoTDS.model.discounts.Discount;
+import umu.tds.app.PhotoTDS.model.discounts.PopularityDiscount;
 
 
 public class User {
@@ -22,6 +30,10 @@ public class User {
 	private List<User> usuariosSeguidos;
 	private Date ultimoLogin;
 	
+	private Discount dc;
+	
+	
+	private final static int DEFAULT_PRICE_PREMIUM = 10;
 	private final static int MIN_PASSWD_LENGTH = 6;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
@@ -41,24 +53,22 @@ public class User {
 		this.usuariosSeguidores = usuariosSeguidores;
 		this.usuariosSeguidos = usuariosSeguidos;
 		this.ultimoLogin = ultimoLogin;
+
+		List<Discount> l = new LinkedList<>();
+		for(Discount d : Discount.getPossibleDiscounts()) {
+			if(d.usable(this)) {
+				this.dc = d;
+				l.add(d);
+			}
+		}
+		
+		if(l.size() > 1) 
+			this.dc = new CompoundDiscount(l);
+		
 	}
 
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, 
 			String contrasena, String profilePic, Date ultimoLogin) {
-//		super();
-//		this.username = username;
-//		this.email = email;
-//		this.nombreCompleto = nombreCompleto;
-//		this.fechaNacimiento = fechaNacimiento;
-//		this.descripcion = descripcion;
-//		this.contrasena = EncryptDecrypt.encrypt(contrasena);
-//		this.profilePic = profilePic;
-//		this.premium = false;
-//		this.notifications = new LinkedList<>();
-//		this.publications = new LinkedList<>();
-//		this.usuariosSeguidores = new LinkedList<>();
-//		this.usuariosSeguidos = new LinkedList<>();
-//		this.ultimoLogin = ultimoLogin;
 		
 		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
 				EncryptDecrypt.encrypt(contrasena), profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
@@ -86,6 +96,15 @@ public class User {
 		this.profilePic = path;
 	}
 	
+	
+	public int getAgeYears() {
+		return Period.between(this.fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).getYears();
+	}
+	
+	public void goPremium() {
+		this.premium = true;
+	}
+	
 	// CALCULATED PROPERTIES.
 	
 	public int getNumFollowers() {
@@ -94,6 +113,14 @@ public class User {
 	
 	public int getNumFollowing() {
 		return this.usuariosSeguidos.size();
+	}
+	
+	public int getDiscount() {
+		return 0;
+	}
+	
+	public int getTotalPremiumPrice() {
+		return this.dc.getDiscount(DEFAULT_PRICE_PREMIUM, this);
 	}
 	
 	
@@ -172,8 +199,10 @@ public class User {
 				+ nombreCompleto + ", fechaNacimiento=" + fechaNacimiento + ", descripcion=" + descripcion
 				+ ", contrasena=" + contrasena + ", profilePic=" + profilePic + ", premium=" + premium
 				+ ", notifications=" + notifications + ", publications=" + publications + ", usuariosSeguidores="
-				+ usuariosSeguidores + ", usuariosSeguidos=" + usuariosSeguidos + ", ultimoLogin=" + ultimoLogin + "]";
+				+ usuariosSeguidores + ", usuariosSeguidos=" + usuariosSeguidos + ", ultimoLogin=" + ultimoLogin
+				+ ", dc=" + dc + "]";
 	}
+
 
 		
 }

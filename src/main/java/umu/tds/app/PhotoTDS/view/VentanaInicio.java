@@ -26,6 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -112,6 +113,13 @@ public class VentanaInicio {
 		JPanel panel_1 = new JPanel();
 		panelNorte.add(panel_1, BorderLayout.CENTER);
 
+		JLabel premium = new JLabel("");
+		
+		premium.setIcon(
+				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/calidad-premium.png")));
+		premium.setFont(new Font("Segoe Script", Font.BOLD, 16));
+		panel_1.add(premium, BorderLayout.EAST);
+		
 		
 		JButton addPhoto = new JButton("+");
 		addPhoto.setFont(new Font("Segoe Script", Font.PLAIN, 20));
@@ -168,6 +176,9 @@ public class VentanaInicio {
 		JPanel panelBusqueda = new JPanel();
 		panelCentralCardLayout.add(panelBusqueda, "panelBusqueda");
 		
+		JPanel panelPremium = new JPanel();
+		panelCentralCardLayout.add(panelPremium, "panelPremium");
+		
 		JPanel panelBusquedaClicked = new JPanel();
 		panelCentralCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");
 		
@@ -205,7 +216,43 @@ public class VentanaInicio {
 			}
 		});
 		
+		premium.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				initializePremiumPanel(panelPremium);
+				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+				cl.show(panelCentralCardLayout, "panelPremium");
+			}
+		});
 
+	}
+	
+	private void initializePremiumPanel(JPanel panelPremium) {
+		
+
+		Optional<User> us = Controller.getInstancia().getUser(user);
+		
+		if(us.isEmpty())
+			return;
+					
+		User u = us.get();
+			
+		JLabel prem = new JLabel("Get premium! Just for " + u.getTotalPremiumPrice() + "$");
+		
+		prem.setFont(new Font("Segoe Script", Font.BOLD, 16));
+		panelPremium.add(prem);
+		
+		JButton suscribe = new JButton("Suscribe!");
+		panelPremium.add(suscribe);
+		
+		suscribe.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Controller.getInstancia().goPremium(user);
+			}
+		});
+		
+	
 	}
 	
 	private void initializeBusquedaPanel(String b, JPanel panelBusqueda) {
