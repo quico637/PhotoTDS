@@ -300,7 +300,7 @@ public class Controller {
 		
 				// pillo la vez anterior que entro.
 		List<Publication> l = new LinkedList<>(this.pubRepo.getAllPublications().stream().
-				filter(p -> p.getFechaPublicacion().after(userOpt.get().getUltimoLogin())).
+				//filter(p -> p.getFechaPublicacion().after(userOpt.get().getUltimoLogin())).
 				collect(Collectors.toList()));
 		
 		for(Publication p : l) {

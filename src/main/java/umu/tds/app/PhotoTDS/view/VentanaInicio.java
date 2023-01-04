@@ -1,6 +1,8 @@
 package umu.tds.app.PhotoTDS.view;
 
 import java.awt.Font;
+
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -9,6 +11,7 @@ import javax.swing.JFrame;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
@@ -34,6 +37,8 @@ import javax.swing.ListCellRenderer;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.ListSelectionModel;
+import java.awt.Dimension;
 
 public class VentanaInicio {
 
@@ -156,13 +161,18 @@ public class VentanaInicio {
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
 		demoList.addAll(paneles);
 		
-		
-		JPanel panelPublications = new JPanel();
+		JScrollPane panelPublications = new JScrollPane();
+		//JPanel panelPublications = new JPanel();
 		panelCentralCardLayout.add(panelPublications, "panelPublications");
 		JList<Component> jList = new JList<>(demoList);
-		panelPublications.add(jList);
+		jList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		jList.setVisibleRowCount(-1);
+		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
-		jList.addListSelectionListener(createListSelectionListener(jList));
+		jList.setLayoutOrientation(JList.VERTICAL);
+		jList.setVisibleRowCount(-1);
+		panelPublications.setViewportView(jList);
+		
 		
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
