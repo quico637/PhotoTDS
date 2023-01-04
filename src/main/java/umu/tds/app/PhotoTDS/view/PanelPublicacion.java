@@ -37,7 +37,7 @@ public class PanelPublicacion {
 		return this.frame;
 	}
 	
-	protected ImageIcon createImageIcon(String path) {
+	private ImageIcon createImageIcon(String path) {
 		if(path == null) {
 			System.err.println("Path is null!!!.");
 			return null;

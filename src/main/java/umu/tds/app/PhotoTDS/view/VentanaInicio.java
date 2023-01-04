@@ -1,6 +1,7 @@
 package umu.tds.app.PhotoTDS.view;
 
 import java.awt.Font;
+import java.awt.Image;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
@@ -42,18 +43,21 @@ import java.awt.Dimension;
 
 public class VentanaInicio {
 
-	private JFrame frame;
+	private static JFrame frame;
 
 	private final static int X = 100;
 	private final static int Y = 100;
 	private final static int X_BORDER = 500;
 	private final static int Y_BORDER = 700;
-	private static VentanaInicio unicaInstancia = null;
+	
+	private final static int PROFILE_PIC_SIZE = 40;
+	
 	private JTextField textField;
+	private static JPanel panelBusquedaClicked;
 	
 	private static JPanel panelCentralCardLayout;
 	
-	private String user;
+	private static String user;
 	
 
 	protected ImageIcon createImageIcon(String path, String description) {
@@ -70,7 +74,7 @@ public class VentanaInicio {
 	 * Create the application.
 	 */
 	public VentanaInicio(String u) {
-		this.user = u;
+		user = u;
 		initialize();
 	}
 
@@ -131,7 +135,7 @@ public class VentanaInicio {
 		panel_1.add(addPhoto);
 		
 		addPhoto.addActionListener(e -> {
-			PublicationWindow pw = new PublicationWindow(this.user);
+			PublicationWindow pw = new PublicationWindow(user);
 			pw.showWindow(frame);
 		});
 		
@@ -173,37 +177,11 @@ public class VentanaInicio {
 		jList.setVisibleRowCount(-1);
 		panelPublications.setViewportView(jList);
 		
-		
-		JPanel panelPerfil = new JPanel();
-		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
-		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		panelPerfil.add(lblNewLabel_2);
-		
-		JButton logout = new JButton("Logout");
-		panelPerfil.add(logout);
-		
-		JPanel panelBusqueda = new JPanel();
-		panelCentralCardLayout.add(panelBusqueda, "panelBusqueda");
-		
-		JPanel panelPremium = new JPanel();
-		panelCentralCardLayout.add(panelPremium, "panelPremium");
-		
-		JPanel panelBusquedaClicked = new JPanel();
-		panelCentralCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");
-		
-		JLabel lblNewLabel_3_1_1 = new JLabel("Etiqueta o Pub");
-		panelBusquedaClicked.add(lblNewLabel_3_1_1);
-		logout.addActionListener(e -> {
-			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
-			this.frame.setVisible(false);
-			VentanaLogin.getInstancia().showWindow();
-		});
-		
-		
+			
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				initializeProfilePanel("user");
 				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 				cl.show(panelCentralCardLayout, "panelPerfil");
 			}
@@ -220,7 +198,7 @@ public class VentanaInicio {
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				initializeBusquedaPanel(textField.getText(), panelBusqueda);
+				initializeBusquedaPanel(textField.getText());
 				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 				cl.show(panelCentralCardLayout, "panelBusqueda");
 			}
@@ -229,7 +207,7 @@ public class VentanaInicio {
 		premium.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				initializePremiumPanel(panelPremium);
+				initializePremiumPanel();
 				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 				cl.show(panelCentralCardLayout, "panelPremium");
 			}
@@ -237,7 +215,49 @@ public class VentanaInicio {
 
 	}
 	
-	private void initializePremiumPanel(JPanel panelPremium) {
+	
+	private void initializeProfilePanel(String u) {
+		
+		JPanel panelPerfil = new JPanel();
+		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
+		
+		JLabel lblNewLabel_2 = new JLabel(u);
+		panelPerfil.add(lblNewLabel_2);
+		
+		JButton logout = new JButton("Logout");
+		panelPerfil.add(logout);
+		
+		
+		logout.addActionListener(e -> {
+			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
+			frame.setVisible(false);
+			VentanaLogin.getInstancia().showWindow();
+		});
+	}
+	
+	private static void initializeBusquedaClickedPanel(String u) {
+		
+		panelBusquedaClicked = new JPanel();
+		panelCentralCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");
+		
+		JLabel lblNewLabel_2 = new JLabel(u);
+		panelBusquedaClicked.add(lblNewLabel_2);
+		
+		JButton logout = new JButton("Logout");
+		panelBusquedaClicked.add(logout);
+		
+		
+		logout.addActionListener(e -> {
+			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
+			frame.setVisible(false);
+			VentanaLogin.getInstancia().showWindow();
+		});
+	}
+	
+	private void initializePremiumPanel() {
+		
+		JPanel panelPremium = new JPanel();
+		panelCentralCardLayout.add(panelPremium, "panelPremium");
 		
 
 		Optional<User> us = Controller.getInstancia().getUser(user);
@@ -265,24 +285,42 @@ public class VentanaInicio {
 	
 	}
 	
-	private void initializeBusquedaPanel(String b, JPanel panelBusqueda) {
+	private void initializeBusquedaPanel(String b) {
+		
+		JPanel panelBusqueda = new JPanel();
+		panelCentralCardLayout.add(panelBusqueda, "panelBusqueda");
+		
 		
 		List<Component> labelsBusqueda = new LinkedList<>();
-		List<Object> l = Controller.getInstancia().getBusqueda(this.user, b);
+		List<Object> l = Controller.getInstancia().getBusqueda(user, b);
 		if(l == null)
 			return;
 		
 		for (Object o : l) {
 			JLabel label = new JLabel("");
+			label.setFont(new Font("Segoe Script", Font.BOLD, 16));
+			label.setBounds(0, 0, PROFILE_PIC_SIZE, PROFILE_PIC_SIZE);
 			if(o instanceof User) {
 				User u = ((User)o);
 				label.setText("[User] " + u.getUsername());
+				
+
+				Image img = createImageIcon(u.getProfilePic()).getImage().getScaledInstance(label.getHeight(), label.getWidth(), Image.SCALE_SMOOTH);
+				ImageIcon icon = new ImageIcon(img);
+				label.setIcon(icon);
+				
 				labelsBusqueda.add(label);
 			}
 				
 			else if (o instanceof Foto) {
 				Foto p = ((Foto)o);
 				label.setText("[Foto] " + p.getTitulo());
+				
+
+				Image img = createImageIcon(p.getPath()).getImage().getScaledInstance(label.getHeight(), label.getWidth(), Image.SCALE_SMOOTH);
+				ImageIcon icon = new ImageIcon(img);
+				label.setIcon(icon);
+				
 				labelsBusqueda.add(label);
 			}
 			
@@ -328,7 +366,8 @@ public class VentanaInicio {
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-						showBusquedaClicked();
+						showBusquedaClicked("userBusqueda");
+						System.out.println("value obj: " + value.toString());
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
@@ -340,9 +379,29 @@ public class VentanaInicio {
 		};
 	}
 	
-	private static void showBusquedaClicked() {
+	private static void showBusquedaClicked(String u) {
+		initializeBusquedaClickedPanel(u);
 		CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 		cl.show(panelCentralCardLayout, "panelBusquedaClicked");
+	}
+	
+	private ImageIcon createImageIcon(String path) {
+		if(path == null) {
+			System.err.println("Path is null!!!.");
+			return null;
+		}
+		java.net.URL imgURL = getClass().getResource(path);
+		
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		}
+		ImageIcon img = new ImageIcon(path);
+		if(img != null)
+			return img;
+			
+		System.err.println("Couldn't find file: " + path);
+		return null;
+		
 	}
 
 
