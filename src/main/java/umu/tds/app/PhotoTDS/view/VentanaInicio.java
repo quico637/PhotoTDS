@@ -181,7 +181,7 @@ public class VentanaInicio {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				initializeProfilePanel("user");
+				initializeProfilePanel();
 				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 				cl.show(panelCentralCardLayout, "panelPerfil");
 			}
@@ -216,14 +216,15 @@ public class VentanaInicio {
 	}
 	
 	
-	private void initializeProfilePanel(String u) {
+	private void initializeProfilePanel() {
 		
 		JPanel panelPerfil = new JPanel();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
 		
-		JLabel lblNewLabel_2 = new JLabel(u);
+		JLabel lblNewLabel_2 = new JLabel(user);
 		panelPerfil.add(lblNewLabel_2);
 		
+
 		JButton logout = new JButton("Logout");
 		panelPerfil.add(logout);
 		
@@ -244,11 +245,13 @@ public class VentanaInicio {
 		panelBusquedaClicked.add(lblNewLabel_2);
 		
 		JButton logout = new JButton("Logout");
-		panelBusquedaClicked.add(logout);
+		if(u.equals(user))
+			panelBusquedaClicked.add(logout);
+		
 		
 		
 		logout.addActionListener(e -> {
-			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
+			if(!Controller.getInstancia().logout(u)) System.out.println("Cagaste en LOGOUT");
 			frame.setVisible(false);
 			VentanaLogin.getInstancia().showWindow();
 		});
@@ -302,7 +305,7 @@ public class VentanaInicio {
 			label.setBounds(0, 0, PROFILE_PIC_SIZE, PROFILE_PIC_SIZE);
 			if(o instanceof User) {
 				User u = ((User)o);
-				label.setText("[User] " + u.getUsername());
+				label.setText(u.getUsername());
 				
 
 				Image img = createImageIcon(u.getProfilePic()).getImage().getScaledInstance(label.getHeight(), label.getWidth(), Image.SCALE_SMOOTH);
@@ -314,7 +317,7 @@ public class VentanaInicio {
 				
 			else if (o instanceof Foto) {
 				Foto p = ((Foto)o);
-				label.setText("[Foto] " + p.getTitulo());
+				label.setText(p.getTitulo());
 				
 
 				Image img = createImageIcon(p.getPath()).getImage().getScaledInstance(label.getHeight(), label.getWidth(), Image.SCALE_SMOOTH);
@@ -366,8 +369,8 @@ public class VentanaInicio {
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-						showBusquedaClicked("userBusqueda");
-						System.out.println("value obj: " + value.toString());
+						JLabel l = (JLabel) value;
+						showBusquedaClicked(l.getText());
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
