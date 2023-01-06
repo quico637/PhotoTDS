@@ -8,6 +8,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
@@ -19,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
 import umu.tds.app.PhotoTDS.model.Publication;
@@ -40,13 +42,16 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.ListSelectionModel;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class VentanaInicio {
 
 	private static JFrame frame;
 
-	private final static int X = 100;
-	private final static int Y = 100;
+	private final static int X = 150;
+	private final static int Y = 150;
 	private final static int X_BORDER = 500;
 	private final static int Y_BORDER = 700;
 	
@@ -58,7 +63,6 @@ public class VentanaInicio {
 	private static JPanel panelCentralCardLayout;
 	
 	private static String user;
-	
 
 	protected ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
@@ -166,7 +170,6 @@ public class VentanaInicio {
 		demoList.addAll(paneles);
 		
 		JScrollPane panelPublications = new JScrollPane();
-		//JPanel panelPublications = new JPanel();
 		panelCentralCardLayout.add(panelPublications, "panelPublications");
 		JList<Component> jList = new JList<>(demoList);
 		jList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -176,7 +179,6 @@ public class VentanaInicio {
 		jList.setLayoutOrientation(JList.VERTICAL);
 		jList.setVisibleRowCount(-1);
 		panelPublications.setViewportView(jList);
-		
 			
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -186,6 +188,8 @@ public class VentanaInicio {
 				cl.show(panelCentralCardLayout, "panelPerfil");
 			}
 		});
+		
+		
 		
 		photoApp.addMouseListener(new MouseAdapter() {
 			@Override
@@ -218,22 +222,27 @@ public class VentanaInicio {
 	
 	private void initializeProfilePanel() {
 		
-		JPanel panelPerfil = new JPanel();
+		JPanel panelPerfil = new PanelPerfil(user).getPanelPerfil();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
 		
-		JLabel lblNewLabel_2 = new JLabel(user);
-		panelPerfil.add(lblNewLabel_2);
+//		JPanel panelPerfil = new JPanel();
+//		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
+//		
+//		JLabel lblNewLabel_2 = new JLabel(user);
+//		panelPerfil.add(lblNewLabel_2);
+//		
+//
+//		JButton logout = new JButton("Logout");
+//		panelPerfil.add(logout);
+//		
+//		
+//		logout.addActionListener(e -> {
+//			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
+//			frame.setVisible(false);
+//			VentanaLogin.getInstancia().showWindow();
+//		});
 		
-
-		JButton logout = new JButton("Logout");
-		panelPerfil.add(logout);
 		
-		
-		logout.addActionListener(e -> {
-			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
-			frame.setVisible(false);
-			VentanaLogin.getInstancia().showWindow();
-		});
 	}
 	
 	private static void initializeBusquedaClickedPanel(String u) {
