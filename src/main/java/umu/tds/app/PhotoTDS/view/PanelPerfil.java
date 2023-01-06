@@ -42,6 +42,9 @@ public class PanelPerfil {
 	private String profilePath;
 	private JPanel panelPerfil;
 	
+	private String userLogged;
+
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}
@@ -72,9 +75,10 @@ public class PanelPerfil {
 
 
 
-	public PanelPerfil(String user) {
+	public PanelPerfil(String user, String userLogged) {
 		super();
 		this.user = user;
+		this.userLogged = userLogged;
 		initialize();
 	}
 	
@@ -127,10 +131,11 @@ public class PanelPerfil {
 		gbc_editButton.gridx = 5;
 		gbc_editButton.gridy = 1;
 		panelPerfil.add(editButton, gbc_editButton);
-//		editButton.addActionListener(e -> {
-//			CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
-//			cl.show(panelCentralCardLayout, "panelEdit");
-//		});
+		
+		editButton.addActionListener(e -> {
+			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
+			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelEdit");
+		});
 		
 
 		JButton logout = new JButton("Logout");
@@ -139,7 +144,9 @@ public class PanelPerfil {
 		gbc_logout.anchor = GridBagConstraints.NORTHWEST;
 		gbc_logout.gridx = 5;
 		gbc_logout.gridy = 4;
-		panelPerfil.add(logout, gbc_logout);
+		
+		if(user.equals(userLogged))
+			panelPerfil.add(logout, gbc_logout);
 		
 		JPanel panelEdit = new JPanel();
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -203,7 +210,7 @@ public class PanelPerfil {
 		
 		logout.addActionListener(e -> {
 			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
-			frame.setVisible(false);
+			VentanaInicio.hideWindow();
 			VentanaLogin.getInstancia().showWindow();
 		});
 		

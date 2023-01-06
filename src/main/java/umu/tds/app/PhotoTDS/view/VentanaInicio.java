@@ -74,6 +74,11 @@ public class VentanaInicio {
 		}
 	}
 
+	
+	public static JPanel getPanelCentralCardLayout() {
+		return panelCentralCardLayout;
+	}
+	
 	/**
 	 * Create the application.
 	 */
@@ -85,6 +90,10 @@ public class VentanaInicio {
 	public void showWindow() {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
+	}
+	
+	public static void hideWindow() {
+		frame.setVisible(false);
 	}
 
 	/**
@@ -122,6 +131,8 @@ public class VentanaInicio {
 				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/profileInicio.png")));
 		lblNewLabel.setFont(new Font("Segoe Script", Font.BOLD, 16));
 		panelNorte.add(lblNewLabel, BorderLayout.EAST);
+		
+	
 
 		JPanel panel_1 = new JPanel();
 		panelNorte.add(panel_1, BorderLayout.CENTER);
@@ -220,82 +231,32 @@ public class VentanaInicio {
 	}
 	
 	
+	
 	private void initializeProfilePanel() {
+
+		JPanel panelEdit = new PanelEdit(user).getPanel();
+		panelCentralCardLayout.add(panelEdit, "panelEdit");
 		
-		JPanel panelPerfil = new PanelPerfil(user).getPanelPerfil();
+		JPanel panelPerfil = new PanelPerfil(user, user).getPanelPerfil();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
-		
-//		JPanel panelPerfil = new JPanel();
-//		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
-//		
-//		JLabel lblNewLabel_2 = new JLabel(user);
-//		panelPerfil.add(lblNewLabel_2);
-//		
-//
-//		JButton logout = new JButton("Logout");
-//		panelPerfil.add(logout);
-//		
-//		
-//		logout.addActionListener(e -> {
-//			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
-//			frame.setVisible(false);
-//			VentanaLogin.getInstancia().showWindow();
-//		});
-		
-		
+				
 	}
 	
 	private static void initializeBusquedaClickedPanel(String u) {
 		
-		panelBusquedaClicked = new JPanel();
+		JPanel panelBusquedaClicked = new PanelPerfil(u, user).getPanelPerfil();
 		panelCentralCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");
 		
-		JLabel lblNewLabel_2 = new JLabel(u);
-		panelBusquedaClicked.add(lblNewLabel_2);
-		
-		JButton logout = new JButton("Logout");
-		if(u.equals(user))
-			panelBusquedaClicked.add(logout);
-		
-		
-		
-		logout.addActionListener(e -> {
-			if(!Controller.getInstancia().logout(u)) System.out.println("Cagaste en LOGOUT");
-			frame.setVisible(false);
-			VentanaLogin.getInstancia().showWindow();
-		});
 	}
 	
 	private void initializePremiumPanel() {
 		
-		JPanel panelPremium = new JPanel();
+		JPanel panelPremium = new PanelPremium(user).getPanel();
 		panelCentralCardLayout.add(panelPremium, "panelPremium");
 		
-
-		Optional<User> us = Controller.getInstancia().getUser(user);
-		
-		if(us.isEmpty())
-			return;
-					
-		User u = us.get();
-			
-		JLabel prem = new JLabel("Get premium! Just for " + u.getTotalPremiumPrice() + "$");
-		
-		prem.setFont(new Font("Segoe Script", Font.BOLD, 16));
-		panelPremium.add(prem);
-		
-		JButton suscribe = new JButton("Suscribe!");
-		panelPremium.add(suscribe);
-		
-		suscribe.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Controller.getInstancia().goPremium(user);
-			}
-		});
-		
-	
 	}
+	
+	
 	
 	private void initializeBusquedaPanel(String b) {
 		
