@@ -27,6 +27,8 @@ import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelPerfil {
 
@@ -155,56 +157,71 @@ public class PanelPerfil {
 		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelEdit.setLayout(gbl_panel);
-
-		JLabel profPicEdit = new JLabel();
-		GridBagConstraints gbc_profPic_Edit = new GridBagConstraints();
-		gbc_profPic_Edit.gridheight = 2;
-		gbc_profPic_Edit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_profPic_Edit.insets = new Insets(0, 0, 5, 5);
-		gbc_profPic_Edit.gridx = 1;
-		gbc_profPic_Edit.gridy = 1;
-		panelEdit.add(profPicEdit, gbc_profPic_Edit);
-		profPic.setBounds(0, 0, 40, 40);
-		Optional<User> usEdit = Controller.getInstancia().getUser(user);
-		if (!usEdit.isPresent())
-			System.out.println("user null");
-		User useEdit = usEdit.get();
-		Image imgEdit = createImageIcon(useEdit.getProfilePic()).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-		ImageIcon iconEdit = new ImageIcon(imgEdit);
-		profPicEdit.setIcon(iconEdit);
-
-		JLabel userNameEdit = new JLabel(user);
-		GridBagConstraints gbc_userName_Edit = new GridBagConstraints();
-		gbc_userName_Edit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_userName_Edit.insets = new Insets(0, 0, 5, 5);
-		gbc_userName_Edit.gridx = 2;
-		gbc_userName_Edit.gridy = 1;
-		panelEdit.add(userNameEdit, gbc_userName_Edit);
-
-		JButton changeButton = new JButton("Change");
-		GridBagConstraints gbc_changeButton = new GridBagConstraints();
-		gbc_changeButton.insets = new Insets(0, 0, 5, 5);
-		gbc_changeButton.gridx = 1;
-		gbc_changeButton.gridy = 3;
-		panelEdit.add(changeButton, gbc_changeButton);
-		changeButton.addActionListener(e -> {
-		JFileChooser chooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-		chooser.setFileFilter(filter);
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println("You chose to open this file: " + chooser.getSelectedFile());
-			profilePath = chooser.getSelectedFile().getPath();
-			Controller.getInstancia().changeProfilePicture(user, profilePath);
-		}
-	});
+//
+//		JLabel profPicEdit = new JLabel();
+//		GridBagConstraints gbc_profPic_Edit = new GridBagConstraints();
+//		gbc_profPic_Edit.gridheight = 2;
+//		gbc_profPic_Edit.fill = GridBagConstraints.HORIZONTAL;
+//		gbc_profPic_Edit.insets = new Insets(0, 0, 5, 5);
+//		gbc_profPic_Edit.gridx = 1;
+//		gbc_profPic_Edit.gridy = 1;
+//		panelEdit.add(profPicEdit, gbc_profPic_Edit);
+//		profPic.setBounds(0, 0, 40, 40);
+//		Optional<User> usEdit = Controller.getInstancia().getUser(user);
+//		if (!usEdit.isPresent())
+//			System.out.println("user null");
+//		User useEdit = usEdit.get();
+//		Image imgEdit = createImageIcon(useEdit.getProfilePic()).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+//		ImageIcon iconEdit = new ImageIcon(imgEdit);
+//		profPicEdit.setIcon(iconEdit);
+//
+//		JLabel userNameEdit = new JLabel(user);
+//		GridBagConstraints gbc_userName_Edit = new GridBagConstraints();
+//		gbc_userName_Edit.fill = GridBagConstraints.HORIZONTAL;
+//		gbc_userName_Edit.insets = new Insets(0, 0, 5, 5);
+//		gbc_userName_Edit.gridx = 2;
+//		gbc_userName_Edit.gridy = 1;
+//		panelEdit.add(userNameEdit, gbc_userName_Edit);
+//
+//		JButton changeButton = new JButton("Change");
+//		GridBagConstraints gbc_changeButton = new GridBagConstraints();
+//		gbc_changeButton.insets = new Insets(0, 0, 5, 5);
+//		gbc_changeButton.gridx = 1;
+//		gbc_changeButton.gridy = 3;
+//		panelEdit.add(changeButton, gbc_changeButton);
+//		changeButton.addActionListener(e -> {
+//		JFileChooser chooser = new JFileChooser();
+//		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+//		chooser.setFileFilter(filter);
+//		int returnVal = chooser.showOpenDialog(null);
+//		if (returnVal == JFileChooser.APPROVE_OPTION) {
+//			System.out.println("You chose to open this file: " + chooser.getSelectedFile());
+//			profilePath = chooser.getSelectedFile().getPath();
+//			Controller.getInstancia().changeProfilePicture(user, profilePath);
+//		}
+//	});
+//		
+//		JButton btnNewButton = new JButton("Save Changes");
+//		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+//		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+//		gbc_btnNewButton.gridx = 1;
+//		gbc_btnNewButton.gridy = 4;
+//		panelEdit.add(btnNewButton, gbc_btnNewButton);
 		
-		JButton btnNewButton = new JButton("Save Changes");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 4;
-		panelEdit.add(btnNewButton, gbc_btnNewButton);
+		JButton createPdf = new JButton("PDF");
+		createPdf.addActionListener(e -> {
+			
+			JFileChooser chooser = new JFileChooser();
+			chooser.showSaveDialog(null);
+
+			if (chooser.getSelectedFile() != null) {
+
+				String fichero = chooser.getSelectedFile().getAbsolutePath();
+				Controller.getInstancia().createPdf(user, fichero);
+
+			}
+		});
+		panelPerfil.add(createPdf);
 		
 		
 		

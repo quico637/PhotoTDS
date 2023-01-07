@@ -235,7 +235,7 @@ public class UserAdapterTDS implements IUserDAO {
 
 		List<User> l = new LinkedList<>();
 		StringTokenizer strTok = new StringTokenizer(segs, " ");
-		IUserDAO adaptador = UserAdapterTDS.getInstance();
+		UserAdapterTDS adaptador = (UserAdapterTDS) UserAdapterTDS.getInstance();
 		while (strTok.hasMoreTokens()) {
 			l.add(adaptador.readUser(Integer.valueOf((String) strTok.nextElement())));
 		}

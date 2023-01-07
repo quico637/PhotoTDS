@@ -105,6 +105,22 @@ public class User {
 		this.premium = true;
 	}
 	
+	public boolean follow(User u) {
+		if(this.usuariosSeguidos.contains(u))
+			return false;
+		
+		this.usuariosSeguidos.add(u);
+		return true;
+	}
+	
+	public boolean addFollower(User f) {
+		if(this.usuariosSeguidores.contains(f))
+			return false;
+		
+		this.usuariosSeguidores.add(f);
+		return true;
+	}
+
 	// CALCULATED PROPERTIES.
 	
 	public int getNumFollowers() {
@@ -114,10 +130,7 @@ public class User {
 	public int getNumFollowing() {
 		return this.usuariosSeguidos.size();
 	}
-	
-	public int getDiscount() {
-		return 0;
-	}
+
 	
 	public int getTotalPremiumPrice() {
 		return this.dc.getDiscount(DEFAULT_PRICE_PREMIUM, this);

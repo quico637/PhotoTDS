@@ -43,7 +43,7 @@ public class UserRepository {
 
 	public Optional<User> getUser(String username) {
 
-		return Optional.ofNullable(users.get(username));
+		return Optional.ofNullable(this.users.get(username));
 	}
 	
 
