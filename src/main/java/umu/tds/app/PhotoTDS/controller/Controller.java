@@ -1,6 +1,8 @@
 package umu.tds.app.PhotoTDS.controller;
 
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,28 +20,50 @@ import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.Utils;
 import umu.tds.app.PhotoTDS.model.repositories.PublicationRepository;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
+import umu.tds.fotos.CargadorFotos;
+import umu.tds.fotos.MapperFotosXMLtoJava;
 
 /**
  * 
  * @author quico y JC
  *
  */
-public class Controller {
+public class Controller implements PropertyChangeListener {
 
 	private static Controller unicaInstancia = null;
 		
 	private Map<String, List<Date>> logins;
 	private Map<String, Boolean> valids;
 	
-	UserRepository userRepo;
-	PublicationRepository pubRepo;
+	private UserRepository userRepo;
+	private PublicationRepository pubRepo;
 	
+	private Optional<User> currentuser;
 	
+
 
 	private Controller() {
 		this.logins = new HashMap<>();
 		this.valids = new HashMap<>();
+		CargadorFotos.getUnicaInstancia().addCancionesListener(this);
 		inicializarCatalogos();
+	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
+		
+		umu.tds.fotos.Fotos fotos = MapperFotosXMLtoJava.cargarFotos(evt.getNewValue().toString());
+		for(umu.tds.fotos.Foto f : fotos.getFoto()) {
+			if(this.currentuser.isEmpty())
+				continue;
+			User u = this.currentuser.get();
+			Foto ph = new Foto(u.getUsername(), f.getTitulo(), new Date(), f.getDescripcion(), f.getPath());
+			this.pubRepo.createPublication(ph);
+		}
+	
+		
 	}
 
 	public static Controller getInstancia() {
@@ -90,6 +114,7 @@ public class Controller {
 			this.logins.put(username, dates);
 		}
 		this.valids.put(username, true);
+		this.currentuser = Optional.ofNullable(u);
 		System.out.println(this.logins);
 		
 		
@@ -215,6 +240,7 @@ public class Controller {
 		u.setUltimoLogin(new Date());
 		this.userRepo.updateUser(u);
 		this.valids.put(user, false);
+		this.currentuser = Optional.empty();
 		return true;
 	}
 	
@@ -379,6 +405,11 @@ public class Controller {
 		return true;
 	}
 	
+	/**
+	 * updates some user's account to premium.
+	 * @param user
+	 * @return success or failure.
+	 */
 	public boolean goPremium(String user) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if(userOpt.isEmpty())
@@ -389,5 +420,21 @@ public class Controller {
 		return true;
 		
 	}
+	
+	/**
+	 * User must be logged in.
+	 * @param u
+	 * @param f
+	 */
+	public void uploadPhotos(String u, String f) {
+		
+		Optional<User> userOpt = checkLoginAndGetUser(u);
+		if(userOpt.isEmpty())
+			return;
+		
+		CargadorFotos.getUnicaInstancia().setArchivoCanciones(f);
+		
+	}
+
 
 }

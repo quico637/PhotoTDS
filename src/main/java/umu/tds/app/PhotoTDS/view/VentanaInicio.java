@@ -22,6 +22,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import pulsador.IEncendidoListener;
+import pulsador.Luz;
 import umu.tds.app.PhotoTDS.controller.Controller;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
@@ -30,6 +32,9 @@ import umu.tds.app.PhotoTDS.model.Foto;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +51,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class VentanaInicio {
+public class VentanaInicio implements IEncendidoListener {
 
 	private static JFrame frame;
 
@@ -72,6 +77,22 @@ public class VentanaInicio {
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
+	}
+		
+	@Override
+	public void enteradoCambioEncendido(EventObject arg0) {
+		// TODO Auto-generated method stub
+		
+		JFileChooser chooser = new JFileChooser();
+		chooser.showSaveDialog(null);
+
+		if (chooser.getSelectedFile() != null) {
+
+			String fichero = chooser.getSelectedFile().getAbsolutePath();
+			Controller.getInstancia().uploadPhotos(user, fichero);
+
+		}
+		
 	}
 
 	
@@ -116,7 +137,8 @@ public class VentanaInicio {
 		frame.getContentPane().add(panelCentralCardLayout, BorderLayout.CENTER);
 		panelCentralCardLayout.setLayout(new CardLayout(0, 0));
 
-				
+		
+					
 		JLabel photoApp = new JLabel("PhotoApp");
 		photoApp.setFont(new Font("Segoe Script", Font.PLAIN, 20));
 
@@ -137,6 +159,10 @@ public class VentanaInicio {
 		JPanel panel_1 = new JPanel();
 		panelNorte.add(panel_1, BorderLayout.CENTER);
 
+		Luz luz = new Luz();
+		luz.addEncendidoListener(this);
+		panel_1.add(luz, BorderLayout.EAST);
+		
 		JLabel premium = new JLabel("");
 		
 		premium.setIcon(
@@ -376,6 +402,5 @@ public class VentanaInicio {
 		return null;
 		
 	}
-
 
 }
