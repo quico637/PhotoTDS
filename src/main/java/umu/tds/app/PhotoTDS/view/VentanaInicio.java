@@ -57,7 +57,7 @@ public class VentanaInicio implements IEncendidoListener {
 
 	private final static int X = 150;
 	private final static int Y = 150;
-	private final static int X_BORDER = 500;
+	private final static int X_BORDER = 510;
 	private final static int Y_BORDER = 700;
 	
 	private final static int PROFILE_PIC_SIZE = 40;
@@ -256,8 +256,6 @@ public class VentanaInicio implements IEncendidoListener {
 
 	}
 	
-	
-	
 	private void initializeProfilePanel() {
 		
 		JPanel panelPerfil = new PanelPerfil(user, user).getPanelPerfil();
@@ -282,6 +280,14 @@ public class VentanaInicio implements IEncendidoListener {
 		
 	}
 	
+//	private void initializePublicationPanel(User u, Publication p) {
+//		
+//		JPanel panelPublication = new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
+//				50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2));
+//		panelCentralCardLayout.add(panelPublication, "panelPublication");
+//		
+//	}
+//	
 	
 	
 	private void initializeBusquedaPanel(String b) {

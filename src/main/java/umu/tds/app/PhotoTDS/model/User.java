@@ -92,8 +92,11 @@ public class User {
 		return true;
 	}
 	
-	public void updateProfilePic(String path) {
+	public boolean updateProfilePic(String path) {
+		if(this.profilePic.equals(path))
+			return false;
 		this.profilePic = path;
+		return true;
 	}
 	
 	
@@ -119,6 +122,12 @@ public class User {
 		
 		this.usuariosSeguidores.add(f);
 		return true;
+	}
+	
+	public Foto createPhoto(String titulo, String descripcion, String path) {
+		Foto f = new Foto(this.username, titulo, new Date(), descripcion, path);
+		this.publications.add(f);
+		return f;
 	}
 
 	// CALCULATED PROPERTIES.

@@ -201,6 +201,8 @@ public class Controller implements PropertyChangeListener {
 
 		Optional<User> u = this.userRepo.getUser(user);
 		u.ifPresent(a -> a.updateProfilePic(path));
+		this.userRepo.getUser(user).get().updateProfilePic(path);
+		this.userRepo.updateUser(u.get());
 		return true;
 	}
 
@@ -290,8 +292,9 @@ public class Controller implements PropertyChangeListener {
 
 		User u = userOpt.get();
 
+		Foto f = u.createPhoto(titulo, descripcion, path);
+		
 		System.out.println("creating foto");
-		Foto f = new Foto(u.getUsername(), titulo, new Date(), descripcion, path);
 		pubRepo.createPublication(f);
 		return true;
 	}

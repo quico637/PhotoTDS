@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -14,21 +16,36 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.persistence.jpa.jpql.parser.DatabaseTypeFactory;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.Foto;
+import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
 
 import java.awt.GridBagLayout;
 import java.awt.Image;
 
 import javax.swing.JLabel;
+import javax.swing.JList;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
 
 public class PanelPerfil {
 
@@ -96,15 +113,16 @@ public class PanelPerfil {
 		
 		panelPerfil = new JPanel();
 		GridBagLayout gbl_panelPerfil = new GridBagLayout();
-		gbl_panelPerfil.columnWidths = new int[]{50, 51, 0, 0, 55, 65, 50, 0};
-		gbl_panelPerfil.rowHeights = new int[]{50, 23, 0, 0, 0, 0};
-		gbl_panelPerfil.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelPerfil.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPerfil.columnWidths = new int[]{40, 0, 0, 50, 0, 55, 65, 50, 0};
+		gbl_panelPerfil.rowHeights = new int[]{40, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panelPerfil.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPerfil.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panelPerfil.setLayout(gbl_panelPerfil);
 		
 		JLabel profPic = new JLabel();
 		GridBagConstraints gbc_profPic = new GridBagConstraints();
-		gbc_profPic.gridheight = 2;
+		gbc_profPic.gridwidth = 2;
+		gbc_profPic.gridheight = 3;
 		gbc_profPic.fill = GridBagConstraints.HORIZONTAL;
 		gbc_profPic.insets = new Insets(0, 0, 5, 5);
 		gbc_profPic.gridx = 1;
@@ -121,18 +139,70 @@ public class PanelPerfil {
 		
 		JLabel userName = new JLabel(user);
 		GridBagConstraints gbc_userName = new GridBagConstraints();
-		gbc_userName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_userName.anchor = GridBagConstraints.WEST;
 		gbc_userName.insets = new Insets(0, 0, 5, 5);
-		gbc_userName.gridx = 3;
+		gbc_userName.gridx = 4;
 		gbc_userName.gridy = 1;
 		panelPerfil.add(userName, gbc_userName);
 		
+		JLabel lblNewLabel = new JLabel("Seguidores");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 4;
+		gbc_lblNewLabel.gridy = 2;
+		panelPerfil.add(lblNewLabel, gbc_lblNewLabel);
+		
+		JLabel completeName = new JLabel(use.getNombreCompleto());
+		GridBagConstraints gbc_completeName = new GridBagConstraints();
+		gbc_completeName.anchor = GridBagConstraints.WEST;
+		gbc_completeName.gridwidth = 2;
+		gbc_completeName.insets = new Insets(0, 0, 5, 5);
+		gbc_completeName.gridx = 4;
+		gbc_completeName.gridy = 3;
+		panelPerfil.add(completeName, gbc_completeName);
+		
 		JButton editButton = new JButton("Edit Profile");
 		GridBagConstraints gbc_editButton = new GridBagConstraints();
+		gbc_editButton.gridwidth = 2;
 		gbc_editButton.insets = new Insets(0, 0, 5, 5);
 		gbc_editButton.gridx = 5;
 		gbc_editButton.gridy = 1;
 		panelPerfil.add(editButton, gbc_editButton);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridwidth = 6;
+		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 5;
+		panelPerfil.add(scrollPane, gbc_scrollPane);
+		
+		List<JLabel> labels = new LinkedList<>();
+		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
+		for (Publication p : l) {
+			if (p instanceof Foto) {
+				JLabel etiqueta = new JLabel();
+				Image imagen = createImageIcon(((Foto) p).getPath()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
+				ImageIcon icono = new ImageIcon(imagen);
+				etiqueta.setIcon(icono);
+				labels.add(etiqueta);
+				System.out.println("Publicacion: " + p);
+			}
+		}
+		
+		DefaultListModel<Component> demoList = new DefaultListModel<>();
+		demoList.addAll(labels);
+		
+		JList<Component> jList = new JList<>(demoList);
+		jList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		jList.setVisibleRowCount(-1);
+		jList.ensureIndexIsVisible(jList.getHeight());
+		jList.setCellRenderer(createListRenderer());
+		scrollPane.setViewportView(jList);
+		
+		
 		
 		editButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
@@ -142,72 +212,22 @@ public class PanelPerfil {
 
 		JButton logout = new JButton("Logout");
 		GridBagConstraints gbc_logout = new GridBagConstraints();
-		gbc_logout.insets = new Insets(0, 0, 0, 5);
-		gbc_logout.anchor = GridBagConstraints.NORTHWEST;
-		gbc_logout.gridx = 5;
+		gbc_logout.gridwidth = 2;
+		gbc_logout.insets = new Insets(0, 0, 5, 5);
+		gbc_logout.gridx = 1;
 		gbc_logout.gridy = 4;
+		
+		logout.addActionListener(e -> {
+			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
+			VentanaInicio.hideWindow();
+			VentanaLogin.getInstancia().showWindow();
+		});
+		panelPerfil.add(logout, gbc_logout);
 		
 		if(user.equals(userLogged))
 			panelPerfil.add(logout, gbc_logout);
 		
-//		JPanel panelEdit = new JPanel();
-//		GridBagLayout gbl_panel = new GridBagLayout();
-//		gbl_panel.columnWidths = new int[] { 25, 51, 0, 0, 55, 65, 50, 0 };
-//		gbl_panel.rowHeights = new int[] { 25, 23, 0, 0, 0, 0 };
-//		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-//		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-//		panelEdit.setLayout(gbl_panel);
-//
-//		JLabel profPicEdit = new JLabel();
-//		GridBagConstraints gbc_profPic_Edit = new GridBagConstraints();
-//		gbc_profPic_Edit.gridheight = 2;
-//		gbc_profPic_Edit.fill = GridBagConstraints.HORIZONTAL;
-//		gbc_profPic_Edit.insets = new Insets(0, 0, 5, 5);
-//		gbc_profPic_Edit.gridx = 1;
-//		gbc_profPic_Edit.gridy = 1;
-//		panelEdit.add(profPicEdit, gbc_profPic_Edit);
-//		profPic.setBounds(0, 0, 40, 40);
-//		Optional<User> usEdit = Controller.getInstancia().getUser(user);
-//		if (!usEdit.isPresent())
-//			System.out.println("user null");
-//		User useEdit = usEdit.get();
-//		Image imgEdit = createImageIcon(useEdit.getProfilePic()).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-//		ImageIcon iconEdit = new ImageIcon(imgEdit);
-//		profPicEdit.setIcon(iconEdit);
-//
-//		JLabel userNameEdit = new JLabel(user);
-//		GridBagConstraints gbc_userName_Edit = new GridBagConstraints();
-//		gbc_userName_Edit.fill = GridBagConstraints.HORIZONTAL;
-//		gbc_userName_Edit.insets = new Insets(0, 0, 5, 5);
-//		gbc_userName_Edit.gridx = 2;
-//		gbc_userName_Edit.gridy = 1;
-//		panelEdit.add(userNameEdit, gbc_userName_Edit);
-//
-//		JButton changeButton = new JButton("Change");
-//		GridBagConstraints gbc_changeButton = new GridBagConstraints();
-//		gbc_changeButton.insets = new Insets(0, 0, 5, 5);
-//		gbc_changeButton.gridx = 1;
-//		gbc_changeButton.gridy = 3;
-//		panelEdit.add(changeButton, gbc_changeButton);
-//		changeButton.addActionListener(e -> {
-//		JFileChooser chooser = new JFileChooser();
-//		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-//		chooser.setFileFilter(filter);
-//		int returnVal = chooser.showOpenDialog(null);
-//		if (returnVal == JFileChooser.APPROVE_OPTION) {
-//			System.out.println("You chose to open this file: " + chooser.getSelectedFile());
-//			profilePath = chooser.getSelectedFile().getPath();
-//			Controller.getInstancia().changeProfilePicture(user, profilePath);
-//		}
-//	});
-//		
-//		JButton btnNewButton = new JButton("Save Changes");
-//		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-//		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-//		gbc_btnNewButton.gridx = 1;
-//		gbc_btnNewButton.gridy = 4;
-//		panelEdit.add(btnNewButton, gbc_btnNewButton);
-		
+
 //		JButton createPdf = new JButton("PDF");
 //		createPdf.addActionListener(e -> {
 //			
@@ -225,12 +245,42 @@ public class PanelPerfil {
 		
 		
 		
-		logout.addActionListener(e -> {
-			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
-			VentanaInicio.hideWindow();
-			VentanaLogin.getInstancia().showWindow();
-		});
-		
+	}
+	
+	private static ListSelectionListener createListSelectionListener(JList<Component> list) {
+		return e -> {
+			if (!e.getValueIsAdjusting()) {
+				System.out.println(list.getSelectedValue());
+			}
+		};
+	}
+
+	private static ListCellRenderer<? super Component> createListRenderer() {
+		return new DefaultListCellRenderer() {
+			/**
+			 * º
+			 */
+			private static final long serialVersionUID = 1L;
+			private Color background = new Color(0, 100, 255, 15);
+			private Color defaultBackground = (Color) UIManager.get("List.background");
+
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+
+				Component renderer = (Component) value;
+				if(renderer instanceof JLabel) {
+					if(isSelected) {
+						JLabel l = (JLabel) value;
+					}
+					
+					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
+				}
+
+
+				return renderer;
+			}
+		};
 	}
 
 }
