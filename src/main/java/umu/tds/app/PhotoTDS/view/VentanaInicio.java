@@ -259,12 +259,12 @@ public class VentanaInicio implements IEncendidoListener {
 	
 	
 	private void initializeProfilePanel() {
-
-		JPanel panelEdit = new PanelEdit(user).getPanel();
-		panelCentralCardLayout.add(panelEdit, "panelEdit");
 		
 		JPanel panelPerfil = new PanelPerfil(user, user).getPanelPerfil();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
+
+		JPanel panelEdit = new PanelEdit(user).getPanel();
+		panelCentralCardLayout.add(panelEdit, "panelEdit");
 				
 	}
 	

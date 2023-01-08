@@ -150,13 +150,13 @@ public class PanelPerfil {
 		if(user.equals(userLogged))
 			panelPerfil.add(logout, gbc_logout);
 		
-		JPanel panelEdit = new JPanel();
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 25, 51, 0, 0, 55, 65, 50, 0 };
-		gbl_panel.rowHeights = new int[] { 25, 23, 0, 0, 0, 0 };
-		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		panelEdit.setLayout(gbl_panel);
+//		JPanel panelEdit = new JPanel();
+//		GridBagLayout gbl_panel = new GridBagLayout();
+//		gbl_panel.columnWidths = new int[] { 25, 51, 0, 0, 55, 65, 50, 0 };
+//		gbl_panel.rowHeights = new int[] { 25, 23, 0, 0, 0, 0 };
+//		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+//		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+//		panelEdit.setLayout(gbl_panel);
 //
 //		JLabel profPicEdit = new JLabel();
 //		GridBagConstraints gbc_profPic_Edit = new GridBagConstraints();
@@ -208,20 +208,20 @@ public class PanelPerfil {
 //		gbc_btnNewButton.gridy = 4;
 //		panelEdit.add(btnNewButton, gbc_btnNewButton);
 		
-		JButton createPdf = new JButton("PDF");
-		createPdf.addActionListener(e -> {
-			
-			JFileChooser chooser = new JFileChooser();
-			chooser.showSaveDialog(null);
-
-			if (chooser.getSelectedFile() != null) {
-
-				String fichero = chooser.getSelectedFile().getAbsolutePath();
-				Controller.getInstancia().createPdf(user, fichero);
-
-			}
-		});
-		panelPerfil.add(createPdf);
+//		JButton createPdf = new JButton("PDF");
+//		createPdf.addActionListener(e -> {
+//			
+//			JFileChooser chooser = new JFileChooser();
+//			chooser.showSaveDialog(null);
+//
+//			if (chooser.getSelectedFile() != null) {
+//
+//				String fichero = chooser.getSelectedFile().getAbsolutePath();
+//				Controller.getInstancia().createPdf(user, fichero);
+//
+//			}
+//		});
+//		panelPerfil.add(createPdf);
 		
 		
 		
