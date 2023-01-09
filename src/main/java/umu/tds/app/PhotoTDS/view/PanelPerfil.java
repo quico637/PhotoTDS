@@ -165,6 +165,11 @@ public class PanelPerfil {
 		if(isUserLogged())
 			panelPerfil.add(editButton, gbc_editButton);
 		
+		editButton.addActionListener(e -> {
+			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
+			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelEdit");
+		});
+		
 		JLabel seguidosLabel = new JLabel("Following");
 		GridBagConstraints gbc_seguidosLabel = new GridBagConstraints();
 		gbc_seguidosLabel.insets = new Insets(0, 0, 5, 5);
@@ -227,13 +232,17 @@ public class PanelPerfil {
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
 		
+		JButton btnNewButton = new JButton("New button");
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 6;
+		panelPerfil.add(btnNewButton, gbc_btnNewButton);
 		
-		
-		editButton.addActionListener(e -> {
+		btnNewButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
-			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelEdit");
+			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelFoto");
 		});
-		
 
 		JButton logout = new JButton("Logout");
 		GridBagConstraints gbc_logout = new GridBagConstraints();

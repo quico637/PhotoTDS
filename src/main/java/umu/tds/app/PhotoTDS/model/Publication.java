@@ -114,23 +114,21 @@ public class Publication {
 	}
 	
 	public List<Comentario> getComentarios() {
-		return comentarios;
+		return new LinkedList<>(comentarios);
 	}
 	
 
 	public List<HashTag> getHashTags() {
-		return hashtags;
+		return new LinkedList<>(hashtags);
 	}
 
-	public void anadirComentarios(Comentario comentario) {
-		this.comentarios.add(comentario);
+	public void anadirComentarios(String comentario, User user) {
+		Comentario coment = new Comentario(comentario, new Date(), user);
+		this.comentarios.add(coment);
 	}
-
-	@Override
-	public String toString() {
-		return this.getClass().getName() + "[codigo=" + codigo + ", titulo=" + titulo + ", fechaPublicacion=" + fechaPublicacion
-				+ ", descripcion=" + descripcion + ", likes=" + likes + ", hashtags=" + hashtags + ", comentarios="
-				+ comentarios + "]";
+	
+	public void addMeGusta() {
+		this.likes++;
 	}
 	
 }

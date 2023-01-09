@@ -68,6 +68,8 @@ public class VentanaInicio implements IEncendidoListener {
 	private static JPanel panelCentralCardLayout;
 	
 	private static String user;
+	
+	private static List<Publication> l;
 
 	protected ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
@@ -193,7 +195,7 @@ public class VentanaInicio implements IEncendidoListener {
 		textField.setColumns(10);
 
 		List<Component> paneles = new LinkedList<>();
-		List<Publication> l = Controller.getInstancia().getPublicationsToShow(user);
+		l = Controller.getInstancia().getPublicationsToShow(user);
 		System.out.println("l2: " + l);
 		for (Publication p : l) {
 			User u = Controller.getInstancia().getUser(p.getCreator()).get();
@@ -386,8 +388,15 @@ public class VentanaInicio implements IEncendidoListener {
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
+				} else {
+					if(isSelected) {
+						JPanel panelFoto = new PanelFoto(l.get(index), user).getPanel();
+						panelCentralCardLayout.add(panelFoto, "panelFoto");
+						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+						cl.show(panelCentralCardLayout, "panelFoto");
+						System.out.println("Fotico golfa");
+					}
 				}
-
 
 				return renderer;
 			}

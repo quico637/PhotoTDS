@@ -274,6 +274,25 @@ public class Controller implements PropertyChangeListener {
 
 		return u.changePassword(passwd);
 	}
+	
+	public boolean meGusta(Publication pub, String user) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		pub.addMeGusta();
+
+		return true;
+	}
+	
+	public boolean addComentario(Publication pub, String comentario, String user) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+		pub.anadirComentarios(comentario, userOpt.get());
+		
+		return true;
+	}
 
 	/**
 	 * creates a photo in the PhotoTDS domain and returns its object.
@@ -400,26 +419,6 @@ public class Controller implements PropertyChangeListener {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param u
-	 * @param fotoTitle
-	 * @param comment
-	 * @return
-	 */
-	public boolean addComment(String u, String fotoTitle, String comment) {
-
-		Optional<Publication> pub = this.pubRepo.getPublication(fotoTitle);
-		Optional<User> user = this.userRepo.getUser(u);
-
-		if (pub.isEmpty() || user.isEmpty())
-			return false;
-
-		Publication p = pub.get();
-		p.anadirComentarios(new Comentario(comment, new Date(), user.get()));
-
-		return true;
-	}
 
 	/**
 	 * updates some user's account to premium.
