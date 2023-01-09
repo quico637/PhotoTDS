@@ -215,15 +215,15 @@ public class User {
 		this.ultimoLogin = ultimoLogin;
 	}
 
-	@Override
-	public String toString() {
-		return "User [codigo=" + codigo + ", username=" + username + ", email=" + email + ", nombreCompleto="
-				+ nombreCompleto + ", fechaNacimiento=" + fechaNacimiento + ", descripcion=" + descripcion
-				+ ", contrasena=" + contrasena + ", profilePic=" + profilePic + ", premium=" + premium
-				+ ", notifications=" + notifications + ", publications=" + publications + ", usuariosSeguidores="
-				+ usuariosSeguidores + ", usuariosSeguidos=" + usuariosSeguidos + ", ultimoLogin=" + ultimoLogin
-				+ ", dc=" + dc + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "User [codigo=" + codigo + ", username=" + username + ", email=" + email + ", nombreCompleto="
+//				+ nombreCompleto + ", fechaNacimiento=" + fechaNacimiento + ", descripcion=" + descripcion
+//				+ ", contrasena=" + contrasena + ", profilePic=" + profilePic + ", premium=" + premium
+//				+ ", notifications=" + notifications + ", publications=" + publications + ", usuariosSeguidores="
+//				+ usuariosSeguidores + ", usuariosSeguidos=" + usuariosSeguidos + ", ultimoLogin=" + ultimoLogin
+//				+ ", dc=" + dc + "]";
+//	}
 
 
 		

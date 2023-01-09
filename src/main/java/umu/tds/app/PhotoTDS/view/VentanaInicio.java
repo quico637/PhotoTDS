@@ -253,6 +253,16 @@ public class VentanaInicio implements IEncendidoListener {
 				cl.show(panelCentralCardLayout, "panelPremium");
 			}
 		});
+		
+		for(User u : Controller.getInstancia().getAllusers()) {
+			System.out.println("--------User: " + u.getUsername());
+			for(User f : u.getUsuariosSeguidores()) {
+				System.out.println("Follower: " + f.getUsername());
+			}
+			for(User f : u.getUsuariosSeguidos()) {
+				System.out.println("Following: " + f.getUsername());
+			}
+		}
 
 	}
 	

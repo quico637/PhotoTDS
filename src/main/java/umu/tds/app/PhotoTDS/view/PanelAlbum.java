@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.persistence.jpa.jpql.parser.DatabaseTypeFactory;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.Album;
 import umu.tds.app.PhotoTDS.model.Foto;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
@@ -47,7 +48,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
-public class PanelPerfil {
+public class PanelAlbum {
 
 	/**
 	 * 
@@ -60,8 +61,6 @@ public class PanelPerfil {
 	private String user;
 	private String profilePath;
 	private JPanel panelPerfil;
-	
-	private User use;
 	
 	private String userLogged;
 
@@ -96,12 +95,10 @@ public class PanelPerfil {
 
 
 
-	public PanelPerfil(String user, String userLogged) {
+	public PanelAlbum(String user, String userLogged) {
 		super();
 		this.user = user;
 		this.userLogged = userLogged;
-		Optional<User> us = Controller.getInstancia().getUser(user);
-		this.use = us.get();
 		initialize();
 	}
 	
@@ -134,6 +131,8 @@ public class PanelPerfil {
 		panelPerfil.add(profPic, gbc_profPic);
 		profPic.setFont(new Font("Segoe Script", Font.BOLD, 16));
 		profPic.setBounds(0, 0, PROFILE_PIC_SIZE, PROFILE_PIC_SIZE);
+		Optional<User> us = Controller.getInstancia().getUser(user);
+		User use = us.get();
 		Image img = createImageIcon(use.getProfilePic()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(img);
 		profPic.setIcon(icon);
@@ -147,13 +146,22 @@ public class PanelPerfil {
 		gbc_userName.gridy = 1;
 		panelPerfil.add(userName, gbc_userName);
 		
-		JLabel seguidoresLabel = new JLabel("Followers");
-		GridBagConstraints gbc_seguidoresLabel = new GridBagConstraints();
-		gbc_seguidoresLabel.anchor = GridBagConstraints.WEST;
-		gbc_seguidoresLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_seguidoresLabel.gridx = 4;
-		gbc_seguidoresLabel.gridy = 2;
-		panelPerfil.add(seguidoresLabel, gbc_seguidoresLabel);
+		JLabel lblNewLabel = new JLabel("Seguidores");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 4;
+		gbc_lblNewLabel.gridy = 2;
+		panelPerfil.add(lblNewLabel, gbc_lblNewLabel);
+		
+		JLabel completeName = new JLabel(use.getNombreCompleto());
+		GridBagConstraints gbc_completeName = new GridBagConstraints();
+		gbc_completeName.anchor = GridBagConstraints.WEST;
+		gbc_completeName.gridwidth = 2;
+		gbc_completeName.insets = new Insets(0, 0, 5, 5);
+		gbc_completeName.gridx = 4;
+		gbc_completeName.gridy = 3;
+		panelPerfil.add(completeName, gbc_completeName);
 		
 		JButton editButton = new JButton("Edit Profile");
 		GridBagConstraints gbc_editButton = new GridBagConstraints();
@@ -163,42 +171,12 @@ public class PanelPerfil {
 		gbc_editButton.gridy = 1;
 		
 		if(isUserLogged())
-			panelPerfil.add(editButton, gbc_editButton);
-		
-		JLabel seguidosLabel = new JLabel("Following");
-		GridBagConstraints gbc_seguidosLabel = new GridBagConstraints();
-		gbc_seguidosLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_seguidosLabel.gridx = 5;
-		gbc_seguidosLabel.gridy = 2;
-		panelPerfil.add(seguidosLabel, gbc_seguidosLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel(Integer.toString(this.use.getNumFollowers()));
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 4;
-		gbc_lblNewLabel_1.gridy = 3;
-		panelPerfil.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		JLabel lblNewLabel = new JLabel(Integer.toString(this.use.getNumFollowing()));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 5;
-		gbc_lblNewLabel.gridy = 3;
-		panelPerfil.add(lblNewLabel, gbc_lblNewLabel);
-		
-		JLabel completeName = new JLabel(use.getNombreCompleto());
-		GridBagConstraints gbc_completeName = new GridBagConstraints();
-		gbc_completeName.anchor = GridBagConstraints.WEST;
-		gbc_completeName.gridwidth = 2;
-		gbc_completeName.insets = new Insets(0, 0, 5, 5);
-		gbc_completeName.gridx = 4;
-		gbc_completeName.gridy = 4;
-		panelPerfil.add(completeName, gbc_completeName);
+		panelPerfil.add(editButton, gbc_editButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 6;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 5;
@@ -207,10 +185,10 @@ public class PanelPerfil {
 		List<JLabel> labels = new LinkedList<>();
 		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
 		for (Publication p : l) {
-			if (p instanceof Foto) {
+			if (p instanceof Album) {
 				JLabel etiqueta = new JLabel();
-				Image imagen = createImageIcon(((Foto) p).getPath()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
-				ImageIcon icono = new ImageIcon(imagen);
+				etiqueta.setBounds(0, 0, X, Y);
+				ImageIcon icono = new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png"));
 				etiqueta.setIcon(icono);
 				labels.add(etiqueta);
 				System.out.println("Publicacion: " + p);
@@ -247,6 +225,9 @@ public class PanelPerfil {
 			VentanaInicio.hideWindow();
 			VentanaLogin.getInstancia().showWindow();
 		});
+
+		
+		
 		
 		if(isUserLogged())
 			panelPerfil.add(logout, gbc_logout);
@@ -256,13 +237,13 @@ public class PanelPerfil {
 				follow.setText("Unfollow");
 			else 
 				follow.setText("Follow");
-						
+			
+			
 			follow.addActionListener(e -> {
 				Controller.getInstancia().follow(userLogged, user);
-
+				// update
 			});
 			panelPerfil.add(follow, gbc_logout);
-
 		}
 		
 
@@ -310,6 +291,7 @@ public class PanelPerfil {
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
 						JLabel l = (JLabel) value;
+						
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);

@@ -564,31 +564,67 @@ public class Controller implements PropertyChangeListener {
 	}
 
 	public boolean follow(String user, String follow) {
-//		Optional<User> userOpt = checkLoginAndGetUser(user);
-//		if (userOpt.isEmpty())
-//			return false;
-//
-//		User u = userOpt.get();
+		System.out.println("follow(): user -  " + user + "follow - " + follow);
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
 
 		Optional<User> us = this.userRepo.getUser(user);
 
-		if (us.isEmpty())
+		if (us.isEmpty()) {
+			System.out.println("us false");
 			return false;
-
-		User u = us.get();
+		}
 
 		Optional<User> newFollowedOpt = this.userRepo.getUser(follow);
-		if (newFollowedOpt.isEmpty())
+		if (newFollowedOpt.isEmpty()) {
+			System.out.println("newFollowedOpt false");
 			return false;
+		}
+			
 
 		User newFollowed = newFollowedOpt.get();
 
-		u.follow(newFollowed);
-		newFollowed.addFollower(u);
+		if(u.follow(newFollowed))
+			this.userRepo.updateUser(u);
+		
+		if(newFollowed.addFollower(u))
+			this.userRepo.updateUser(newFollowed);
 
-		this.userRepo.updateUser(u);
-		this.userRepo.updateUser(newFollowed);
+		
 		return true;
+	}
+	
+	/**
+	 * Checks if f is following u
+	 * @param u
+	 * @param f
+	 * @return true or false
+	 */
+	public boolean checkFollower(String user, String f) {
+		
+		// check if user is logged
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty()) {
+			System.out.println("checkFollower(): user not logged");
+			return false;
+		}
+			
+
+		User u = userOpt.get();
+		
+		Optional<User> followerOp = this.userRepo.getUser(f);
+		if(followerOp.isEmpty()) {
+			System.out.println("checkFollower(): follower not logged");
+			return false;
+		}
+			
+		
+		User follower = followerOp.get();		
+		
+		return u.getUsuariosSeguidores().contains(follower);
 	}
 
 }

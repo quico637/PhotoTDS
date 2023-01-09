@@ -110,7 +110,7 @@ public class UserAdapterTDS implements IUserDAO {
 		notifications = servPersistencia.recuperarPropiedadEntidad(eUser, "notifications");
 		publications = servPersistencia.recuperarPropiedadEntidad(eUser, "publications");
 		usuariosSeguidores = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
-		usuariosSeguidos = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
+		usuariosSeguidos = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidos");
 		ultimoLogin = servPersistencia.recuperarPropiedadEntidad(eUser, "ultimoLogin");
 
 		User u;
@@ -152,6 +152,8 @@ public class UserAdapterTDS implements IUserDAO {
 				prop.setValor(obtenerCodigosPublications(u.getPublications()));
 			else if (prop.getNombre().equals("usuariosSeguidores"))
 				prop.setValor(obtenerCodigosSeguidores(u.getUsuariosSeguidores()));
+			else if (prop.getNombre().equals("usuariosSeguidos"))
+				prop.setValor(obtenerCodigosSeguidores(u.getUsuariosSeguidos()));
 			else if (prop.getNombre().equals("ultimoLogin"))
 				prop.setValor(Utils.DateToString(u.getUltimoLogin()));
 

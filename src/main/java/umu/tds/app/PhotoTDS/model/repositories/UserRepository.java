@@ -96,7 +96,7 @@ public class UserRepository {
 	}
 	
 	public void updateUser(User u) {
-		this.users.put(u.getUsername(), u);
+//		this.users.put(u.getUsername(), u);
 		this.userAdapter.updateUser(u);
 	}
 
