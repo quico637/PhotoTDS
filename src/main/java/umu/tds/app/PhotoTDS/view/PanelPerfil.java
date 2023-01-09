@@ -61,6 +61,8 @@ public class PanelPerfil {
 	private String profilePath;
 	private JPanel panelPerfil;
 	
+	private static List<Publication> l;
+	
 	private User use;
 	
 	private String userLogged;
@@ -210,7 +212,7 @@ public class PanelPerfil {
 		panelPerfil.add(scrollPane, gbc_scrollPane);
 		
 		List<JLabel> labels = new LinkedList<>();
-		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
+		l = Controller.getInstancia().getUser(user).get().getPublications();
 		for (Publication p : l) {
 			if (p instanceof Foto) {
 				JLabel etiqueta = new JLabel();
@@ -274,22 +276,6 @@ public class PanelPerfil {
 
 		}
 		
-
-//		JButton createPdf = new JButton("PDF");
-//		createPdf.addActionListener(e -> {
-//			
-//			JFileChooser chooser = new JFileChooser();
-//			chooser.showSaveDialog(null);
-//
-//			if (chooser.getSelectedFile() != null) {
-//
-//				String fichero = chooser.getSelectedFile().getAbsolutePath();
-//				Controller.getInstancia().createPdf(user, fichero);
-//
-//			}
-//		});
-//		panelPerfil.add(createPdf);
-		
 		
 		
 	}
@@ -318,7 +304,12 @@ public class PanelPerfil {
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-						JLabel l = (JLabel) value;
+						JPanel panelFoto = new PanelFoto(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
+						panelCentralCardLayout.add(panelFoto, "panelFoto");
+						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+						cl.show(panelCentralCardLayout, "panelFoto");
+						System.out.println("Fotico golfa");
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);

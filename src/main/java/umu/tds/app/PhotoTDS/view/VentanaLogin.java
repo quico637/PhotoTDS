@@ -233,7 +233,7 @@ public class VentanaLogin {
 		JButton botonLogin = new JButton("Login");
 		botonLogin.addActionListener(e -> {
 			if(Controller.getInstancia().login(textField.getText(), String.valueOf(passwordField.getPassword())) == true) {
-				VentanaInicio v = new VentanaInicio(textField.getText());
+				VentanaInicio v = VentanaInicio.getUnicaInstancia(textField.getText());
 				v.showWindow();
 				this.hideWindow();
 			}

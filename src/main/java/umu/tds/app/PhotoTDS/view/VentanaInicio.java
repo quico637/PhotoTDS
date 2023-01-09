@@ -70,7 +70,9 @@ public class VentanaInicio implements IEncendidoListener {
 	private static String user;
 	
 	private static List<Publication> l;
-
+	
+	private static VentanaInicio unicaInstancia;
+	
 	protected ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
 		if (imgURL != null) {
@@ -105,10 +107,18 @@ public class VentanaInicio implements IEncendidoListener {
 	/**
 	 * Create the application.
 	 */
-	public VentanaInicio(String u) {
+	private VentanaInicio(String u) {
 		user = u;
 		initialize();
 	}
+	
+	public static VentanaInicio getUnicaInstancia(String u) {
+		if(unicaInstancia == null)
+			unicaInstancia = new VentanaInicio(u);
+		
+		return unicaInstancia;
+	}
+
 
 	public void showWindow() {
 		frame.setVisible(true);
@@ -194,30 +204,7 @@ public class VentanaInicio implements IEncendidoListener {
 		panel_1.add(textField);
 		textField.setColumns(10);
 
-		List<Component> paneles = new LinkedList<>();
-		l = Controller.getInstancia().getPublicationsToShow(user);
-		System.out.println("l2: " + l);
-		for (Publication p : l) {
-			User u = Controller.getInstancia().getUser(p.getCreator()).get();
-			paneles.add(new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
-					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
-					.getContentPane());
-			System.out.println("PERSON: " + u.getUsername());
-		}
-		
-		DefaultListModel<Component> demoList = new DefaultListModel<>();
-		demoList.addAll(paneles);
-		
-		JScrollPane panelPublications = new JScrollPane();
-		panelCentralCardLayout.add(panelPublications, "panelPublications");
-		JList<Component> jList = new JList<>(demoList);
-		jList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		jList.setVisibleRowCount(-1);
-		jList.ensureIndexIsVisible(jList.getHeight());
-		jList.setCellRenderer(createListRenderer());
-		jList.setLayoutOrientation(JList.VERTICAL);
-		jList.setVisibleRowCount(-1);
-		panelPublications.setViewportView(jList);
+		initializePublicationPanel();
 			
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -233,6 +220,7 @@ public class VentanaInicio implements IEncendidoListener {
 		photoApp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				initializePublicationPanel();
 				CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 				cl.show(panelCentralCardLayout, "panelPublications");
 			}
@@ -292,14 +280,36 @@ public class VentanaInicio implements IEncendidoListener {
 		
 	}
 	
-//	private void initializePublicationPanel(User u, Publication p) {
-//		
-//		JPanel panelPublication = new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
-//				50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2));
-//		panelCentralCardLayout.add(panelPublication, "panelPublication");
-//		
-//	}
-//	
+	private void initializePublicationPanel() {
+
+		
+		List<Component> paneles = new LinkedList<>();
+		l = Controller.getInstancia().getPublicationsToShow(user);
+		System.out.println("l2: " + l);
+		for (Publication p : l) {
+			User u = Controller.getInstancia().getUser(p.getCreator()).get();
+			paneles.add(new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
+					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
+					.getContentPane());
+			System.out.println("PERSON: " + u.getUsername());
+		}
+		
+		DefaultListModel<Component> demoList = new DefaultListModel<>();
+		demoList.addAll(paneles);
+		
+		JScrollPane panelPublications = new JScrollPane();
+		panelCentralCardLayout.add(panelPublications, "panelPublications");
+		JList<Component> jList = new JList<>(demoList);
+		jList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		jList.setVisibleRowCount(-1);
+		jList.ensureIndexIsVisible(jList.getHeight());
+		jList.setCellRenderer(createListRenderer());
+		jList.setLayoutOrientation(JList.VERTICAL);
+		jList.setVisibleRowCount(-1);
+		panelPublications.setViewportView(jList);
+		
+	}
+	
 	
 	
 	private void initializeBusquedaPanel(String b) {
@@ -390,7 +400,7 @@ public class VentanaInicio implements IEncendidoListener {
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
 				} else {
 					if(isSelected) {
-						JPanel panelFoto = new PanelFoto(l.get(index), user).getPanel();
+						JPanel panelFoto = new PanelFoto(l.get(index), l.get(index).getCreator()).getPanel();
 						panelCentralCardLayout.add(panelFoto, "panelFoto");
 						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 						cl.show(panelCentralCardLayout, "panelFoto");
