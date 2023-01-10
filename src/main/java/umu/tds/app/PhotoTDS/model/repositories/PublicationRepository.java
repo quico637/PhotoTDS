@@ -51,6 +51,10 @@ public class PublicationRepository {
 		this.publicationAdapter.createPublication(p);
 	}
 	
+	public void updatePublication(Publication p) {
+		this.publicationAdapter.updatePublication(p);
+	}
+	
 	public void removePublication(Publication p) {
 		this.publications.remove(p.getTitulo());
 		this.publicationAdapter.deletePublication(p);

@@ -44,8 +44,8 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		eComentario.setNombre("comentario");
 		eComentario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
 				new Propiedad("texto", c.getTexto()),
-				new Propiedad("fechaPublicacion", Utils.DateToString(c.getFechaPublicacion())),
-				new Propiedad("autor", String.valueOf(c.getAutor().getCodigo()))
+				new Propiedad("fechaPublicacion", Utils.DateToStringNoHour(c.getFechaPublicacion())),
+				new Propiedad("autor", c.getAutor())
 				)));
 
 		// registrar entidad cliente
@@ -74,8 +74,11 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		fechaPublicacion = servPersistencia.recuperarPropiedadEntidad(eComentario, "fechaPublicacion");
 		autor = servPersistencia.recuperarPropiedadEntidad(eComentario, "autor");
 		Comentario c;
-		c = new Comentario(texto, Utils.StringToDate(fechaPublicacion), UserAdapterTDS.getInstance().readUser(Integer.parseInt(autor)));
+		c = new Comentario(texto, Utils.StringToDateNoHour(fechaPublicacion), autor);
 		c.setCodigo(codigo);
+		
+		PoolDAO.getUnicaInstancia().addObjeto(codigo, c);
+		
 		return c;
 	}
 	public void updateComentario(Comentario c) {
@@ -85,10 +88,10 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 			if (prop.getNombre().equals("texto")) {
 				prop.setValor(c.getTexto());
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
-				prop.setValor(Utils.DateToString(c.getFechaPublicacion()));
+				prop.setValor(Utils.DateToStringNoHour(c.getFechaPublicacion()));
 			}
 			else if (prop.getNombre().equals("autor")) {
-				prop.setValor(String.valueOf(c.getAutor()));
+				prop.setValor(c.getAutor());
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}

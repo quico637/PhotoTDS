@@ -12,9 +12,9 @@ public class Comentario {
 	private int codigo;
 	private String texto;
 	private Date fechaPublicacion;
-	private User autor;
+	private String autor;
 
-	public Comentario(String texto, Date fechaPublicacion, User autor) {
+	public Comentario(String texto, Date fechaPublicacion, String autor) {
 		super();
 		this.texto = texto;
 		this.fechaPublicacion = fechaPublicacion;
@@ -40,7 +40,7 @@ public class Comentario {
 	}
 
 
-	public User getAutor() {
+	public String getAutor() {
 		return autor;
 	}
 

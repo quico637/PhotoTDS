@@ -74,6 +74,9 @@ public class HashTagAdapterTDS implements IHashTagDAO {
 			return null;
 		}
 		c.setCodigo(codigo);
+		
+		PoolDAO.getUnicaInstancia().addObjeto(codigo, c);
+		
 		return c;
 	}
 	public void updateHashTag(HashTag h) {

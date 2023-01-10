@@ -150,7 +150,7 @@ public class Controller implements PropertyChangeListener {
 		if (this.userRepo.getAllEmails().stream().anyMatch(e -> e.equals(email)))
 			return false;
 
-		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, contrasena, profilePic,
+		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, EncryptDecrypt.encrypt(contrasena), profilePic,
 				new Date());
 		userRepo.createrUser(userNew);
 
@@ -272,7 +272,9 @@ public class Controller implements PropertyChangeListener {
 		if (EncryptDecrypt.encrypt(passwd).equals(u.getContrasena()))
 			return false;
 
-		return u.changePassword(passwd);
+		Boolean b = u.changePassword(passwd);
+		this.userRepo.updateUser(u);
+		return b;
 	}
 	
 	public boolean meGusta(Publication pub, String user) {
@@ -281,6 +283,7 @@ public class Controller implements PropertyChangeListener {
 			return false;
 
 		pub.addMeGusta();
+		this.pubRepo.updatePublication(pub);
 
 		return true;
 	}
@@ -289,7 +292,8 @@ public class Controller implements PropertyChangeListener {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
 			return false;
-		pub.anadirComentarios(comentario, userOpt.get());
+		pub.anadirComentarios(comentario, userOpt.get().getUsername());
+		this.pubRepo.updatePublication(pub);
 		
 		return true;
 	}

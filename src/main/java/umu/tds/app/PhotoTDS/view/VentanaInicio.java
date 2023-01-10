@@ -71,7 +71,6 @@ public class VentanaInicio implements IEncendidoListener {
 	
 	private static List<Publication> l;
 	
-	private static VentanaInicio unicaInstancia;
 	
 	protected ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
@@ -107,17 +106,11 @@ public class VentanaInicio implements IEncendidoListener {
 	/**
 	 * Create the application.
 	 */
-	private VentanaInicio(String u) {
+	public VentanaInicio(String u) {
 		user = u;
 		initialize();
 	}
-	
-	public static VentanaInicio getUnicaInstancia(String u) {
-		if(unicaInstancia == null)
-			unicaInstancia = new VentanaInicio(u);
-		
-		return unicaInstancia;
-	}
+
 
 
 	public void showWindow() {

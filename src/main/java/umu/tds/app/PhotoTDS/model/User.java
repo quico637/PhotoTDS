@@ -24,7 +24,6 @@ public class User {
 	private String contrasena;
 	private String profilePic;
 	private boolean premium;
-	private List<Notification> notifications;
 	private List<Publication> publications;
 	private List<User> usuariosSeguidores;
 	private List<User> usuariosSeguidos;
@@ -37,8 +36,7 @@ public class User {
 	private final static int MIN_PASSWD_LENGTH = 6;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
-			String contrasena, String profilePic, boolean premium, List<Notification> notifications, List<Publication> publications,
-			List<User> usuariosSeguidores, List<User> usuariosSeguidos, Date ultimoLogin) {
+			String contrasena, String profilePic, boolean premium, Date ultimoLogin) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -48,11 +46,11 @@ public class User {
 		this.contrasena = contrasena;
 		this.profilePic = profilePic;
 		this.premium = premium;
-		this.notifications = notifications;
-		this.publications = publications;
-		this.usuariosSeguidores = usuariosSeguidores;
-		this.usuariosSeguidos = usuariosSeguidos;
 		this.ultimoLogin = ultimoLogin;
+		
+		this.publications = new LinkedList<>();
+		this.usuariosSeguidores = new LinkedList<>();
+		this.usuariosSeguidos = new LinkedList<>();
 
 		List<Discount> l = new LinkedList<>();
 		for(Discount d : Discount.getPossibleDiscounts()) {
@@ -66,14 +64,26 @@ public class User {
 			this.dc = new CompoundDiscount(l);
 		
 	}
-
+	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion, 
 			String contrasena, String profilePic, Date ultimoLogin) {
 		
 		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
-				EncryptDecrypt.encrypt(contrasena), profilePic, false, new LinkedList<Notification>(), new LinkedList<Publication>(), 
-				new LinkedList<User>(), new LinkedList<User>(), ultimoLogin);
+				contrasena, profilePic, false, ultimoLogin);
 	}
+	
+	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
+			String contrasena, String profilePic, boolean premium, List<Publication> publications,
+			List<User> usuariosSeguidores, List<User> usuariosSeguidos, Date ultimoLogin) {
+		this(username, email, nombreCompleto, fechaNacimiento, descripcion,
+				contrasena, profilePic, false, ultimoLogin);
+		this.publications = publications;
+		this.usuariosSeguidores = usuariosSeguidores;
+		this.usuariosSeguidos = usuariosSeguidos;
+		
+	}
+
+	
 	
 	
 	public boolean changePassword(String passwd) {
@@ -84,6 +94,7 @@ public class User {
 		this.contrasena = passwd;
 		return true;
 	}
+	
 	
 	public boolean updateDescription(String desc) {
 		if(this.descripcion.equals(desc))
@@ -149,12 +160,22 @@ public class User {
 	// GETTERS AND SETTERS
 	
 	
-	public List<Notification> getNotifications() {
-		return new LinkedList<>(notifications);
-	}
+	
 
 	public List<Publication> getPublications() {
 		return new LinkedList<>(publications);
+	}
+
+	public void setPublications(List<Publication> publications) {
+		this.publications = publications;
+	}
+
+	public void setUsuariosSeguidores(List<User> usuariosSeguidores) {
+		this.usuariosSeguidores = usuariosSeguidores;
+	}
+
+	public void setUsuariosSeguidos(List<User> usuariosSeguidos) {
+		this.usuariosSeguidos = usuariosSeguidos;
 	}
 
 	public List<User> getUsuariosSeguidores() {

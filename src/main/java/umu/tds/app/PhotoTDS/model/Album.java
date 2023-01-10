@@ -41,6 +41,11 @@ public class Album extends Publication {
 	public List<Foto> getFotos() {
 		return fotos;
 	}
+	
+	public void setFotos(List<Foto> fotos) {
+		this.fotos = fotos;
+	}
+	
 
 	@Override
 	public String toString() {

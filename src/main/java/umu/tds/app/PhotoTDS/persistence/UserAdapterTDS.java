@@ -12,7 +12,6 @@ import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
-import umu.tds.app.PhotoTDS.model.Notification;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
 
@@ -42,6 +41,16 @@ public class UserAdapterTDS implements IUserDAO {
 		}
 		if (eUser != null)
 			return;
+		
+		// registrar primero los atributos que son objetos
+		PublicationAdapterTDS adaptadorPub = (PublicationAdapterTDS) PublicationAdapterTDS.getInstance();
+		u.getPublications().stream().forEach(p -> adaptadorPub.createPublication(p));
+		
+		UserAdapterTDS adaptadorUser = (UserAdapterTDS) UserAdapterTDS.getInstance();
+		u.getUsuariosSeguidores().stream().forEach(us -> adaptadorUser.createrUser(us));
+		u.getUsuariosSeguidos().stream().forEach(us -> adaptadorUser.createrUser(us));
+		
+		
 
 		// crear entidad Cliente
 		eUser = new Entidad();
@@ -55,7 +64,7 @@ public class UserAdapterTDS implements IUserDAO {
 				new Propiedad("contrasena", u.getContrasena()),
 				new Propiedad("profilePic", u.getProfilePic()),
 				new Propiedad("premium", String.valueOf(u.isPremium())),
-				new Propiedad("notifications", obtenerCodigosNotificaciones(u.getNotifications())),
+//				new Propiedad("notifications", obtenerCodigosNotificaciones(u.getNotifications())),
 				new Propiedad("publications", obtenerCodigosPublications(u.getPublications())),
 				new Propiedad("usuariosSeguidores", obtenerCodigosSeguidores(u.getUsuariosSeguidores())),
 				new Propiedad("usuariosSeguidos", obtenerCodigosSeguidores(u.getUsuariosSeguidos())),
@@ -87,13 +96,13 @@ public class UserAdapterTDS implements IUserDAO {
 		String profilePic;
 		String premium;
 		
-		String notifications;
+//		String notifications;
 		String publications;
 		String usuariosSeguidores;
 		String usuariosSeguidos;
 		String ultimoLogin;
 		
-
+		
 		// recuperar entidad
 		eUser = servPersistencia.recuperarEntidad(codigo);
 
@@ -107,7 +116,7 @@ public class UserAdapterTDS implements IUserDAO {
 		profilePic = servPersistencia.recuperarPropiedadEntidad(eUser, "profilePic");
 		premium = servPersistencia.recuperarPropiedadEntidad(eUser, "premium");
 		
-		notifications = servPersistencia.recuperarPropiedadEntidad(eUser, "notifications");
+//		notifications = servPersistencia.recuperarPropiedadEntidad(eUser, "notifications");
 		publications = servPersistencia.recuperarPropiedadEntidad(eUser, "publications");
 		usuariosSeguidores = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidores");
 		usuariosSeguidos = servPersistencia.recuperarPropiedadEntidad(eUser, "usuariosSeguidos");
@@ -115,13 +124,23 @@ public class UserAdapterTDS implements IUserDAO {
 
 		User u;
 		u = new User(username, email, nombreCompleto, Utils.StringToDateNoHour(fechaNacimiento), descripcion, contrasena, profilePic
-				,Boolean.parseBoolean(premium), obtenerNotificationsDesdeCodigos(notifications), 
-				obtenerPublicationsDesdeCodigos(publications),
-				obtenerSeguidoresDesdeCodigos(usuariosSeguidores),
-				obtenerSeguidoresDesdeCodigos(usuariosSeguidos),
+				,Boolean.parseBoolean(premium),
 				Utils.StringToDate(ultimoLogin)
 				);
 		u.setCodigo(codigo);
+		
+		// IMPORTANTE:aï¿½adir el cliente al pool antes de llamar a otros
+		// adaptadores
+		PoolDAO.getUnicaInstancia().addObjeto(codigo, u);
+		
+		// recuperar propiedades que son objetos llamando a adaptadores
+		// ventas
+		
+		u.setPublications(obtenerPublicationsDesdeCodigos(publications));
+		u.setUsuariosSeguidores(obtenerSeguidoresDesdeCodigos(usuariosSeguidores));
+		u.setUsuariosSeguidos(obtenerSeguidoresDesdeCodigos(usuariosSeguidos));
+		
+		
 		return u;
 	}
 
@@ -146,8 +165,7 @@ public class UserAdapterTDS implements IUserDAO {
 			else if (prop.getNombre().equals("premium"))
 				prop.setValor(String.valueOf(u.isPremium()));
 			
-			else if (prop.getNombre().equals("notifications")) 
-				prop.setValor(obtenerCodigosNotificaciones(u.getNotifications()));
+			
 			else if (prop.getNombre().equals("publications")) 
 				prop.setValor(obtenerCodigosPublications(u.getPublications()));
 			else if (prop.getNombre().equals("usuariosSeguidores"))
@@ -179,26 +197,6 @@ public class UserAdapterTDS implements IUserDAO {
 	
 	// -------------------Funciones auxiliares-----------------------------
 	
-	// 	NOTIFICATIONS 
-	
-	private String obtenerCodigosNotificaciones(List<Notification> listaNot) {
-		String aux = "";
-		for (Notification n : listaNot) {
-			aux += n.getCodigo() + " ";
-		}
-		return aux.trim();
-	}
-
-	private List<Notification> obtenerNotificationsDesdeCodigos(String nots) {
-
-		List<Notification> listaNots = new LinkedList<>();
-		StringTokenizer strTok = new StringTokenizer(nots, " ");
-		INotificationDAO adaptador = NotificationAdapterTDS.getInstance();
-		while (strTok.hasMoreTokens()) {
-			listaNots.add(adaptador.readNotification(Integer.valueOf((String) strTok.nextElement())));
-		}
-		return listaNots;
-	}
 
 	// PUBLICATIONS 
 	

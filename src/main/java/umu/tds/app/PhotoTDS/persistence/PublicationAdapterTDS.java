@@ -44,36 +44,48 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		if (ePublication != null)
 			return;
 
-		for(HashTag htg : p.getHashTags()) {
-			HashTagAdapterTDS.getInstance().createHashTag(htg);
-		}
+		// registrar primero los atributos que son objetos
+		HashTagAdapterTDS adaptadorHashtag = (HashTagAdapterTDS) HashTagAdapterTDS.getInstance();
+		p.getHashTags().stream().forEach(h -> adaptadorHashtag.createHashTag(h));
 		
+		ComentarioAdapterTDS adaptadorCom = (ComentarioAdapterTDS) ComentarioAdapterTDS.getInstance();
+		p.getComentarios().stream().forEach(c -> adaptadorCom.createComentario(c));
 		
+	
+		
+
+
+
 		// crear entidad Cliente
 		ePublication = new Entidad();
 		if (p instanceof Foto) {
 			ePublication.setNombre("photo");
-			ePublication.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
-					new Propiedad("creator", p.getCreator()),
-					new Propiedad("titulo", p.getTitulo()),
-					new Propiedad("fechaPublicacion", Utils.DateToString(p.getFechaPublicacion())),
-					new Propiedad("descripcion", p.getDescripcion()),
-					new Propiedad("likes", String.valueOf(p.getLikes())),
-					new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
-					new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios())),
-					new Propiedad("path", ((Foto) p).getPath()))));
+			ePublication.setPropiedades(new ArrayList<Propiedad>(
+					Arrays.asList(new Propiedad("creator", p.getCreator()), 
+							new Propiedad("titulo", p.getTitulo()),
+							new Propiedad("fechaPublicacion", Utils.DateToStringNoHour(p.getFechaPublicacion())),
+							new Propiedad("descripcion", p.getDescripcion()),
+							new Propiedad("likes", String.valueOf(p.getLikes())),
+							new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
+							new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios())),
+							new Propiedad("path", ((Foto) p).getPath()))));
 
+			System.out.println("estoy en pub adapter()");
+			
 		} else if (p instanceof Album) {
+			
+			((Album)p).getFotos().stream().forEach(f -> getInstance().createPublication(f));
+			
 			ePublication.setNombre("album");
-			ePublication.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
-					new Propiedad("creator", p.getCreator()),
-					new Propiedad("titulo", p.getTitulo()),
-					new Propiedad("fechaPublicacion", Utils.DateToString(p.getFechaPublicacion())),
-					new Propiedad("descripcion", p.getDescripcion()),
-					new Propiedad("likes", String.valueOf(p.getLikes())),
-					new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
-					new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios())),
-					new Propiedad("fotos", obtenerCodigosFotos(((Album) p).getFotos())))));
+			ePublication.setPropiedades(new ArrayList<Propiedad>(
+					Arrays.asList(new Propiedad("creator", p.getCreator()), 
+							new Propiedad("titulo", p.getTitulo()),
+							new Propiedad("fechaPublicacion", Utils.DateToStringNoHour(p.getFechaPublicacion())),
+							new Propiedad("descripcion", p.getDescripcion()),
+							new Propiedad("likes", String.valueOf(p.getLikes())),
+							new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
+							new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios())),
+							new Propiedad("fotos", obtenerCodigosFotos(((Album) p).getFotos())))));
 		}
 
 		// registrar entidad cliente
@@ -87,9 +99,15 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 	public Publication readPublication(int codigo) {
 
 		// Si la entidad esta en el pool la devuelve directamente
-		if (PoolDAO.getUnicaInstancia().contiene(codigo))
-			return (Publication) PoolDAO.getUnicaInstancia().getObjeto(codigo);
-
+		if (PoolDAO.getUnicaInstancia().contiene(codigo)) {
+			Object o = PoolDAO.getUnicaInstancia().getObjeto(codigo);
+			if( o instanceof Foto)
+				return (Foto) o;
+			else if (o instanceof Album)
+				return (Album) o;
+		}
+			
+			
 		Entidad ePublication;
 		ePublication = servPersistencia.recuperarEntidad(codigo);
 		if (ePublication.getNombre().equals("photo"))
@@ -102,6 +120,9 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 
 	private Foto readFoto(int codigo) {
 
+//		if (PoolDAO.getUnicaInstancia().contiene(codigo))
+//			return (Foto) PoolDAO.getUnicaInstancia().getObjeto(codigo);
+		
 		// si no, la recupera de la base de datos
 		Entidad ePublication;
 
@@ -130,14 +151,22 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		path = servPersistencia.recuperarPropiedadEntidad(ePublication, "path");
 
 		Foto p;
-		p = new Foto(creator, titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes),
-				obtenerHashTagsDesdeCodigos(hashtags), obtenerComentariosDesdeCodigos(comentarios), path);
+		p = new Foto(creator, titulo, Utils.StringToDateNoHour(fechaPublicacion), descripcion, Integer.parseInt(likes), path);
 		p.setCodigo(codigo);
+
+		PoolDAO.getUnicaInstancia().addObjeto(codigo, p);
+		
+		p.setHashtags(obtenerHashTagsDesdeCodigos(hashtags)); 
+		p.setComentarios(obtenerComentariosDesdeCodigos(comentarios));
+
 		return p;
 	}
 
 	private Album readAlbum(int codigo) {
 
+//		if (PoolDAO.getUnicaInstancia().contiene(codigo))
+//			return (Album) PoolDAO.getUnicaInstancia().getObjeto(codigo);
+		
 		// si no, la recupera de la base de datos
 		Entidad ePublication;
 
@@ -166,10 +195,15 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		fotos = servPersistencia.recuperarPropiedadEntidad(ePublication, "fotos");
 
 		Album p;
-		p = new Album(creator, titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes),
-				obtenerHashTagsDesdeCodigos(hashtags), obtenerComentariosDesdeCodigos(comentarios),
-				obtenerFotosDesdeCodigos(fotos));
+		p = new Album(creator, titulo, Utils.StringToDateNoHour(fechaPublicacion), descripcion, Integer.parseInt(likes));
 		p.setCodigo(codigo);
+
+		PoolDAO.getUnicaInstancia().addObjeto(codigo, p);
+		
+		p.setHashtags(obtenerHashTagsDesdeCodigos(hashtags)); 
+		p.setComentarios(obtenerComentariosDesdeCodigos(comentarios));
+		((Album)p).setFotos(obtenerFotosDesdeCodigos(fotos));
+
 		return p;
 	}
 
@@ -190,9 +224,9 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			if (prop.getNombre().equals("titulo")) {
 				prop.setValor(String.valueOf(p.getTitulo()));
 			} else if (prop.getNombre().equals("creator")) {
-					prop.setValor(p.getCreator());
+				prop.setValor(p.getCreator());
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
-				prop.setValor(Utils.DateToString(p.getFechaPublicacion()));
+				prop.setValor(Utils.DateToStringNoHour(p.getFechaPublicacion()));
 			} else if (prop.getNombre().equals("descripcion")) {
 				prop.setValor(p.getDescripcion());
 			} else if (prop.getNombre().equals("likes")) {
@@ -203,8 +237,8 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
 			} else if (prop.getNombre().equals("path")) {
 				prop.setValor(p.getPath());
-				servPersistencia.modificarPropiedad(prop);
 			}
+			servPersistencia.modificarPropiedad(prop);
 		}
 	}
 
@@ -217,7 +251,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			} else if (prop.getNombre().equals("creator")) {
 				prop.setValor(p.getCreator());
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
-				prop.setValor(Utils.DateToString(p.getFechaPublicacion()));
+				prop.setValor(Utils.DateToStringNoHour(p.getFechaPublicacion()));
 			} else if (prop.getNombre().equals("descripcion")) {
 				prop.setValor(p.getDescripcion());
 			} else if (prop.getNombre().equals("likes")) {
@@ -226,7 +260,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 				prop.setValor(obtenerCodigosHashTags(p.getHashTags()));
 			} else if (prop.getNombre().equals("comentarios")) {
 				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
-			}else if (prop.getNombre().equals("fotos")) {
+			} else if (prop.getNombre().equals("fotos")) {
 				prop.setValor(obtenerCodigosFotos(p.getFotos()));
 			}
 			servPersistencia.modificarPropiedad(prop);
@@ -245,11 +279,12 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		List<Entidad> eAlbum = servPersistencia.recuperarEntidades("album");
 		List<Entidad> ePublication = new LinkedList<>(ePhoto);
 		ePublication.addAll(eAlbum);
-		
+
 		List<Publication> publicaciones = new LinkedList<>();
 
 		for (Entidad eCliente : ePublication) {
 			publicaciones.add(readPublication(eCliente.getId()));
+			System.out.println("readed pub " + eCliente.getId());
 		}
 		return publicaciones;
 	}

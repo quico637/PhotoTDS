@@ -36,12 +36,7 @@ public class Publication {
 	
 	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes,
 			List<HashTag> hashtags, List<Comentario> comentarios) {
-		super();
-		this.creator = creator;
-		this.titulo = titulo;
-		this.fechaPublicacion = fechaPublicacion;
-		this.descripcion = descripcion;
-		this.likes = likes;
+		this(creator, titulo, fechaPublicacion, descripcion);
 		this.hashtags = getHashTagsFromText(descripcion);
 		this.comentarios = comentarios;
 
@@ -81,10 +76,24 @@ public class Publication {
 	// GETTERS AND SETTERS
 	
 	
+	
+	
 	public int getCodigo() {
 		return codigo;
 	}
 	
+	public List<HashTag> getHashtags() {
+		return hashtags;
+	}
+
+	public void setHashtags(List<HashTag> hashtags) {
+		this.hashtags = hashtags;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	public String getCreator() {
 		return this.creator;
 	}
@@ -122,7 +131,7 @@ public class Publication {
 		return new LinkedList<>(hashtags);
 	}
 
-	public void anadirComentarios(String comentario, User user) {
+	public void anadirComentarios(String comentario, String user) {
 		Comentario coment = new Comentario(comentario, new Date(), user);
 		this.comentarios.add(coment);
 	}

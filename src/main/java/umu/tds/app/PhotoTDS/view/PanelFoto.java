@@ -195,7 +195,7 @@ public class PanelFoto {
 		List<JLabel> labels = new LinkedList<>();
 		List<Comentario> l = publicacion.getComentarios();
 		for (Comentario p : l) {
-			JLabel etiqueta = new JLabel(p.getAutor().getUsername() + " : " + p.getTexto() + " -- " + p.getFechaPublicacion());
+			JLabel etiqueta = new JLabel(p.getAutor() + " : " + p.getTexto() + " -- " + p.getFechaPublicacion());
 			labels.add(etiqueta);
 			System.out.println("Comentarios: " + p);
 		}
