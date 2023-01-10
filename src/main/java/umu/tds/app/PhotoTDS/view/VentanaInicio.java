@@ -271,6 +271,9 @@ public class VentanaInicio implements IEncendidoListener {
 		JPanel panelPremium = new PanelPremium(user).getPanel();
 		panelCentralCardLayout.add(panelPremium, "panelPremium");
 		
+		JPanel panelPremiumUser = new PanelPremiumUser(user).getPanel();
+		panelCentralCardLayout.add(panelPremiumUser, "panelPremiumUser");
+		
 	}
 	
 	private void initializePublicationPanel() {

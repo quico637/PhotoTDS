@@ -30,36 +30,32 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-public class PanelPremium {
+public class PanelPremiumUser {
 
 	/**
 	 * 
 	 */
-	
+
 	private JFrame frame;
-		
+
 	private String user;
 	private JPanel panel;
-	
+
 	private boolean logged;
 
-	
 	public JFrame getFrame() {
 		return this.frame;
 	}
-	
+
 	public JPanel getPanel() {
 		return panel;
 	}
 
-
-
-	public PanelPremium(String user) {
+	public PanelPremiumUser(String user) {
 		super();
 		this.user = user;
 		initialize();
 	}
-	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -69,33 +65,50 @@ public class PanelPremium {
 		frame.setBounds(0, 0, 500, 625);
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		panel = new JPanel();
-		
+
 		Optional<User> us = Controller.getInstancia().getUser(user);
-		
-		if(us.isEmpty())
+
+		if (us.isEmpty())
 			return;
-					
+
 		User u = us.get();
-			
-		JLabel prem = new JLabel("Get premium! Just for " + u.getTotalPremiumPrice() + "$");
-		
-		prem.setFont(new Font("Segoe Script", Font.BOLD, 16));
-		panel.add(prem);
-		
-		JButton suscribe = new JButton("Suscribe!");
-		panel.add(suscribe);
-		
-		suscribe.addMouseListener(new MouseAdapter() {
+
+		JLabel excel = new JLabel("Generate Excel file with your followers");
+
+		panel.add(excel);
+
+		JButton excelButton = new JButton("Generate Excel");
+		panel.add(excelButton);
+
+		excelButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Controller.getInstancia().goPremium(user);
-				CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
-				cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelPremiumUser");
 			}
 		});
-		
+
+		JLabel pdf = new JLabel("Generate Excel file with your followers");
+		panel.add(pdf);
+
+		JButton pdfButton = new JButton("Generate PDF");
+		panel.add(pdfButton);
+
+		pdfButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				chooser.showSaveDialog(null);
+
+				if (chooser.getSelectedFile() != null) {
+
+					String fichero = chooser.getSelectedFile().getAbsolutePath();
+					Controller.getInstancia().createPdf(user, fichero);
+				}
+			}
+		});
+
 	}
 
 }

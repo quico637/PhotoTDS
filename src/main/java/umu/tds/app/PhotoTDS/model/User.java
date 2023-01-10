@@ -235,6 +235,7 @@ public class User {
 	public void setUltimoLogin(Date ultimoLogin) {
 		this.ultimoLogin = ultimoLogin;
 	}
+	
 
 //	@Override
 //	public String toString() {
