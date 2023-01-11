@@ -437,6 +437,7 @@ public class Controller implements PropertyChangeListener {
 
 		User u = userOpt.get();
 		u.goPremium();
+		this.userRepo.updateUser(u);
 		return true;
 
 	}

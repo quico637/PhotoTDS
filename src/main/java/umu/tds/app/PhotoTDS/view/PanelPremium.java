@@ -92,7 +92,7 @@ public class PanelPremium {
 			public void mouseClicked(MouseEvent e) {
 				Controller.getInstancia().goPremium(user);
 				CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
-				cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelPremiumUser");
+				cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelPremium");
 			}
 		});
 		

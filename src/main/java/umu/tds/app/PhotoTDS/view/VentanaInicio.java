@@ -268,11 +268,25 @@ public class VentanaInicio implements IEncendidoListener {
 	
 	private void initializePremiumPanel() {
 		
-		JPanel panelPremium = new PanelPremium(user).getPanel();
-		panelCentralCardLayout.add(panelPremium, "panelPremium");
+		Optional<User> us = Controller.getInstancia().getUser(user);
+		if(us.isEmpty()) {
+			System.out.println("user empty");
+			return;
+		}
+			
+		JPanel panelPremium;
+		if(us.get().isPremium()) {
+			System.out.println("SI ES PREMIUM");
+			panelPremium= new PanelPremiumUser(user).getPanel();
+		}
+			
+		else {
+			panelPremium = new PanelPremium(user).getPanel();
+			System.out.println("NO ES PREMIUM");
+		}
+			
 		
-		JPanel panelPremiumUser = new PanelPremiumUser(user).getPanel();
-		panelCentralCardLayout.add(panelPremiumUser, "panelPremiumUser");
+		panelCentralCardLayout.add(panelPremium, "panelPremium");
 		
 	}
 	
