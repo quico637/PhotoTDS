@@ -37,6 +37,13 @@ public class Album extends Publication {
 		super(creator, titulo, fechaPublicacion, descripcion, likes);
 		this.fotos = new LinkedList<>();
 	}
+	
+	public Album(String creator, String titulo, Date fechaPublicacion, String descripcion, Foto f) {
+		super(creator, titulo, fechaPublicacion, descripcion);
+		this.fotos = new LinkedList<>();
+		this.fotos.add(f);
+		
+	}
 
 	public List<Foto> getFotos() {
 		return fotos;
@@ -45,6 +52,11 @@ public class Album extends Publication {
 	public void setFotos(List<Foto> fotos) {
 		this.fotos = fotos;
 	}
+	
+	public String getPathProfileFoto() {
+		return this.fotos.get(0).getPath();
+	}
+	
 	
 
 	@Override

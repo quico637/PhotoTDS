@@ -140,6 +140,13 @@ public class User {
 		this.publications.add(f);
 		return f;
 	}
+	
+	public Album createAlbum(String titulo, String descripcion, String path) {
+		Foto f = this.createPhoto(titulo, descripcion, path);
+		Album a = new Album(this.username, titulo, new Date(), descripcion, f);
+		this.publications.add(a);
+		return a;
+	}
 
 	// CALCULATED PROPERTIES.
 	

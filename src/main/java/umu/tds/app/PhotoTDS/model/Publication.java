@@ -28,7 +28,7 @@ public class Publication {
 		this.titulo = titulo;
 		this.fechaPublicacion = fechaPublicacion;
 		this.descripcion = descripcion;
-		this.likes = 0;
+		this.likes = likes;
 		this.hashtags = getHashTagsFromText(descripcion);
 		this.comentarios = new LinkedList<>();
 
@@ -118,9 +118,6 @@ public class Publication {
 		return likes;
 	}
 
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
 	
 	public List<Comentario> getComentarios() {
 		return new LinkedList<>(comentarios);
@@ -131,13 +128,14 @@ public class Publication {
 		return new LinkedList<>(hashtags);
 	}
 
-	public void anadirComentarios(String comentario, String user) {
+	public Comentario anadirComentarios(String comentario, String user) {
 		Comentario coment = new Comentario(comentario, new Date(), user);
 		this.comentarios.add(coment);
+		return coment;
 	}
 	
 	public void addMeGusta() {
-		this.likes++;
+		this.likes = this.likes + 1;
 	}
 	
 }

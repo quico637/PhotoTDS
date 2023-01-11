@@ -253,10 +253,13 @@ public class VentanaInicio implements IEncendidoListener {
 		
 		JPanel panelPerfil = new PanelPerfil(user, user).getPanelPerfil();
 		panelCentralCardLayout.add(panelPerfil, "panelPerfil");
+		
+		JPanel panelAlbum = new PanelAlbum(user, user).getPanelPerfil();
+		panelCentralCardLayout.add(panelAlbum, "panelAlbum");
+		
 
 		JPanel panelEdit = new PanelEdit(user).getPanel();
 		panelCentralCardLayout.add(panelEdit, "panelEdit");
-				
 	}
 	
 	private static void initializeBusquedaClickedPanel(String u) {
@@ -298,10 +301,11 @@ public class VentanaInicio implements IEncendidoListener {
 		System.out.println("l2: " + l);
 		for (Publication p : l) {
 			User u = Controller.getInstancia().getUser(p.getCreator()).get();
-			paneles.add(new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
-					50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
-					.getContentPane());
-			System.out.println("PERSON: " + u.getUsername());
+			if(p instanceof Foto) 
+				paneles.add(new PanelPublicacion(u.getUsername(), p.getDescripcion(), u.getProfilePic(), ((Foto) p).getPath(),
+						50, 50, Math.round(VentanaInicio.X_BORDER / 2), Math.round(VentanaInicio.Y_BORDER / 2)).getFrame()
+						.getContentPane());
+//			System.out.println("PERSON: " + u.getUsername());
 		}
 		
 		DefaultListModel<Component> demoList = new DefaultListModel<>();

@@ -21,6 +21,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import umu.tds.app.PhotoTDS.model.Album;
 import umu.tds.app.PhotoTDS.model.Comentario;
 import umu.tds.app.PhotoTDS.model.EncryptDecrypt;
 import umu.tds.app.PhotoTDS.model.Foto;
@@ -338,6 +339,32 @@ public class Controller implements PropertyChangeListener {
 		return true;
 	}
 
+	public boolean createAlbum(String user, String titulo, String descripcion, String path) {
+
+		System.out.println("pre creating album");
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
+
+		Album a = u.createAlbum(titulo, descripcion, path);
+		
+		System.out.println("creating album");
+		this.pubRepo.createPublication(a);
+		return true;
+	}
+	
+	public boolean removeAlbum (String user, Publication p) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		this.pubRepo.removePublication(p);
+		return true;
+	}
+
+	
 	/**
 	 * We implement notification system through last logins.
 	 * 

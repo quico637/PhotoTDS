@@ -241,6 +241,17 @@ public class PanelPerfil {
 		gbc_btnNewButton.gridy = 6;
 		panelPerfil.add(btnNewButton, gbc_btnNewButton);
 		
+		JButton btnNewButton_1 = new JButton("Albumes");
+		btnNewButton_1.addActionListener(e -> {
+			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
+			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelAlbum");
+		});
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_1.gridx = 6;
+		gbc_btnNewButton_1.gridy = 6;
+		panelPerfil.add(btnNewButton_1, gbc_btnNewButton_1);
+		
 		btnNewButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
 			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelFoto");

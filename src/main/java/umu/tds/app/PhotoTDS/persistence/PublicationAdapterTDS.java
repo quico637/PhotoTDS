@@ -63,7 +63,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			ePublication.setPropiedades(new ArrayList<Propiedad>(
 					Arrays.asList(new Propiedad("creator", p.getCreator()), 
 							new Propiedad("titulo", p.getTitulo()),
-							new Propiedad("fechaPublicacion", Utils.DateToStringNoHour(p.getFechaPublicacion())),
+							new Propiedad("fechaPublicacion", Utils.DateToString(p.getFechaPublicacion())),
 							new Propiedad("descripcion", p.getDescripcion()),
 							new Propiedad("likes", String.valueOf(p.getLikes())),
 							new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
@@ -80,7 +80,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			ePublication.setPropiedades(new ArrayList<Propiedad>(
 					Arrays.asList(new Propiedad("creator", p.getCreator()), 
 							new Propiedad("titulo", p.getTitulo()),
-							new Propiedad("fechaPublicacion", Utils.DateToStringNoHour(p.getFechaPublicacion())),
+							new Propiedad("fechaPublicacion", Utils.DateToString(p.getFechaPublicacion())),
 							new Propiedad("descripcion", p.getDescripcion()),
 							new Propiedad("likes", String.valueOf(p.getLikes())),
 							new Propiedad("hashtags", obtenerCodigosHashTags(p.getHashTags())),
@@ -148,14 +148,16 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		likes = servPersistencia.recuperarPropiedadEntidad(ePublication, "likes");
 		hashtags = servPersistencia.recuperarPropiedadEntidad(ePublication, "hashtags");
 		comentarios = servPersistencia.recuperarPropiedadEntidad(ePublication, "comentarios");
+	
 		path = servPersistencia.recuperarPropiedadEntidad(ePublication, "path");
 
 		Foto p;
-		p = new Foto(creator, titulo, Utils.StringToDateNoHour(fechaPublicacion), descripcion, Integer.parseInt(likes), path);
+		p = new Foto(creator, titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes), path);
 		p.setCodigo(codigo);
 
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, p);
 		
+		System.out.println("CoMENTARIOS: " + comentarios);
 		p.setHashtags(obtenerHashTagsDesdeCodigos(hashtags)); 
 		p.setComentarios(obtenerComentariosDesdeCodigos(comentarios));
 
@@ -195,7 +197,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		fotos = servPersistencia.recuperarPropiedadEntidad(ePublication, "fotos");
 
 		Album p;
-		p = new Album(creator, titulo, Utils.StringToDateNoHour(fechaPublicacion), descripcion, Integer.parseInt(likes));
+		p = new Album(creator, titulo, Utils.StringToDate(fechaPublicacion), descripcion, Integer.parseInt(likes));
 		p.setCodigo(codigo);
 
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, p);
@@ -226,7 +228,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			} else if (prop.getNombre().equals("creator")) {
 				prop.setValor(p.getCreator());
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
-				prop.setValor(Utils.DateToStringNoHour(p.getFechaPublicacion()));
+				prop.setValor(Utils.DateToString(p.getFechaPublicacion()));
 			} else if (prop.getNombre().equals("descripcion")) {
 				prop.setValor(p.getDescripcion());
 			} else if (prop.getNombre().equals("likes")) {
@@ -251,7 +253,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			} else if (prop.getNombre().equals("creator")) {
 				prop.setValor(p.getCreator());
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
-				prop.setValor(Utils.DateToStringNoHour(p.getFechaPublicacion()));
+				prop.setValor(Utils.DateToString(p.getFechaPublicacion()));
 			} else if (prop.getNombre().equals("descripcion")) {
 				prop.setValor(p.getDescripcion());
 			} else if (prop.getNombre().equals("likes")) {

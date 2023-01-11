@@ -123,6 +123,8 @@ public class UserAdapterTDS implements IUserDAO {
 		ultimoLogin = servPersistencia.recuperarPropiedadEntidad(eUser, "ultimoLogin");
 
 		User u;
+		
+		System.out.println("seguid: " + usuariosSeguidores);
 		u = new User(username, email, nombreCompleto, Utils.StringToDateNoHour(fechaNacimiento), descripcion, contrasena, profilePic
 				,Boolean.parseBoolean(premium),
 				Utils.StringToDate(ultimoLogin)

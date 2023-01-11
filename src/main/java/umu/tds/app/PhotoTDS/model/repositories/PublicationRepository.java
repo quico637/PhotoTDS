@@ -53,6 +53,7 @@ public class PublicationRepository {
 	
 	public void updatePublication(Publication p) {
 		this.publicationAdapter.updatePublication(p);
+		
 	}
 	
 	public void removePublication(Publication p) {

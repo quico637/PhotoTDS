@@ -44,7 +44,7 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		eComentario.setNombre("comentario");
 		eComentario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
 				new Propiedad("texto", c.getTexto()),
-				new Propiedad("fechaPublicacion", Utils.DateToStringNoHour(c.getFechaPublicacion())),
+				new Propiedad("fechaPublicacion", Utils.DateToString(c.getFechaPublicacion())),
 				new Propiedad("autor", c.getAutor())
 				)));
 
@@ -53,6 +53,7 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
 		c.setCodigo(eComentario.getId());
+		System.out.println("codigo coment: " + c.getCodigo());
 		
 	}
 	public Comentario readComentario(int codigo) {
@@ -68,13 +69,19 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		String autor;
 		// recuperar entidad
 		eComentario = servPersistencia.recuperarEntidad(codigo);
+		if(eComentario == null)
+			System.out.println("NULLL 1");
 
 		// recuperar propiedades que no son objetos
 		texto = servPersistencia.recuperarPropiedadEntidad(eComentario, "texto");
 		fechaPublicacion = servPersistencia.recuperarPropiedadEntidad(eComentario, "fechaPublicacion");
 		autor = servPersistencia.recuperarPropiedadEntidad(eComentario, "autor");
 		Comentario c;
-		c = new Comentario(texto, Utils.StringToDateNoHour(fechaPublicacion), autor);
+		
+		if(fechaPublicacion == null) 
+			System.out.println("NULLL 2");
+		
+		c = new Comentario(texto, Utils.StringToDate(fechaPublicacion), autor);
 		c.setCodigo(codigo);
 		
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, c);
@@ -88,7 +95,7 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 			if (prop.getNombre().equals("texto")) {
 				prop.setValor(c.getTexto());
 			} else if (prop.getNombre().equals("fechaPublicacion")) {
-				prop.setValor(Utils.DateToStringNoHour(c.getFechaPublicacion()));
+				prop.setValor(Utils.DateToString(c.getFechaPublicacion()));
 			}
 			else if (prop.getNombre().equals("autor")) {
 				prop.setValor(c.getAutor());

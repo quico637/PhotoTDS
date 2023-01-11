@@ -176,20 +176,20 @@ public class PanelAlbum {
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 6;
-		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 5;
 		panelPerfil.add(scrollPane, gbc_scrollPane);
 		
 		List<JLabel> labels = new LinkedList<>();
-		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
+//		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
+		List<Publication> l = Controller.getInstancia().getAllPublications();
 		for (Publication p : l) {
 			if (p instanceof Album) {
 				JLabel etiqueta = new JLabel();
-				etiqueta.setBounds(0, 0, X, Y);
-				ImageIcon icono = new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png"));
-				etiqueta.setIcon(icono);
+				Image icono = new ImageIcon(((Album)p).getPathProfileFoto()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
+				etiqueta.setIcon(new ImageIcon(icono));
 				labels.add(etiqueta);
 				System.out.println("Publicacion: " + p);
 			}
@@ -204,6 +204,29 @@ public class PanelAlbum {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
+		
+		JButton btnNewButton = new JButton("Fotos");
+		btnNewButton.addActionListener(e -> {
+			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
+			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelPerfil");
+		});
+		
+		JButton btnNewButton_1 = new JButton("A+");
+		btnNewButton_1.addActionListener(e -> {
+			
+			AlbumWindow pw = new AlbumWindow(user);
+			pw.showWindow(frame);
+		});
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_1.gridx = 1;
+		gbc_btnNewButton_1.gridy = 6;
+		panelPerfil.add(btnNewButton_1, gbc_btnNewButton_1);
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 6;
+		gbc_btnNewButton.gridy = 6;
+		panelPerfil.add(btnNewButton, gbc_btnNewButton);
 		
 		
 		
