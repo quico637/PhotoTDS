@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.logging.log4j.util.PropertySource.Util;
+
 import umu.tds.app.PhotoTDS.model.discounts.AgeDiscount;
 import umu.tds.app.PhotoTDS.model.discounts.CompoundDiscount;
 import umu.tds.app.PhotoTDS.model.discounts.Discount;
@@ -89,9 +91,11 @@ public class User {
 	public boolean changePassword(String passwd) {
 		if(passwd.length() < MIN_PASSWD_LENGTH)
 			return false;
+		String encriptada = EncryptDecrypt.encrypt(passwd);
+		if (encriptada.equals(this.contrasena))
+			return false;
 		
-		
-		this.contrasena = passwd;
+		this.contrasena = encriptada;
 		return true;
 	}
 	

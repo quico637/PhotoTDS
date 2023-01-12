@@ -196,13 +196,10 @@ public class Controller implements PropertyChangeListener {
 	 *         if it can be showable or not.
 	 */
 	public boolean changeProfilePicture(String user, String path) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL == null)
-			return false;
-
 		Optional<User> u = this.userRepo.getUser(user);
 		u.ifPresent(a -> a.updateProfilePic(path));
 		this.userRepo.getUser(user).get().updateProfilePic(path);
+		System.out.println(path);
 		this.userRepo.updateUser(u.get());
 		return true;
 	}

@@ -166,13 +166,12 @@ public class PanelEdit {
 				Controller.getInstancia().changeDescription(user, description);
 			}
 				
-			if(passwd != null) {
+			if(!passwd.equals("")) {
 				if(!Controller.getInstancia().changePassword(user, passwd)) {
 					ErrorWindow ew = new ErrorWindow("Password is too short.");
 					ew.showWindow(frame);
 				};
 			}
-
 			if(profilePath != null) {
 				Controller.getInstancia().changeProfilePicture(user, profilePath);
 			}
