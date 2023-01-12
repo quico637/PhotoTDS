@@ -289,13 +289,6 @@ public class PanelAlbum {
 		
 	}
 	
-	private static ListSelectionListener createListSelectionListener(JList<Component> list) {
-		return e -> {
-			if (!e.getValueIsAdjusting()) {
-				System.out.println(list.getSelectedValue());
-			}
-		};
-	}
 
 	private static ListCellRenderer<? super Component> createListRenderer() {
 		return new DefaultListCellRenderer() {

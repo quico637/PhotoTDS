@@ -149,7 +149,13 @@ public class User {
 		Foto f = this.createPhoto(titulo, descripcion, path);
 		Album a = new Album(this.username, titulo, new Date(), descripcion, f);
 		this.publications.add(a);
+		this.publications.add(f);
 		return a;
+	}
+	
+	public boolean removePublication(Publication p) {
+		
+		return this.publications.remove(p);
 	}
 
 	// CALCULATED PROPERTIES.

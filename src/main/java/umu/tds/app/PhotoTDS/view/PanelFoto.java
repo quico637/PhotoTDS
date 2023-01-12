@@ -209,6 +209,18 @@ public class PanelFoto {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
+		
+		JButton deleteBtn = new JButton("");
+		deleteBtn.addActionListener(e -> {
+			if(!Controller.getInstancia().removePublication(userLogged, publicacion))
+				System.out.println("User Not logged in PanelFoto.");
+		});
+		deleteBtn.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
+		GridBagConstraints gbc_deleteBtn = new GridBagConstraints();
+		gbc_deleteBtn.insets = new Insets(0, 0, 0, 5);
+		gbc_deleteBtn.gridx = 1;
+		gbc_deleteBtn.gridy = 8;
+		panel.add(deleteBtn, gbc_deleteBtn);
 
 	}
 

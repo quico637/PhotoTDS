@@ -327,11 +327,15 @@ public class Controller implements PropertyChangeListener {
 	 * @param p
 	 * @return
 	 */
-	public boolean removeFoto(String user, Publication p) {
+	public boolean removePublication(String user, Publication p) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
 			return false;
 
+		User u = userOpt.get();
+		
+		u.removePublication(p);
+		this.userRepo.updateUser(u);
 		this.pubRepo.removePublication(p);
 		return true;
 	}
@@ -347,17 +351,9 @@ public class Controller implements PropertyChangeListener {
 
 		Album a = u.createAlbum(titulo, descripcion, path);
 		
+		
 		System.out.println("creating album");
-		this.pubRepo.createPublication(a);
-		return true;
-	}
-	
-	public boolean removeAlbum (String user, Publication p) {
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-
-		this.pubRepo.removePublication(p);
+		this.userRepo.updateUser(u);
 		return true;
 	}
 

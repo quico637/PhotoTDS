@@ -214,6 +214,7 @@ public class PanelPerfil {
 		List<JLabel> labels = new LinkedList<>();
 		l = Controller.getInstancia().getUser(user).get().getPublications();
 		for (Publication p : l) {
+			System.out.println("p -  -- -- - - --");
 			if (p instanceof Foto) {
 				JLabel etiqueta = new JLabel();
 				Image imagen = createImageIcon(((Foto) p).getPath()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
@@ -233,29 +234,19 @@ public class PanelPerfil {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
-		
-		JButton btnNewButton = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 6;
-		panelPerfil.add(btnNewButton, gbc_btnNewButton);
-		
+				
 		JButton btnNewButton_1 = new JButton("Albumes");
 		btnNewButton_1.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
 			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelAlbum");
 		});
+
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_1.gridx = 6;
 		gbc_btnNewButton_1.gridy = 6;
 		panelPerfil.add(btnNewButton_1, gbc_btnNewButton_1);
 		
-		btnNewButton.addActionListener(e -> {
-			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
-			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelFoto");
-		});
 
 		JButton logout = new JButton("Logout");
 		GridBagConstraints gbc_logout = new GridBagConstraints();
@@ -290,14 +281,7 @@ public class PanelPerfil {
 		
 		
 	}
-	
-	private static ListSelectionListener createListSelectionListener(JList<Component> list) {
-		return e -> {
-			if (!e.getValueIsAdjusting()) {
-				System.out.println(list.getSelectedValue());
-			}
-		};
-	}
+
 
 	private static ListCellRenderer<? super Component> createListRenderer() {
 		return new DefaultListCellRenderer() {
