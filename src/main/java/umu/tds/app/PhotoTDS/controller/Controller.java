@@ -337,8 +337,8 @@ public class Controller implements PropertyChangeListener {
 		User u = userOpt.get();
 
 		u.removePublication(p);
-		this.userRepo.updateUser(u);
 		this.pubRepo.removePublication(p);
+		this.userRepo.updateUser(u);
 		return true;
 	}
 

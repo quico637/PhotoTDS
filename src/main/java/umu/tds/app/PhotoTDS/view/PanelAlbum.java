@@ -308,9 +308,12 @@ public class PanelAlbum {
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-
-						System.out.println("MERECONTRAPUTEASTE --> " + l.get(index));
-						
+						JPanel panelAlbumFotos = new PanelAlbumFotos(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
+						panelCentralCardLayout.add(panelAlbumFotos, "panelAlbumFotos");
+						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+						cl.show(panelCentralCardLayout, "panelAlbumFotos");
+						System.out.println("Fotico golfa");
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);

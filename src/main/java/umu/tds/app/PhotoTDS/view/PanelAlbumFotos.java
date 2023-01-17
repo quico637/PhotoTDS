@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.persistence.jpa.jpql.parser.DatabaseTypeFactory;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.Album;
 import umu.tds.app.PhotoTDS.model.Comentario;
 import umu.tds.app.PhotoTDS.model.Foto;
 import umu.tds.app.PhotoTDS.model.Publication;
@@ -49,7 +50,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.JTextField;
 
-public class PanelFoto {
+public class PanelAlbumFotos {
 
 	/**
 	 * 
@@ -62,6 +63,7 @@ public class PanelFoto {
 	private Publication publicacion;
 	private String profilePath;
 	private JPanel panel;
+	private static List<Foto> l;
 
 	private String userLogged;
 	private JTextField textField;
@@ -93,7 +95,7 @@ public class PanelFoto {
 
 	}
 
-	public PanelFoto(Publication publicacion, String userLogged) {
+	public PanelAlbumFotos(Publication publicacion, String userLogged) {
 		super();
 		this.userLogged = userLogged;
 		this.publicacion = publicacion;
@@ -133,8 +135,13 @@ public class PanelFoto {
 		gbc_profPicEdit.gridy = 2;
 		panel.add(profPicEdit, gbc_profPicEdit);
 		profPicEdit.setBounds(0, 0, 40, 40);
-		Image imageEdit = createImageIcon(((Foto) publicacion).getPath()).getImage().getScaledInstance(380, 380,
-				Image.SCALE_SMOOTH);
+		Image imageEdit;
+		if(publicacion instanceof Album) {
+			imageEdit = createImageIcon(((Album) publicacion).getFotos().get(0).getPath()).getImage().getScaledInstance(200, 200,
+					Image.SCALE_SMOOTH);
+		} else {
+			imageEdit = createImageIcon(((Foto) publicacion).getPath()).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+		}
 		ImageIcon icon = new ImageIcon(imageEdit);
 		profPicEdit.setIcon(icon);
 
@@ -147,7 +154,7 @@ public class PanelFoto {
 		lblNewLabel.setText(Integer.toString(publicacion.getLikes()));
 
 		JButton like = new JButton("");
-		like.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
+		like.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
 		GridBagConstraints gbc_like = new GridBagConstraints();
 		gbc_like.fill = GridBagConstraints.HORIZONTAL;
 		gbc_like.insets = new Insets(0, 0, 5, 5);
@@ -170,7 +177,7 @@ public class PanelFoto {
 		textField.setColumns(10);
 
 		JButton send = new JButton("");
-		send.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/send.png")));
+		send.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/send.png")));
 		GridBagConstraints gbc_send = new GridBagConstraints();
 		gbc_send.fill = GridBagConstraints.HORIZONTAL;
 		gbc_send.insets = new Insets(0, 0, 5, 5);
@@ -193,11 +200,14 @@ public class PanelFoto {
 		panel.add(scrollPane, gbc_scrollPane);
 
 		List<JLabel> labels = new LinkedList<>();
-		List<Comentario> l = publicacion.getComentarios();
-		for (Comentario p : l) {
-			JLabel etiqueta = new JLabel(p.getAutor() + " : " + p.getTexto() + " -- " + p.getFechaPublicacion());
+		l = ((Album)publicacion).getFotos();
+		for (Foto p : l) {
+			JLabel etiqueta = new JLabel();
+			Image imagen = createImageIcon(((Foto) p).getPath()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
+			ImageIcon icono = new ImageIcon(imagen);
+			etiqueta.setIcon(icono);
 			labels.add(etiqueta);
-			System.out.println("Comentarios: " + p);
+			System.out.println("Publicacion: " + p);
 		}
 
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
@@ -215,12 +225,25 @@ public class PanelFoto {
 			if(!Controller.getInstancia().removePublication(userLogged, publicacion))
 				System.out.println("User Not logged in PanelFoto.");
 		});
-		deleteBtn.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
+		deleteBtn.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
 		GridBagConstraints gbc_deleteBtn = new GridBagConstraints();
 		gbc_deleteBtn.insets = new Insets(0, 0, 0, 5);
 		gbc_deleteBtn.gridx = 1;
 		gbc_deleteBtn.gridy = 8;
 		panel.add(deleteBtn, gbc_deleteBtn);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(e -> {
+			// Hay que cambiarlo a AlbumAddWindow	- Crealo yulari mentiendono
+			AlbumWindowFotos pw = new AlbumWindowFotos(userLogged, (Album)publicacion);
+			pw.showWindow(frame);
+		});
+		btnNewButton.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/anadir-imagen.png")));
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 4;
+		gbc_btnNewButton.gridy = 8;
+		panel.add(btnNewButton, gbc_btnNewButton);
 
 	}
 
@@ -240,7 +263,12 @@ public class PanelFoto {
 				Component renderer = (Component) value;
 				if (renderer instanceof JLabel) {
 					if (isSelected) {
-						JLabel l = (JLabel) value;
+						JPanel panelFoto = new PanelFoto(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
+						panelCentralCardLayout.add(panelFoto, "panelFoto");
+						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+						cl.show(panelCentralCardLayout, "panelFoto");
+						System.out.println("Fotico golfa");
 					}
 
 					((JLabel) renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
