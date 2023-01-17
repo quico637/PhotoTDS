@@ -53,6 +53,12 @@ public class Album extends Publication {
 		return true;
 	}
 	
+	@Override
+	public void addMeGusta() {
+		 this.fotos.stream()
+		 	.forEach(f -> f.addMeGusta());
+	}
+	
 	
 	// GETTERS AND SETTERS
 	

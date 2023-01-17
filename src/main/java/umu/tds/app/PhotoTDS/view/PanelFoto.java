@@ -221,6 +221,19 @@ public class PanelFoto {
 		gbc_deleteBtn.gridx = 1;
 		gbc_deleteBtn.gridy = 8;
 		panel.add(deleteBtn, gbc_deleteBtn);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(e -> {
+			// Hay que cambiarlo a AlbumAddWindow	- Crealo yulari mentiendono
+			AlbumWindow pw = new AlbumWindow(userLogged);
+			pw.showWindow(frame);
+		});
+		btnNewButton.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/anadir-imagen.png")));
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 4;
+		gbc_btnNewButton.gridy = 8;
+		panel.add(btnNewButton, gbc_btnNewButton);
 
 	}
 

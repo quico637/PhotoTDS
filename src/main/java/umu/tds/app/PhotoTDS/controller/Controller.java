@@ -634,6 +634,30 @@ public class Controller implements PropertyChangeListener {
 				.collect(Collectors.toList());
 
 	}
+	
+	public Optional<Publication> getPublication(String user, String title) {
+
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return null;
+		
+		return this.pubRepo.getPublication(title);
+		
+	}
+		
+	public boolean addNewPicture(String user, Album a, String titulo, String descripcion, String path) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+		
+		User u = userOpt.get();
+		Foto f = u.addFotoAlbum(a, titulo, descripcion, path);
+
+		this.userRepo.updateUser(u);
+//		this.pubRepo.createPublication(a);
+		return true;
+		
+	}
 
 	/**
 	 * Checks if f is following u

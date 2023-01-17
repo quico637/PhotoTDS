@@ -102,7 +102,7 @@ public class PanelPerfil {
 		super();
 		this.user = user;
 		this.userLogged = userLogged;
-		Optional<User> us = Controller.getInstancia().getUser(user);
+		Optional<User> us = Controller.getInstancia().getUser(userLogged);
 		this.use = us.get();
 		initialize();
 	}
@@ -212,7 +212,7 @@ public class PanelPerfil {
 		panelPerfil.add(scrollPane, gbc_scrollPane);
 		
 		List<JLabel> labels = new LinkedList<>();
-		l = Controller.getInstancia().getUser(user).get().getPublications();
+		l = Controller.getInstancia().getUser(userLogged).get().getPublications();
 		for (Publication p : l) {
 			System.out.println("p -  -- -- - - --");
 			if (p instanceof Foto) {

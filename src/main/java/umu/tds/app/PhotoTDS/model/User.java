@@ -146,6 +146,13 @@ public class User {
 		return f;
 	}
 	
+	public Foto addFotoAlbum(Album a, String titulo, String descripcion, String path) {
+		Foto f = this.createPhoto(titulo, descripcion, path);
+		
+		this.publications.add(f);
+		return f;
+	}
+	
 	public Album createAlbum(String titulo, String descripcion, String path) {
 		Foto f = this.createPhoto(titulo, descripcion, path);
 		Album a = new Album(this.username, titulo, new Date(), descripcion, f);
@@ -154,6 +161,7 @@ public class User {
 		this.publications.add(f);
 		return a;
 	}
+	
 	
 	
 	public boolean removePublication(Publication p) {
