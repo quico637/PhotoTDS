@@ -63,6 +63,8 @@ public class PanelAlbum {
 	private JPanel panelPerfil;
 	
 	private String userLogged;
+	
+	private static List<Publication> l;
 
 	
 	public JFrame getFrame() {
@@ -184,7 +186,7 @@ public class PanelAlbum {
 		
 		List<JLabel> labels = new LinkedList<>();
 //		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
-		List<Publication> l = Controller.getInstancia().getAllPublications();
+		l = Controller.getInstancia().getAllPublications();
 		for (Publication p : l) {
 			if (p instanceof Album) {
 				JLabel etiqueta = new JLabel();
@@ -306,7 +308,8 @@ public class PanelAlbum {
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-						JLabel l = (JLabel) value;
+
+						System.out.println("MERECONTRAPUTEASTE --> " + l.get(index));
 						
 					}
 					

@@ -93,7 +93,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
 		p.setCodigo(ePublication.getId());
-
+		System.out.println("amo a ver ?????? ---- " + p.getCodigo());
 	}
 
 	public Publication readPublication(int codigo) {
@@ -109,6 +109,7 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			
 			
 		Entidad ePublication;
+		System.out.println("eCodigo = " + codigo);
 		ePublication = servPersistencia.recuperarEntidad(codigo);
 		if (ePublication.getNombre().equals("photo"))
 			return readFoto(codigo);

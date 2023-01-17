@@ -148,6 +148,8 @@ public class UserAdapterTDS implements IUserDAO {
 
 	public void updateUser(User u) {
 		Entidad eUser = servPersistencia.recuperarEntidad(u.getCodigo());
+		
+		System.out.println("updateUser() --> " + u.getPublications());
 
 		for (Propiedad prop : eUser.getPropiedades()) {
 			if (prop.getNombre().equals("username"))

@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -151,8 +152,8 @@ public class Controller implements PropertyChangeListener {
 		if (this.userRepo.getAllEmails().stream().anyMatch(e -> e.equals(email)))
 			return false;
 
-		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion, EncryptDecrypt.encrypt(contrasena), profilePic,
-				new Date());
+		User userNew = new User(username, email, nombreCompleto, fechaNacimiento, descripcion,
+				EncryptDecrypt.encrypt(contrasena), profilePic, new Date());
 		userRepo.createrUser(userNew);
 
 		return true;
@@ -274,7 +275,7 @@ public class Controller implements PropertyChangeListener {
 		this.userRepo.updateUser(u);
 		return b;
 	}
-	
+
 	public boolean meGusta(Publication pub, String user) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
@@ -285,14 +286,14 @@ public class Controller implements PropertyChangeListener {
 
 		return true;
 	}
-	
+
 	public boolean addComentario(Publication pub, String comentario, String user) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
 			return false;
 		pub.anadirComentarios(comentario, userOpt.get().getUsername());
 		this.pubRepo.updatePublication(pub);
-		
+
 		return true;
 	}
 
@@ -314,9 +315,10 @@ public class Controller implements PropertyChangeListener {
 		User u = userOpt.get();
 
 		Foto f = u.createPhoto(titulo, descripcion, path);
-		
+
 		System.out.println("creating foto");
-		pubRepo.createPublication(f);
+		this.pubRepo.createPublication(f);
+		this.userRepo.updateUser(u);
 		return true;
 	}
 
@@ -333,7 +335,7 @@ public class Controller implements PropertyChangeListener {
 			return false;
 
 		User u = userOpt.get();
-		
+
 		u.removePublication(p);
 		this.userRepo.updateUser(u);
 		this.pubRepo.removePublication(p);
@@ -350,14 +352,14 @@ public class Controller implements PropertyChangeListener {
 		User u = userOpt.get();
 
 		Album a = u.createAlbum(titulo, descripcion, path);
-		
-		
+
 		System.out.println("creating album");
+//		this.pubRepo.createPublication(f);
+		this.pubRepo.createPublication(a);
 		this.userRepo.updateUser(u);
 		return true;
 	}
 
-	
 	/**
 	 * We implement notification system through last logins.
 	 * 
@@ -442,7 +444,6 @@ public class Controller implements PropertyChangeListener {
 		}
 		return null;
 	}
-
 
 	/**
 	 * updates some user's account to premium.
@@ -607,47 +608,59 @@ public class Controller implements PropertyChangeListener {
 			System.out.println("newFollowedOpt false");
 			return false;
 		}
-			
 
 		User newFollowed = newFollowedOpt.get();
 
-		if(u.follow(newFollowed))
+		if (u.follow(newFollowed))
 			this.userRepo.updateUser(u);
-		
-		if(newFollowed.addFollower(u))
+
+		if (newFollowed.addFollower(u))
 			this.userRepo.updateUser(newFollowed);
 
-		
 		return true;
 	}
-	
+
+	public List<Publication> getMoreLikedFotos(String user) {
+
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return null;
+
+		User u = userOpt.get();
+
+		return u.getPublications().stream()
+				.sorted(Comparator.comparing(Publication::getLikes).reversed()) 
+				.limit(User.NUM_LIKES_PREMIUM)
+				.collect(Collectors.toList());
+
+	}
+
 	/**
 	 * Checks if f is following u
+	 * 
 	 * @param u
 	 * @param f
 	 * @return true or false
 	 */
 	public boolean checkFollower(String user, String f) {
-		
+
 		// check if user is logged
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty()) {
 			System.out.println("checkFollower(): user not logged");
 			return false;
 		}
-			
 
 		User u = userOpt.get();
-		
+
 		Optional<User> followerOp = this.userRepo.getUser(f);
-		if(followerOp.isEmpty()) {
+		if (followerOp.isEmpty()) {
 			System.out.println("checkFollower(): follower not logged");
 			return false;
 		}
-			
-		
-		User follower = followerOp.get();		
-		
+
+		User follower = followerOp.get();
+
 		return u.getUsuariosSeguidores().contains(follower);
 	}
 

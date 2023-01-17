@@ -36,6 +36,7 @@ public class User {
 	
 	private final static int DEFAULT_PRICE_PREMIUM = 10;
 	private final static int MIN_PASSWD_LENGTH = 6;
+	public final static int NUM_LIKES_PREMIUM = 2;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, String profilePic, boolean premium, Date ultimoLogin) {
@@ -148,10 +149,12 @@ public class User {
 	public Album createAlbum(String titulo, String descripcion, String path) {
 		Foto f = this.createPhoto(titulo, descripcion, path);
 		Album a = new Album(this.username, titulo, new Date(), descripcion, f);
+		
 		this.publications.add(a);
 		this.publications.add(f);
 		return a;
 	}
+	
 	
 	public boolean removePublication(Publication p) {
 		

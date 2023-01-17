@@ -29,6 +29,8 @@ import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelPremiumUser {
 
@@ -94,6 +96,13 @@ public class PanelPremiumUser {
 
 		JButton pdfButton = new JButton("Generate PDF");
 		panel.add(pdfButton);
+		
+		JButton btnNewButton = new JButton("MostLikes");
+		btnNewButton.addActionListener(e -> {
+			Controller.getInstancia().getMoreLikedFotos(user).stream()
+			.forEach(p -> System.out.println(p));
+		});
+		panel.add(btnNewButton);
 
 		pdfButton.addMouseListener(new MouseAdapter() {
 			@Override

@@ -44,6 +44,18 @@ public class Album extends Publication {
 		this.fotos.add(f);
 		
 	}
+	
+	
+	public boolean addFoto(Foto f) {
+		if (!this.fotos.contains(f) && this.fotos.size() < MAX_NUM_PHOTOS)
+			return false;
+		this.fotos.add(f);
+		return true;
+	}
+	
+	
+	// GETTERS AND SETTERS
+	
 
 	public List<Foto> getFotos() {
 		return fotos;
