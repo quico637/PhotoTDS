@@ -146,10 +146,21 @@ public class User {
 		return f;
 	}
 	
+	/**
+	 * Only adds foto if album belongs to user.
+	 * @param a
+	 * @param titulo
+	 * @param descripcion
+	 * @param path
+	 * @return
+	 */
 	public Foto addFotoAlbum(Album a, String titulo, String descripcion, String path) {
-		Foto f = this.createPhoto(titulo, descripcion, path);
+		if(!this.publications.contains(a))
+			return null;
 		
-		this.publications.add(f);
+		Foto f = new Foto(this.username, titulo, new Date(), descripcion, path);
+		
+		a.addFoto(f);
 		return f;
 	}
 	
@@ -158,7 +169,6 @@ public class User {
 		Album a = new Album(this.username, titulo, new Date(), descripcion, f);
 		
 		this.publications.add(a);
-		this.publications.add(f);
 		return a;
 	}
 	

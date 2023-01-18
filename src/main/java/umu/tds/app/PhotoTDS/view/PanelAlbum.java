@@ -64,7 +64,7 @@ public class PanelAlbum {
 	
 	private String userLogged;
 	
-	private static List<Publication> l;
+	private static List<Album> albums = new LinkedList<>();
 
 	
 	public JFrame getFrame() {
@@ -186,13 +186,14 @@ public class PanelAlbum {
 		
 		List<JLabel> labels = new LinkedList<>();
 //		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
-		l = Controller.getInstancia().getAllPublications();
+		List<Publication> l = Controller.getInstancia().getAllPublications();
 		for (Publication p : l) {
 			if (p instanceof Album) {
 				JLabel etiqueta = new JLabel();
 				Image icono = new ImageIcon(((Album)p).getPathProfileFoto()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
 				etiqueta.setIcon(new ImageIcon(icono));
 				labels.add(etiqueta);
+				albums.add((Album) p);
 				System.out.println("Publicacion: " + p);
 			}
 		}
@@ -271,21 +272,6 @@ public class PanelAlbum {
 			panelPerfil.add(follow, gbc_logout);
 		}
 		
-
-//		JButton createPdf = new JButton("PDF");
-//		createPdf.addActionListener(e -> {
-//			
-//			JFileChooser chooser = new JFileChooser();
-//			chooser.showSaveDialog(null);
-//
-//			if (chooser.getSelectedFile() != null) {
-//
-//				String fichero = chooser.getSelectedFile().getAbsolutePath();
-//				Controller.getInstancia().createPdf(user, fichero);
-//
-//			}
-//		});
-//		panelPerfil.add(createPdf);
 		
 		
 		
@@ -308,7 +294,7 @@ public class PanelAlbum {
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-						JPanel panelAlbumFotos = new PanelAlbumFotos(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelAlbumFotos = new PanelAlbumFotos(albums.get(index), albums.get(index).getCreator()).getPanel();
 						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
 						panelCentralCardLayout.add(panelAlbumFotos, "panelAlbumFotos");
 						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();

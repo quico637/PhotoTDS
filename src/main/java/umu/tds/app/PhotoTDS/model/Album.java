@@ -55,6 +55,8 @@ public class Album extends Publication {
 	
 	@Override
 	public void addMeGusta() {
+		super.addMeGusta();
+		
 		 this.fotos.stream()
 		 	.forEach(f -> f.addMeGusta());
 	}

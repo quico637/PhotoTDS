@@ -653,6 +653,7 @@ public class Controller implements PropertyChangeListener {
 		User u = userOpt.get();
 		Foto f = u.addFotoAlbum(a, titulo, descripcion, path);
 
+		this.pubRepo.createPublication(f);
 		this.userRepo.updateUser(u);
 //		this.pubRepo.createPublication(a);
 		return true;
