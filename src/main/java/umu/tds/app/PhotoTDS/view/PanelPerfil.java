@@ -1,9 +1,6 @@
 package umu.tds.app.PhotoTDS.view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -11,9 +8,6 @@ import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.eclipse.persistence.jpa.jpql.parser.DatabaseTypeFactory;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
 import umu.tds.app.PhotoTDS.model.Foto;
@@ -36,14 +30,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
@@ -61,7 +48,7 @@ public class PanelPerfil {
 	private String profilePath;
 	private JPanel panelPerfil;
 	
-	private static List<Publication> l;
+	private static List<Foto> l;
 	
 	private User use;
 	
@@ -212,7 +199,7 @@ public class PanelPerfil {
 		panelPerfil.add(scrollPane, gbc_scrollPane);
 		
 		List<JLabel> labels = new LinkedList<>();
-		l = Controller.getInstancia().getUser(userLogged).get().getPublications();
+		l = Controller.getInstancia().getFotosProfile(user);
 		for (Publication p : l) {
 			System.out.println("p -  -- -- - - --");
 			if (p instanceof Foto) {

@@ -6,9 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import umu.tds.app.PhotoTDS.model.HashTag;
 import umu.tds.app.PhotoTDS.model.Publication;
+import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.persistence.DAOException;
 import umu.tds.app.PhotoTDS.persistence.DAOFactory;
 import umu.tds.app.PhotoTDS.persistence.IPublicationDAO;
@@ -53,7 +55,7 @@ public class PublicationRepository {
 	
 	public void updatePublication(Publication p) {
 		this.publicationAdapter.updatePublication(p);
-		
+//		this.publications.put(p.getTitulo(), p);
 	}
 	
 	public void removePublication(Publication p) {
@@ -78,6 +80,18 @@ public class PublicationRepository {
 
 	public Set<Publication> getAllPublications() {
 		return new LinkedHashSet<>(this.publications.values());
+	}
+	
+	public List<Publication> getAllPublicationsUser(String u) {
+		return this.getAllPublications().stream()
+			.filter(p -> p.getCreator().equals(u))
+			.collect(Collectors.toList());
+	}
+	
+	public List<Publication> getPublicationsFromFollowers(User u) {
+		return this.publications.values().stream()
+				.filter(p -> u.getUsuariosSeguidos().contains(UserRepository.getInstancia().getUser(p.getCreator()).get()))
+				.collect(Collectors.toList());
 	}
 
 }

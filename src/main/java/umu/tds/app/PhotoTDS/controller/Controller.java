@@ -32,8 +32,6 @@ import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.Utils;
 import umu.tds.app.PhotoTDS.model.repositories.PublicationRepository;
 import umu.tds.app.PhotoTDS.model.repositories.UserRepository;
-import umu.tds.fotos.CargadorFotos;
-import umu.tds.fotos.MapperFotosXMLtoJava;
 
 /**
  * 
@@ -55,7 +53,7 @@ public class Controller implements PropertyChangeListener {
 	private Controller() {
 		this.logins = new HashMap<>();
 		this.valids = new HashMap<>();
-		CargadorFotos.getUnicaInstancia().addCancionesListener(this);
+		umu.tds.fotos.CargadorFotos.getUnicaInstancia().addCancionesListener(this);
 		inicializarCatalogos();
 
 	}
@@ -64,7 +62,7 @@ public class Controller implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 
-		umu.tds.fotos.Fotos fotos = MapperFotosXMLtoJava.cargarFotos(evt.getNewValue().toString());
+		umu.tds.fotos.Fotos fotos = umu.tds.fotos.MapperFotosXMLtoJava.cargarFotos(evt.getNewValue().toString());
 		for (umu.tds.fotos.Foto f : fotos.getFoto()) {
 			if (this.currentuser.isEmpty())
 				continue;
@@ -371,7 +369,9 @@ public class Controller implements PropertyChangeListener {
 		if (userOpt.isEmpty())
 			return null;
 
-		String u = userOpt.get().getUsername();
+		User us =  userOpt.get();
+		String u =	us.getUsername();
+		
 
 		List<Date> d = this.logins.get(u);
 		int index;
@@ -386,9 +386,10 @@ public class Controller implements PropertyChangeListener {
 		System.out.println(d);
 
 		// pillo la vez anterior que entro.
-		List<Publication> l = new LinkedList<>(this.pubRepo.getAllPublications().stream().
-		// filter(p -> p.getFechaPublicacion().after(userOpt.get().getUltimoLogin())).
-				collect(Collectors.toList()));
+		List<Publication> l = this.pubRepo.getPublicationsFromFollowers(us).stream()
+			.filter(p -> p.getFechaPublicacion().after(us.getUltimoLogin()))
+			.filter(p -> us.checkPublicationInAlbums(p))
+			.collect(Collectors.toList());
 
 		for (Publication p : l) {
 			System.out.println("[PUB]: " + p.getTitulo() + p.getHashTags());
@@ -475,7 +476,7 @@ public class Controller implements PropertyChangeListener {
 		if (userOpt.isEmpty())
 			return;
 
-		CargadorFotos.getUnicaInstancia().setArchivoCanciones(f);
+		umu.tds.fotos.CargadorFotos.getUnicaInstancia().setArchivoCanciones(f);
 
 	}
 
@@ -627,10 +628,27 @@ public class Controller implements PropertyChangeListener {
 			return null;
 
 		User u = userOpt.get();
+		if(!u.isPremium())
+			return null;
 
 		return u.getPublications().stream()
 				.sorted(Comparator.comparing(Publication::getLikes).reversed()) 
 				.limit(User.NUM_LIKES_PREMIUM)
+				.collect(Collectors.toList());
+
+	}
+	
+	public List<Publication> lastLikedFotos(String user) {
+
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return null;
+
+		User u = userOpt.get();
+
+		return u.getPublications().stream()
+				.sorted(Comparator.comparing(Publication::getFechaPublicacion).reversed()) 
+				.limit(User.LAST_LIKED_PICTURES)
 				.collect(Collectors.toList());
 
 	}
@@ -644,6 +662,23 @@ public class Controller implements PropertyChangeListener {
 		return this.pubRepo.getPublication(title);
 		
 	}
+	
+	public List<Foto> getFotosProfile(String user) {
+//		Optional<User> userOpt = checkLoginAndGetUser(user);
+//		if (userOpt.isEmpty())
+//			return null;
+//		User u = userOpt.get();
+		Optional<User> userOpt = this.userRepo.getUser(user);
+		if(userOpt.isEmpty())
+			return null;
+		
+		User u = userOpt.get();
+		
+		return this.pubRepo.getAllPublicationsUser(u.getUsername()).stream()
+				.filter(p -> p instanceof Foto)
+				.map(p -> (Foto) p)
+				.collect(Collectors.toList());
+	}
 		
 	public boolean addNewPicture(String user, Album a, String titulo, String descripcion, String path) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
@@ -654,6 +689,7 @@ public class Controller implements PropertyChangeListener {
 		Foto f = u.addFotoAlbum(a, titulo, descripcion, path);
 
 		this.pubRepo.createPublication(f);
+		this.pubRepo.updatePublication(a);
 		this.userRepo.updateUser(u);
 //		this.pubRepo.createPublication(a);
 		return true;
@@ -688,5 +724,7 @@ public class Controller implements PropertyChangeListener {
 
 		return u.getUsuariosSeguidores().contains(follower);
 	}
+	
+	
 
 }

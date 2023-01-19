@@ -47,7 +47,7 @@ public class Album extends Publication {
 	
 	
 	public boolean addFoto(Foto f) {
-		if (!this.fotos.contains(f) && this.fotos.size() < MAX_NUM_PHOTOS)
+		if (this.fotos.contains(f) || this.fotos.size() >= MAX_NUM_PHOTOS)
 			return false;
 		this.fotos.add(f);
 		return true;
@@ -61,12 +61,15 @@ public class Album extends Publication {
 		 	.forEach(f -> f.addMeGusta());
 	}
 	
+	public boolean checkFoto(Foto f) {
+		return this.fotos.contains(f);
+	}
 	
 	// GETTERS AND SETTERS
 	
 
 	public List<Foto> getFotos() {
-		return fotos;
+		return new LinkedList<>(fotos);
 	}
 	
 	public void setFotos(List<Foto> fotos) {
@@ -76,6 +79,7 @@ public class Album extends Publication {
 	public String getPathProfileFoto() {
 		return this.fotos.get(0).getPath();
 	}
+
 	
 	
 

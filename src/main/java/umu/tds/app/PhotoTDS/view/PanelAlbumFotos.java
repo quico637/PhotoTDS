@@ -60,7 +60,7 @@ public class PanelAlbumFotos {
 	private final static int Y = 150;
 	private JFrame frame;
 
-	private Publication publicacion;
+	private Album publicacion;
 	private String profilePath;
 	private JPanel panel;
 	private static List<Foto> l;
@@ -95,10 +95,11 @@ public class PanelAlbumFotos {
 
 	}
 
-	public PanelAlbumFotos(Publication publicacion, String userLogged) {
+	public PanelAlbumFotos(Album publicacion, String userLogged) {
 		super();
 		this.userLogged = userLogged;
 		this.publicacion = publicacion;
+		System.out.println("titulo album: " + this.publicacion.getTitulo());
 		initialize();
 	}
 
@@ -136,12 +137,8 @@ public class PanelAlbumFotos {
 		panel.add(profPicEdit, gbc_profPicEdit);
 		profPicEdit.setBounds(0, 0, 40, 40);
 		Image imageEdit;
-		if(publicacion instanceof Album) {
-			imageEdit = createImageIcon(((Album) publicacion).getFotos().get(0).getPath()).getImage().getScaledInstance(200, 200,
-					Image.SCALE_SMOOTH);
-		} else {
-			imageEdit = createImageIcon(((Foto) publicacion).getPath()).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-		}
+		imageEdit = createImageIcon(((Album) publicacion).getFotos().get(0).getPath()).getImage().getScaledInstance(200,
+				200, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(imageEdit);
 		profPicEdit.setIcon(icon);
 
@@ -200,7 +197,7 @@ public class PanelAlbumFotos {
 		panel.add(scrollPane, gbc_scrollPane);
 
 		List<JLabel> labels = new LinkedList<>();
-		l = ((Album)publicacion).getFotos();
+		l = ((Album) publicacion).getFotos();
 		for (Foto p : l) {
 			JLabel etiqueta = new JLabel();
 			Image imagen = createImageIcon(((Foto) p).getPath()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
@@ -219,10 +216,10 @@ public class PanelAlbumFotos {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
-		
+
 		JButton deleteBtn = new JButton("");
 		deleteBtn.addActionListener(e -> {
-			if(!Controller.getInstancia().removePublication(userLogged, publicacion))
+			if (!Controller.getInstancia().removePublication(userLogged, publicacion))
 				System.out.println("User Not logged in PanelFoto.");
 		});
 		deleteBtn.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
@@ -231,14 +228,15 @@ public class PanelAlbumFotos {
 		gbc_deleteBtn.gridx = 1;
 		gbc_deleteBtn.gridy = 8;
 		panel.add(deleteBtn, gbc_deleteBtn);
-		
+
 		JButton btnNewButton = new JButton("");
 		btnNewButton.addActionListener(e -> {
-			// Hay que cambiarlo a AlbumAddWindow	- Crealo yulari mentiendono
-			AlbumWindowFotos pw = new AlbumWindowFotos(userLogged, (Album)publicacion);
+			// Hay que cambiarlo a AlbumAddWindow - Crealo yulari mentiendono
+			AlbumWindowFotos pw = new AlbumWindowFotos(userLogged, publicacion);
 			pw.showWindow(frame);
 		});
-		btnNewButton.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/anadir-imagen.png")));
+		btnNewButton.setIcon(
+				new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/anadir-imagen.png")));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 4;

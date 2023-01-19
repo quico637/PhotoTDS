@@ -37,6 +37,7 @@ public class User {
 	private final static int DEFAULT_PRICE_PREMIUM = 10;
 	private final static int MIN_PASSWD_LENGTH = 6;
 	public final static int NUM_LIKES_PREMIUM = 2;
+	public final static int LAST_LIKED_PICTURES = 2;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, String profilePic, boolean premium, Date ultimoLogin) {
@@ -155,8 +156,10 @@ public class User {
 	 * @return
 	 */
 	public Foto addFotoAlbum(Album a, String titulo, String descripcion, String path) {
-		if(!this.publications.contains(a))
-			return null;
+//		if(!this.publications.contains(a)) {
+//			System.out.println("MOSCAS GORDAS");
+//			return null;
+//		}
 		
 		Foto f = new Foto(this.username, titulo, new Date(), descripcion, path);
 		
@@ -177,6 +180,18 @@ public class User {
 	public boolean removePublication(Publication p) {
 		
 		return this.publications.remove(p);
+	}
+	
+	public boolean checkPublicationInAlbums(Publication pub) {
+		if(pub instanceof Album)
+			return false;
+		for(Publication p : this.publications) {
+			if(p instanceof Album) {
+				if(((Album)p).checkFoto((Foto) pub))
+					return true;
+			}
+		}
+		return true;
 	}
 
 	// CALCULATED PROPERTIES.
