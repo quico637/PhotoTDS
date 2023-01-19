@@ -36,8 +36,8 @@ public class User {
 	
 	private final static int DEFAULT_PRICE_PREMIUM = 10;
 	private final static int MIN_PASSWD_LENGTH = 6;
-	public final static int NUM_LIKES_PREMIUM = 2;
-	public final static int LAST_LIKED_PICTURES = 2;
+	public final static int NUM_LIKES_PREMIUM = 3;
+	public final static int LAST_LIKED_PICTURES = 3;
 	
 	public User(String username, String email, String nombreCompleto, Date fechaNacimiento, String descripcion,
 			String contrasena, String profilePic, boolean premium, Date ultimoLogin) {

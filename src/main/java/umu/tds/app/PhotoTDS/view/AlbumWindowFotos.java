@@ -1,6 +1,10 @@
 package umu.tds.app.PhotoTDS.view;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
@@ -70,14 +74,61 @@ public class AlbumWindowFotos {
 		frame.setBounds(100, 100, 450, 300);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
+		JPanel panel_1 = new JPanel();
+		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
+		
+		JLabel lblNewLabel_2 = new JLabel("New Photo to Album");
+		lblNewLabel_2.setFont(new Font("Dialog", Font.BOLD, 16));
+		panel_1.add(lblNewLabel_2);
+		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{60, 86, 61, 50, 0};
+		gbl_panel.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 23, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		JButton btnNewButton_1 = new JButton("Add Photo To Album");
+		btnNewButton_1.addActionListener(e -> {
+			this.hideWindow();
+			if(Controller.getInstancia().addNewPicture(this.user, album, textField_1.getText(), textField.getText(), path))
+				System.out.println("NOOO");
+		});
+		
+		JLabel lblNewLabel_1 = new JLabel("Titulo:");
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 1;
+		gbc_lblNewLabel_1.gridy = 1;
+		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		textField_1 = new JTextField();
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_1.gridx = 2;
+		gbc_textField_1.gridy = 1;
+		panel.add(textField_1, gbc_textField_1);
+		textField_1.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Description: ");
-		panel.add(lblNewLabel);
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 2;
+		panel.add(lblNewLabel, gbc_lblNewLabel);
 		
 		textField = new JTextField();
-		panel.add(textField);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 2;
+		panel.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Select");
@@ -91,26 +142,25 @@ public class AlbumWindowFotos {
 				path = chooser.getSelectedFile().getPath();
 			}
 		});
-		panel.add(btnNewButton);
 		
-		
-		JButton btnNewButton_2 = new JButton("Check");
-		panel.add(btnNewButton_2);
-		
-		JLabel lblNewLabel_1 = new JLabel("Titulo:");
-		panel.add(lblNewLabel_1);
-		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(10);
-		
-		JButton btnNewButton_1 = new JButton("SendFotoToAlbum");
-		btnNewButton_1.addActionListener(e -> {
-			this.hideWindow();
-			if(Controller.getInstancia().addNewPicture(this.user, album, textField_1.getText(), textField.getText(), path))
-				System.out.println("NOOO");
-		});
-		panel.add(btnNewButton_1);
+		JLabel lblNewLabel_3 = new JLabel("Choose Photo:");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.gridx = 1;
+		gbc_lblNewLabel_3.gridy = 3;
+		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton.gridx = 2;
+		gbc_btnNewButton.gridy = 3;
+		panel.add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton_1.gridx = 2;
+		gbc_btnNewButton_1.gridy = 5;
+		panel.add(btnNewButton_1, gbc_btnNewButton_1);
 
 		
 	}

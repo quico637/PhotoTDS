@@ -66,7 +66,6 @@ public class PanelAlbumFotos {
 	private static List<Foto> l;
 
 	private String userLogged;
-	private JTextField textField;
 
 	public JFrame getFrame() {
 		return this.frame;
@@ -113,15 +112,15 @@ public class PanelAlbumFotos {
 
 		panel = new JPanel();
 		GridBagLayout gbl_panelFoto = new GridBagLayout();
-		gbl_panelFoto.columnWidths = new int[] { 40, 0, 0, 0, 0, 40, 0 };
+		gbl_panelFoto.columnWidths = new int[] { 40, 0, 0, 0, 0, 40, 40, 0 };
 		gbl_panelFoto.rowHeights = new int[] { 40, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panelFoto.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelFoto.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_panelFoto.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panelFoto);
 
 		JLabel userName = new JLabel(publicacion.getCreator() + " : " + publicacion.getTitulo());
 		GridBagConstraints gbc_userName = new GridBagConstraints();
-		gbc_userName.gridwidth = 4;
+		gbc_userName.gridwidth = 5;
 		gbc_userName.insets = new Insets(0, 0, 5, 5);
 		gbc_userName.gridx = 1;
 		gbc_userName.gridy = 1;
@@ -129,7 +128,7 @@ public class PanelAlbumFotos {
 
 		JLabel profPicEdit = new JLabel();
 		GridBagConstraints gbc_profPicEdit = new GridBagConstraints();
-		gbc_profPicEdit.gridwidth = 4;
+		gbc_profPicEdit.gridwidth = 5;
 		gbc_profPicEdit.gridheight = 3;
 		gbc_profPicEdit.insets = new Insets(0, 0, 5, 5);
 		gbc_profPicEdit.gridx = 1;
@@ -141,55 +140,63 @@ public class PanelAlbumFotos {
 				200, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(imageEdit);
 		profPicEdit.setIcon(icon);
-
-		JLabel lblNewLabel = new JLabel("");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 5;
-		panel.add(lblNewLabel, gbc_lblNewLabel);
-		lblNewLabel.setText(Integer.toString(publicacion.getLikes()));
-
-		JButton like = new JButton("");
-		like.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
-		GridBagConstraints gbc_like = new GridBagConstraints();
-		gbc_like.fill = GridBagConstraints.HORIZONTAL;
-		gbc_like.insets = new Insets(0, 0, 5, 5);
-		gbc_like.gridx = 2;
-		gbc_like.gridy = 5;
-		panel.add(like, gbc_like);
-		like.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				Controller.getInstancia().meGusta(publicacion, userLogged);
-			}
-		});
-
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 5;
-		panel.add(textField, gbc_textField);
-		textField.setColumns(10);
-
-		JButton send = new JButton("");
-		send.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/send.png")));
-		GridBagConstraints gbc_send = new GridBagConstraints();
-		gbc_send.fill = GridBagConstraints.HORIZONTAL;
-		gbc_send.insets = new Insets(0, 0, 5, 5);
-		gbc_send.gridx = 4;
-		gbc_send.gridy = 5;
-		panel.add(send, gbc_send);
-		send.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				Controller.getInstancia().addComentario(publicacion, textField.getText(), userLogged);
-			}
-		});
+				
+						JButton btnNewButton = new JButton("");
+						btnNewButton.addActionListener(e -> {
+							// Hay que cambiarlo a AlbumAddWindow - Crealo yulari mentiendono
+							AlbumWindowFotos pw = new AlbumWindowFotos(userLogged, publicacion);
+							pw.showWindow(frame);
+						});
+								
+										JLabel lblNewLabel = new JLabel("");
+										GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+										gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+										gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+										gbc_lblNewLabel.gridx = 1;
+										gbc_lblNewLabel.gridy = 5;
+										panel.add(lblNewLabel, gbc_lblNewLabel);
+										lblNewLabel.setText(Integer.toString(publicacion.getLikes()));
+						
+								JButton like = new JButton("");
+								like.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+									}
+								});
+								like.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
+								GridBagConstraints gbc_like = new GridBagConstraints();
+								gbc_like.fill = GridBagConstraints.HORIZONTAL;
+								gbc_like.insets = new Insets(0, 0, 5, 5);
+								gbc_like.gridx = 2;
+								gbc_like.gridy = 5;
+								panel.add(like, gbc_like);
+								like.addMouseListener(new MouseAdapter() {
+									public void mouseClicked(MouseEvent e) {
+										Controller.getInstancia().meGusta(publicacion, userLogged);
+									}
+								});
+						btnNewButton.setIcon(
+								new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/anadir-imagen.png")));
+						GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+						gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+						gbc_btnNewButton.gridx = 4;
+						gbc_btnNewButton.gridy = 5;
+						panel.add(btnNewButton, gbc_btnNewButton);
+		
+				JButton deleteBtn = new JButton("");
+				deleteBtn.addActionListener(e -> {
+					if (!Controller.getInstancia().removePublication(userLogged, publicacion))
+						System.out.println("User Not logged in PanelFoto.");
+				});
+				deleteBtn.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
+				GridBagConstraints gbc_deleteBtn = new GridBagConstraints();
+				gbc_deleteBtn.insets = new Insets(0, 0, 5, 5);
+				gbc_deleteBtn.gridx = 5;
+				gbc_deleteBtn.gridy = 5;
+				panel.add(deleteBtn, gbc_deleteBtn);
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 4;
+		gbc_scrollPane.gridwidth = 5;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
@@ -216,32 +223,6 @@ public class PanelAlbumFotos {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
-
-		JButton deleteBtn = new JButton("");
-		deleteBtn.addActionListener(e -> {
-			if (!Controller.getInstancia().removePublication(userLogged, publicacion))
-				System.out.println("User Not logged in PanelFoto.");
-		});
-		deleteBtn.setIcon(new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
-		GridBagConstraints gbc_deleteBtn = new GridBagConstraints();
-		gbc_deleteBtn.insets = new Insets(0, 0, 0, 5);
-		gbc_deleteBtn.gridx = 1;
-		gbc_deleteBtn.gridy = 8;
-		panel.add(deleteBtn, gbc_deleteBtn);
-
-		JButton btnNewButton = new JButton("");
-		btnNewButton.addActionListener(e -> {
-			// Hay que cambiarlo a AlbumAddWindow - Crealo yulari mentiendono
-			AlbumWindowFotos pw = new AlbumWindowFotos(userLogged, publicacion);
-			pw.showWindow(frame);
-		});
-		btnNewButton.setIcon(
-				new ImageIcon(PanelAlbumFotos.class.getResource("/umu/tds/app/PhotoTDS/images/anadir-imagen.png")));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 4;
-		gbc_btnNewButton.gridy = 8;
-		panel.add(btnNewButton, gbc_btnNewButton);
 
 	}
 

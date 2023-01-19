@@ -222,7 +222,7 @@ public class PanelPerfil {
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
 				
-		JButton btnNewButton_1 = new JButton("Albumes");
+		JButton btnNewButton_1 = new JButton("Albums");
 		btnNewButton_1.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
 			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelAlbum");

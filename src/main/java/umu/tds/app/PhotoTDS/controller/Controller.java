@@ -630,6 +630,7 @@ public class Controller implements PropertyChangeListener {
 		User u = userOpt.get();
 
 		return u.getPublications().stream()
+				.filter(p -> p.getLikes()>0)
 				.sorted(Comparator.comparing(Publication::getFechaPublicacion).reversed()) 
 				.limit(User.LAST_LIKED_PICTURES)
 				.collect(Collectors.toList());

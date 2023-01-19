@@ -61,6 +61,7 @@ public class PanelAlbum {
 	private String user;
 	private String profilePath;
 	private JPanel panelPerfil;
+	private User use;
 	
 	private String userLogged;
 	
@@ -101,6 +102,8 @@ public class PanelAlbum {
 		super();
 		this.user = user;
 		this.userLogged = userLogged;
+		Optional<User> us = Controller.getInstancia().getUser(userLogged);
+		this.use = us.get();
 		initialize();
 	}
 	
@@ -148,22 +151,34 @@ public class PanelAlbum {
 		gbc_userName.gridy = 1;
 		panelPerfil.add(userName, gbc_userName);
 		
-		JLabel lblNewLabel = new JLabel("Seguidores");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 4;
-		gbc_lblNewLabel.gridy = 2;
-		panelPerfil.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel seguidoresLabel = new JLabel("Followers");
+		GridBagConstraints gbc_seguidoresLabel = new GridBagConstraints();
+		gbc_seguidoresLabel.anchor = GridBagConstraints.WEST;
+		gbc_seguidoresLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_seguidoresLabel.gridx = 4;
+		gbc_seguidoresLabel.gridy = 2;
+		panelPerfil.add(seguidoresLabel, gbc_seguidoresLabel);
 		
-		JLabel completeName = new JLabel(use.getNombreCompleto());
-		GridBagConstraints gbc_completeName = new GridBagConstraints();
-		gbc_completeName.anchor = GridBagConstraints.WEST;
-		gbc_completeName.gridwidth = 2;
-		gbc_completeName.insets = new Insets(0, 0, 5, 5);
-		gbc_completeName.gridx = 4;
-		gbc_completeName.gridy = 3;
-		panelPerfil.add(completeName, gbc_completeName);
+		JLabel seguidosLabel = new JLabel("Following");
+		GridBagConstraints gbc_seguidosLabel = new GridBagConstraints();
+		gbc_seguidosLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_seguidosLabel.gridx = 5;
+		gbc_seguidosLabel.gridy = 2;
+		panelPerfil.add(seguidosLabel, gbc_seguidosLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel(Integer.toString(this.use.getNumFollowers()));
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 4;
+		gbc_lblNewLabel_1.gridy = 3;
+		panelPerfil.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		JLabel lblNewLabel = new JLabel(Integer.toString(this.use.getNumFollowing()));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 5;
+		gbc_lblNewLabel.gridy = 3;
+		panelPerfil.add(lblNewLabel, gbc_lblNewLabel);
 		
 		JButton editButton = new JButton("Edit Profile");
 		GridBagConstraints gbc_editButton = new GridBagConstraints();
@@ -174,6 +189,15 @@ public class PanelAlbum {
 		
 		if(isUserLogged())
 		panelPerfil.add(editButton, gbc_editButton);
+		
+		JLabel completeName = new JLabel(use.getNombreCompleto());
+		GridBagConstraints gbc_completeName = new GridBagConstraints();
+		gbc_completeName.anchor = GridBagConstraints.WEST;
+		gbc_completeName.gridwidth = 2;
+		gbc_completeName.insets = new Insets(0, 0, 5, 5);
+		gbc_completeName.gridx = 4;
+		gbc_completeName.gridy = 4;
+		panelPerfil.add(completeName, gbc_completeName);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -208,19 +232,20 @@ public class PanelAlbum {
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
 		
-		JButton btnNewButton = new JButton("Fotos");
+		JButton btnNewButton = new JButton("Photos");
 		btnNewButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
 			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelPerfil");
 		});
 		
-		JButton btnNewButton_1 = new JButton("A+");
+		JButton btnNewButton_1 = new JButton("Add album");
 		btnNewButton_1.addActionListener(e -> {
 			
 			AlbumWindow pw = new AlbumWindow(user);
 			pw.showWindow(frame);
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_1.gridx = 1;
 		gbc_btnNewButton_1.gridy = 6;
