@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import umu.tds.app.PhotoTDS.model.HashTag;
@@ -63,13 +64,15 @@ public class PublicationRepository {
 		this.publicationAdapter.deletePublication(p);
 	}
 	
-	public List<Publication> getPublicationsFromHtg(HashTag hashtag) {
-		List<Publication> l = new LinkedList<>();
-		for(Publication p : this.publications.values()) {
-			if(p.getHashTags().stream().anyMatch(h -> h.getName().equals(hashtag.getName())))
-				l.add(p);
-		}
-		return l;
+	public List<Object> getPublicationsFromHtg(List<String> hashtags) {
+				
+		return this.publications.values().stream()
+			.filter(p -> p.getHashtags().stream()
+							.map(HashTag::getName)
+							.collect(Collectors.toList()).containsAll(hashtags))
+			.map(p -> (Object) p)
+			.collect(Collectors.toList());
+					
 	}
 
 	private void cargarCatalogo() throws DAOException {

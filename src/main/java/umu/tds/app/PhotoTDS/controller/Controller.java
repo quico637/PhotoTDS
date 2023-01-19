@@ -352,7 +352,6 @@ public class Controller implements PropertyChangeListener {
 		Album a = u.createAlbum(titulo, descripcion, path);
 
 		System.out.println("creating album");
-//		this.pubRepo.createPublication(f);
 		this.pubRepo.createPublication(a);
 		this.userRepo.updateUser(u);
 		return true;
@@ -369,21 +368,7 @@ public class Controller implements PropertyChangeListener {
 		if (userOpt.isEmpty())
 			return null;
 
-		User us =  userOpt.get();
-		String u =	us.getUsername();
-		
-
-		List<Date> d = this.logins.get(u);
-		int index;
-		if (d.size() < 2)
-			index = d.size() - 1;
-		else {
-			index = d.size() - 2;
-			System.out.println("Es mayorq 2");
-		}
-
-		System.out.println("index: " + index);
-		System.out.println(d);
+		User us =  userOpt.get();		
 
 		// pillo la vez anterior que entro.
 		List<Publication> l = this.pubRepo.getPublicationsFromFollowers(us).stream()
@@ -417,9 +402,7 @@ public class Controller implements PropertyChangeListener {
 		List<Object> l = new LinkedList<>();
 
 		if (Utils.isHashtag(b)) {
-			for (HashTag h : Utils.getHashTagFromFinder(b))
-				l.addAll(this.pubRepo.getPublicationsFromHtg(h));
-			System.out.println("Hashtags: " + l);
+			l = this.pubRepo.getPublicationsFromHtg(Utils.getHashTagFromFinder(b));
 			return l;
 		}
 

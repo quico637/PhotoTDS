@@ -50,16 +50,18 @@ public class Utils {
 		return s.charAt(0) == '#';
 	}
 	
-	public static List<HashTag> getHashTagFromFinder(String text) {
-		List<HashTag> lh = new LinkedList<>();
+	public static List<String> getHashTagFromFinder(String text) {
+//		List<HashTag> lh = new LinkedList<>();
+		List<String> lh = new LinkedList<>();
 		
 		String[] listaPalabras = text.split(" "); 
 		for(String palabra : listaPalabras) {
 			
 			if(Utils.isHashtag(palabra)) {
-				HashTag has = HashTag.createHashtag(palabra);
-				if(has != null)
-					lh.add(has);
+//				HashTag has = HashTag.createHashtag(palabra);
+//				if(has != null)
+//					lh.add(has);
+				lh.add(palabra);
 			}
 		}
 		return lh;
