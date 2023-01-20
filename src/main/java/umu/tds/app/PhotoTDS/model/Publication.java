@@ -38,7 +38,6 @@ public class Publication {
 			List<HashTag> hashtags, List<Comentario> comentarios) {
 		this(creator, titulo, fechaPublicacion, descripcion);
 		this.hashtags = hashtags;
-		System.out.println("FOTOHASTAGS ¿¿¿¿¿¿¿¿¿ " + this.hashtags);
 		this.comentarios = comentarios;
 
 	}

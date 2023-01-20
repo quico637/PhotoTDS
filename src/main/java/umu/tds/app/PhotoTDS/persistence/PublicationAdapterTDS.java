@@ -70,7 +70,6 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 							new Propiedad("comentarios", obtenerCodigosComentarios(p.getComentarios())),
 							new Propiedad("path", ((Foto) p).getPath()))));
 
-			System.out.println("estoy en pub adapter()");
 			
 		} else if (p instanceof Album) {
 			
@@ -93,7 +92,6 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
 		p.setCodigo(ePublication.getId());
-		System.out.println("amo a ver ?????? ---- " + p.getCodigo());
 	}
 
 	public Publication readPublication(int codigo) {
@@ -109,7 +107,6 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			
 			
 		Entidad ePublication;
-		System.out.println("eCodigo = " + codigo);
 		ePublication = servPersistencia.recuperarEntidad(codigo);
 		if (ePublication.getNombre().equals("photo"))
 			return readFoto(codigo);
@@ -158,7 +155,6 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, p);
 		
-		System.out.println("CoMENTARIOS: " + comentarios);
 		p.setHashtags(obtenerHashTagsDesdeCodigos(hashtags)); 
 		p.setComentarios(obtenerComentariosDesdeCodigos(comentarios));
 
@@ -284,6 +280,9 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 
 	public void deletePublication(Publication p) {
 		Entidad ePublication = servPersistencia.recuperarEntidad(p.getCodigo());
+		
+		if(p instanceof Album)
+			((Album)p).getFotos().stream().forEach(f -> getInstance().deletePublication(f));
 
 		servPersistencia.borrarEntidad(ePublication);
 	}
@@ -298,7 +297,6 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 
 		for (Entidad eCliente : ePublication) {
 			publicaciones.add(readPublication(eCliente.getId()));
-			System.out.println("readed pub " + eCliente.getId());
 		}
 		return publicaciones;
 	}

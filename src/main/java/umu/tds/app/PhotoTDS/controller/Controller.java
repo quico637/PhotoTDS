@@ -2,8 +2,6 @@ package umu.tds.app.PhotoTDS.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,20 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import umu.tds.app.PhotoTDS.model.Album;
-import umu.tds.app.PhotoTDS.model.Comentario;
 import umu.tds.app.PhotoTDS.model.EncryptDecrypt;
 import umu.tds.app.PhotoTDS.model.Foto;
-import umu.tds.app.PhotoTDS.model.HashTag;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
 import umu.tds.app.PhotoTDS.model.Utils;
@@ -67,9 +55,7 @@ public class Controller implements PropertyChangeListener {
 			return;
 		User u = this.currentuser.get();
 		
-		int n = 0;
 		for (umu.tds.fotos.Foto f : fotos.getFoto()) {
-//			Foto foto = u.createPhoto(f.getTitulo(), f.getDescripcion(), f.getPath(), f.getHashTags().stream().flatMap(h -> h.getHashTag().stream()).collect(Collectors.toList()));
 			Foto foto = u.createPhoto(f.getTitulo(), f.getDescripcion(), f.getPath(), f.getHashTags().get(0).getHashTag());
 
 			this.pubRepo.createPublication(foto);
@@ -91,6 +77,28 @@ public class Controller implements PropertyChangeListener {
 		userRepo = UserRepository.getInstancia();
 		pubRepo = PublicationRepository.getInstancia();
 	}
+	
+	/**
+	 * checks if user has logged in, and returns its User instance from username /
+	 * email String
+	 * 
+	 * @param user
+	 * @return
+	 */
+	private Optional<User> checkLoginAndGetUser(String user) {
+		if (!this.logins.containsKey(user))
+			return Optional.empty();
+
+		if (!this.valids.get(user))
+			return Optional.empty();
+
+		Optional<User> u = this.userRepo.getUser(user);
+		if (u.isPresent())
+			return u;
+
+		u = this.userRepo.getUserByEmail(user);
+		return u;
+	}
 
 	/**
 	 * 
@@ -102,7 +110,6 @@ public class Controller implements PropertyChangeListener {
 	public boolean login(String username, String constrasena) {
 		Optional<User> usuario = UserRepository.getInstancia().getUser(username);
 
-		System.out.println("Pre-PRE-moscas");
 		if (usuario.isEmpty())
 			return false;
 		User u = usuario.get();
@@ -111,9 +118,6 @@ public class Controller implements PropertyChangeListener {
 		if (!emails.contains(username) && !username.equals(u.getUsername()))
 			return false;
 
-		System.out.println("moscas22222");
-		System.out.println(constrasena);
-		System.out.println(EncryptDecrypt.decrypt(u.getContrasena()));
 		if (!u.getContrasena().equals(EncryptDecrypt.encrypt(constrasena)))
 			return false;
 
@@ -133,9 +137,26 @@ public class Controller implements PropertyChangeListener {
 		return true;
 
 	}
+	
+	/**
+	 * leaves the app.
+	 * 
+	 * @param u
+	 */
+	public Boolean logout(String user) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+		User u = userOpt.get();
+		u.setUltimoLogin(new Date());
+		this.userRepo.updateUser(u);
+		this.valids.put(user, false);
+		this.currentuser = Optional.empty();
+		return true;
+	}
 
 	/**
-	 * 
+	 * creates user 
 	 * @param username
 	 * @param email
 	 * @param nombreCompleto
@@ -164,7 +185,7 @@ public class Controller implements PropertyChangeListener {
 	}
 
 	/**
-	 * 
+	 * get user from string
 	 * @param username
 	 * @return Optional value containing user corresponding to the given username.
 	 */
@@ -174,7 +195,7 @@ public class Controller implements PropertyChangeListener {
 	}
 
 	/**
-	 * 
+	 * get all user
 	 * @return all users from app
 	 */
 	public List<User> getAllusers() {
@@ -192,185 +213,7 @@ public class Controller implements PropertyChangeListener {
 		this.pubRepo.getAllPublications().stream().forEach(p -> System.out.println(p));
 		return new LinkedList<>(pubRepo.getAllPublications());
 	}
-
-	/**
-	 * 
-	 * @param user
-	 * @param path
-	 * @return false if it cannot find profilePic in path. User class does not know
-	 *         if it can be showable or not.
-	 */
-	public boolean changeProfilePicture(String user, String path) {
-		Optional<User> u = this.userRepo.getUser(user);
-		u.ifPresent(a -> a.updateProfilePic(path));
-		this.userRepo.getUser(user).get().updateProfilePic(path);
-		System.out.println(path);
-		this.userRepo.updateUser(u.get());
-		return true;
-	}
-
-	/**
-	 * 
-	 * @param user
-	 * @param newDescription
-	 * @return if it can change description or not.
-	 */
-	public boolean changeDescription(String user, String newDescription) {
-
-		return this.userRepo.getUser(user).get().updateDescription(newDescription);
-	}
-
-	/**
-	 * checks if user has logged in, and returns its User instance from username /
-	 * email String
-	 * 
-	 * @param user
-	 * @return
-	 */
-	private Optional<User> checkLoginAndGetUser(String user) {
-		if (!this.logins.containsKey(user))
-			return Optional.empty();
-
-		if (!this.valids.get(user))
-			return Optional.empty();
-
-		Optional<User> u = this.userRepo.getUser(user);
-		if (u.isPresent())
-			return u;
-
-		u = this.userRepo.getUserByEmail(user);
-		return u;
-	}
-
-	/**
-	 * leaves the app.
-	 * 
-	 * @param u
-	 */
-	public Boolean logout(String user) {
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-		User u = userOpt.get();
-		u.setUltimoLogin(new Date());
-		this.userRepo.updateUser(u);
-		this.valids.put(user, false);
-		this.currentuser = Optional.empty();
-		return true;
-	}
-
-	/**
-	 * 
-	 * @param user
-	 * @param passwd
-	 * @return false if prev passwd is equal to new passwd or if it doesnt meet
-	 *         minimal passwd requirements.
-	 */
-	public boolean changePassword(String user, String passwd) {
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-
-		User u = userOpt.get();
-		if (EncryptDecrypt.encrypt(passwd).equals(u.getContrasena()))
-			return false;
-
-		Boolean b = u.changePassword(passwd);
-		this.userRepo.updateUser(u);
-		return b;
-	}
-
-	public boolean meGusta(Publication pub, String user) {
-
-		Optional<User> userOpt = this.userRepo.getUser(pub.getCreator());
-		User creator = userOpt.get();
-		
-		pub.addMeGusta();
-		this.pubRepo.updatePublication(pub);
-//		this.userRepo.updateUser(creator);
-		
-
-		return true;
-	}
-
-	public boolean addComentario(Publication pub, String comentario, String user) {
-
-//		Optional<User> userOpt = this.userRepo.getUser(user);
-//		if(userOpt.isEmpty())
-//			return false;
-		
-		Optional<User> creatorOpt = this.userRepo.getUser(pub.getCreator());
-		
 	
-		pub.anadirComentarios(comentario, this.userRepo.getUser(user).get().getUsername());
-		this.pubRepo.updatePublication(pub);
-//		this.userRepo.updateUser(creatorOpt.get());
-
-		return true;
-	}
-
-	/**
-	 * creates a photo in the PhotoTDS domain and returns its object.
-	 * 
-	 * @param titulo
-	 * @param descripcion
-	 * @param path
-	 * @return boolean
-	 */
-	public boolean createFoto(String user, String titulo, String descripcion, String path) {
-
-		System.out.println("pre creating foto");
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-
-		User u = userOpt.get();
-
-		Foto f = u.createPhoto(titulo, descripcion, path);
-
-		System.out.println("creating foto");
-		this.pubRepo.createPublication(f);
-		this.userRepo.updateUser(u);
-		return true;
-	}
-
-	/**
-	 * Must be logged in.
-	 * 
-	 * @param user
-	 * @param p
-	 * @return
-	 */
-	public boolean removePublication(String user, Publication p) {
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-
-		User u = userOpt.get();
-
-		u.removePublication(p);
-		this.pubRepo.removePublication(p);
-		this.userRepo.updateUser(u);
-		return true;
-	}
-
-	public boolean createAlbum(String user, String titulo, String descripcion, String path) {
-
-		System.out.println("pre creating album");
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-
-		User u = userOpt.get();
-
-		Album a = u.createAlbum(titulo, descripcion, path);
-
-		System.out.println("creating album");
-		this.pubRepo.createPublication(a);
-		this.userRepo.updateUser(u);
-		return true;
-	}
-
 	/**
 	 * We implement notification system through last logins.
 	 * 
@@ -390,11 +233,6 @@ public class Controller implements PropertyChangeListener {
 			.filter(p -> us.checkPublicationInAlbums(p))
 			.collect(Collectors.toList());
 
-		for (Publication p : l) {
-			System.out.println("[PUB]: " + p.getTitulo() + p.getHashTags());
-		}
-
-		System.out.println("l: " + l);
 		return l;
 	}
 
@@ -441,6 +279,144 @@ public class Controller implements PropertyChangeListener {
 		return null;
 	}
 
+
+	/**
+	 * 
+	 * @param user
+	 * @param path
+	 * @return false if it cannot find profilePic in path. User class does not know
+	 *         if it can be showable or not.
+	 */
+	public boolean changeProfilePicture(String user, String path) {
+		Optional<User> u = this.userRepo.getUser(user);
+		u.ifPresent(a -> a.updateProfilePic(path));
+		this.userRepo.getUser(user).get().updateProfilePic(path);
+		System.out.println(path);
+		this.userRepo.updateUser(u.get());
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param user
+	 * @param newDescription
+	 * @return if it can change description or not.
+	 */
+	public boolean changeDescription(String user, String newDescription) {
+
+		return this.userRepo.getUser(user).get().updateDescription(newDescription);
+	}
+
+	/**
+	 * 
+	 * @param user
+	 * @param passwd
+	 * @return false if prev passwd is equal to new passwd or if it doesnt meet
+	 *         minimal passwd requirements.
+	 */
+	public boolean changePassword(String user, String passwd) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
+		if (EncryptDecrypt.encrypt(passwd).equals(u.getContrasena()))
+			return false;
+
+		Boolean b = u.changePassword(passwd);
+		this.userRepo.updateUser(u);
+		return b;
+	}
+
+	/**
+	 * adds one like to pub.
+	 * @param pub
+	 * @param user
+	 * @return
+	 */
+	public boolean meGusta(Publication pub, String user) {
+	
+		pub.addMeGusta();
+		this.pubRepo.updatePublication(pub);
+
+		return true;
+	}
+
+	/**
+	 * adds comment to publication
+	 * @param pub
+	 * @param comentario
+	 * @param user
+	 * @return
+	 */
+	public boolean addComentario(Publication pub, String comentario, String user) {
+
+		pub.anadirComentarios(comentario, this.userRepo.getUser(user).get().getUsername());
+		this.pubRepo.updatePublication(pub);
+		return true;
+	}
+
+	/**
+	 * creates a photo in the PhotoTDS domain and returns its object.
+	 * 
+	 * @param titulo
+	 * @param descripcion
+	 * @param path
+	 * @return boolean
+	 */
+	public boolean createFoto(String user, String titulo, String descripcion, String path) {
+
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
+
+		Foto f = u.createPhoto(titulo, descripcion, path);
+
+		this.pubRepo.createPublication(f);
+		this.userRepo.updateUser(u);
+		return true;
+	}
+
+	/**
+	 * Must be logged in.
+	 * 
+	 * @param user
+	 * @param p
+	 * @return
+	 */
+	public boolean removePublication(String user, Publication p) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
+		
+		u.removePublication(p);
+		
+		this.pubRepo.removePublication(p);
+		this.userRepo.updateUser(u);
+		System.out.println("user + "  + u.getPublications());
+		return true;
+	}
+
+	public boolean createAlbum(String user, String titulo, String descripcion, String path) {
+
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
+
+		Album a = u.createAlbum(titulo, descripcion, path);
+
+		this.pubRepo.createPublication(a);
+		this.userRepo.updateUser(u);
+		System.out.println("user-1 + "  + u.getPublications());
+		return true;
+	}
+
 	/**
 	 * updates some user's account to premium.
 	 * 
@@ -475,6 +451,12 @@ public class Controller implements PropertyChangeListener {
 
 	}
 
+	/**
+	 * Only premium
+	 * @param user
+	 * @param path
+	 * @return
+	 */
 	public boolean createExcel(String user, String path) {
 
 		Optional<User> userOpt = checkLoginAndGetUser(user);
@@ -485,107 +467,81 @@ public class Controller implements PropertyChangeListener {
 
 		if (!u.isPremium())
 			return false;
-
-		try {
-			// declare file name to be create
-			String filename = path;
-			// creating an instance of HSSFWorkbook class
-			HSSFWorkbook workbook = new HSSFWorkbook();
-			// invoking creatSheet() method and passing the name of the sheet to be created
-			HSSFSheet sheet = workbook.createSheet("Users");
-			// creating the 0th row using the createRow() method
-			HSSFRow rowhead = sheet.createRow((short) 0);
-			// creating cell by using the createCell() method and setting the values to the
-			// cell by using the setCellValue() method
-			rowhead.createCell(1).setCellValue("username");
-			rowhead.createCell(2).setCellValue("e-mail");
-			rowhead.createCell(3).setCellValue("presentation");
-
-			int n = 1;
-			for (User f : u.getUsuariosSeguidores()) {
-				// creating the 1st row
-				HSSFRow row = sheet.createRow((short) n);
-				// inserting data in the first row
-				row.createCell(1).setCellValue(f.getUsername());
-				row.createCell(2).setCellValue(f.getEmail());
-				row.createCell(3).setCellValue(f.getDescripcion());
-				n++;
-			}
-
-			FileOutputStream fileOut = new FileOutputStream(filename);
-			workbook.write(fileOut);
-			// closing the Stream
-			fileOut.close();
-			// closing the workbook
-			workbook.close();
-			// prints the message on the console
-			System.out.println("Excel file has been generated successfully.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		
+		ExcelGenerator.generateExcel(u, path, u.getUsuariosSeguidores());
 		return true;
 	}
 
+	/**
+	 * Only premium
+	 * @param user
+	 * @param path
+	 * @return
+	 */
 	public boolean createPdf(String user, String path) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
 			return false;
 
 		User u = userOpt.get();
-//
-//		if (!u.isPremium())
-//			return false;
 
-		System.out.println("PRE PDF!");
+		if (!u.isPremium())
+			return false;
 
-		Document document = new Document();
-		try {
-			PdfWriter.getInstance(document, new FileOutputStream(path));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DocumentException e) {
-
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		document.open();
-		PdfPTable table = new PdfPTable(4);
-
-		table.addCell("User-Nº");
-		table.addCell("username");
-		table.addCell("e-mail");
-		table.addCell("description");
-
-		int n = 1;
-		for (User f : u.getUsuariosSeguidores()) {
-
-			System.out.println("[SEGUIDOR] " + f);
-			// creating the 1st row
-			table.addCell(Integer.toString(n));
-			// inserting data in the first row
-			table.addCell(f.getUsername());
-			table.addCell(f.getEmail());
-			table.addCell(f.getDescripcion());
-			n++;
-		}
-
-		try {
-			document.add(table);
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		document.close();
-
-		System.out.println("Sucess PDF!");
+		PDFGenerator.generatePDF(user, path, u.getUsuariosSeguidores());
 		return true;
 	}
+	
+	/**
+	 * Premium functionality.
+	 * @param user
+	 * @return
+	 */
+	public List<Publication> getMoreLikedFotos(String user) {
 
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return null;
+
+		User u = userOpt.get();
+		if(!u.isPremium())
+			return null;
+
+		return u.getPublications().stream()
+				.sorted(Comparator.comparing(Publication::getLikes).reversed()) 
+				.limit(User.NUM_LIKES_PREMIUM)
+				.collect(Collectors.toList());
+
+	}
+	
+	/**
+	 * PRE Premium functionalty.
+	 * @param user
+	 * @return
+	 */
+	public List<Publication> lastLikedFotos(String user) {
+
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return null;
+
+		User u = userOpt.get();
+
+		return u.getPublications().stream()
+				.filter(p -> p.getLikes()>0)
+				.sorted(Comparator.comparing(Publication::getFechaPublicacion).reversed()) 
+				.limit(User.LAST_LIKED_PICTURES)
+				.collect(Collectors.toList());
+
+	}
+
+	/**
+	 * user follows new "follow-user"
+	 * @param user
+	 * @param follow
+	 * @return
+	 */
 	public boolean follow(String user, String follow) {
-		System.out.println("follow(): user -  " + user + "follow - " + follow);
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
 			return false;
@@ -594,16 +550,12 @@ public class Controller implements PropertyChangeListener {
 
 		Optional<User> us = this.userRepo.getUser(user);
 
-		if (us.isEmpty()) {
-			System.out.println("us false");
+		if (us.isEmpty())
 			return false;
-		}
 
 		Optional<User> newFollowedOpt = this.userRepo.getUser(follow);
-		if (newFollowedOpt.isEmpty()) {
-			System.out.println("newFollowedOpt false");
+		if (newFollowedOpt.isEmpty())
 			return false;
-		}
 
 		User newFollowed = newFollowedOpt.get();
 
@@ -616,6 +568,12 @@ public class Controller implements PropertyChangeListener {
 		return true;
 	}
 	
+	/**
+	 * user unfollows "unfollow-user"
+	 * @param user
+	 * @param unfollow
+	 * @return
+	 */
 	public boolean unfollow(String user, String unfollow) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
@@ -642,50 +600,16 @@ public class Controller implements PropertyChangeListener {
 
 		return true;
 	}
-
-	public List<Publication> getMoreLikedFotos(String user) {
-
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return null;
-
-		User u = userOpt.get();
-		if(!u.isPremium())
-			return null;
-
-		return u.getPublications().stream()
-				.sorted(Comparator.comparing(Publication::getLikes).reversed()) 
-				.limit(User.NUM_LIKES_PREMIUM)
-				.collect(Collectors.toList());
-
+	
+	public Optional<Publication> getPublication(String user, String title) {		
+		return this.pubRepo.getPublication(title);	
 	}
 	
-	public List<Publication> lastLikedFotos(String user) {
-
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return null;
-
-		User u = userOpt.get();
-
-		return u.getPublications().stream()
-				.filter(p -> p.getLikes()>0)
-				.sorted(Comparator.comparing(Publication::getFechaPublicacion).reversed()) 
-				.limit(User.LAST_LIKED_PICTURES)
-				.collect(Collectors.toList());
-
-	}
-	
-	public Optional<Publication> getPublication(String user, String title) {
-
-//		Optional<User> userOpt = checkLoginAndGetUser(user);
-//		if (userOpt.isEmpty())
-//			return Optional.empty();
-		
-		return this.pubRepo.getPublication(title);
-		
-	}
-	
+	/**
+	 * Fotos to show in user's profile.
+	 * @param user
+	 * @return
+	 */
 	public List<Foto> getFotosProfile(String user) {
 		Optional<User> userOpt = this.userRepo.getUser(user);
 		if(userOpt.isEmpty())
@@ -700,11 +624,12 @@ public class Controller implements PropertyChangeListener {
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Albums to show in user's albums profile
+	 * @param user
+	 * @return
+	 */
 	public List<Album> getAlbumsProfile(String user) {
-//		Optional<User> userOpt = checkLoginAndGetUser(user);
-//		if (userOpt.isEmpty())
-//			return null;
-//		User u = userOpt.get();
 		Optional<User> userOpt = this.userRepo.getUser(user);
 		if(userOpt.isEmpty())
 			return null;
@@ -717,6 +642,15 @@ public class Controller implements PropertyChangeListener {
 				.collect(Collectors.toList());
 	}
 		
+	/**
+	 * adds new picture to album
+	 * @param user
+	 * @param a
+	 * @param titulo
+	 * @param descripcion
+	 * @param path
+	 * @return
+	 */
 	public boolean addNewPicture(String user, Album a, String titulo, String descripcion, String path) {
 		Optional<User> userOpt = checkLoginAndGetUser(user);
 		if (userOpt.isEmpty())
@@ -728,9 +662,7 @@ public class Controller implements PropertyChangeListener {
 		this.pubRepo.createPublication(f);
 		this.pubRepo.updatePublication(a);
 		this.userRepo.updateUser(u);
-//		this.pubRepo.createPublication(a);
 		return true;
-		
 	}
 
 	/**
@@ -741,23 +673,11 @@ public class Controller implements PropertyChangeListener {
 	 * @return true or false
 	 */
 	public boolean checkFollower(String f, String user) {
-
-		// check if user is logged
-//		Optional<User> userOpt = checkLoginAndGetUser(user);
-//		if (userOpt.isEmpty()) {
-//			System.out.println("checkFollower(): user not logged");
-//			return false;
-//		}
-
 		User u = this.userRepo.getUser(user).get();
 
 		Optional<User> followerOp = this.userRepo.getUser(f);
-		if (followerOp.isEmpty()) {
-			System.out.println("checkFollower(): follower not logged");
+		if (followerOp.isEmpty())
 			return false;
-		}
-
-		User follower = followerOp.get();
 
 		return u.getUsuariosSeguidores().stream()
 				.map(User::getUsername)

@@ -53,7 +53,6 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		// asignar identificador unico
 		// Se aprovecha el que genera el servicio de persistencia
 		c.setCodigo(eComentario.getId());
-		System.out.println("codigo coment: " + c.getCodigo());
 		
 	}
 	public Comentario readComentario(int codigo) {
@@ -69,8 +68,6 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		String autor;
 		// recuperar entidad
 		eComentario = servPersistencia.recuperarEntidad(codigo);
-		if(eComentario == null)
-			System.out.println("NULLL 1");
 
 		// recuperar propiedades que no son objetos
 		texto = servPersistencia.recuperarPropiedadEntidad(eComentario, "texto");
@@ -78,8 +75,6 @@ public class ComentarioAdapterTDS implements IComentarioDAO {
 		autor = servPersistencia.recuperarPropiedadEntidad(eComentario, "autor");
 		Comentario c;
 		
-		if(fechaPublicacion == null) 
-			System.out.println("NULLL 2");
 		
 		c = new Comentario(texto, Utils.StringToDate(fechaPublicacion), autor);
 		c.setCodigo(codigo);

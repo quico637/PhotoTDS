@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.Publication;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -148,7 +150,22 @@ public class PublicationWindow {
 		
 		JButton btnNewButton_1 = new JButton("Upload Photo");
 		btnNewButton_1.addActionListener(e -> {
+			String title = textField_1.getText();
+			boolean exists;
+			
+			Optional<Publication> op = Controller.getInstancia().getPublication(user, title);
+			if(op.isEmpty())
+				exists = false;
+			else {
+				exists = op.get().getTitulo().equals(title);
+			}
+			if(title.length() == 0 || exists) {
+				ErrorWindow ew = new ErrorWindow("Title is missing, or is already used.");
+				ew.showWindow(frame);
+				return;
+			}
 			this.hideWindow();
+			
 			if(Controller.getInstancia().createFoto(this.user, textField_1.getText(), textField.getText(), path))
 				System.out.println("NOOO");
 		});

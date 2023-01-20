@@ -61,19 +61,12 @@ public class PublicationRepository {
 	}
 	
 	public void removePublication(Publication p) {
-		
-		if(p instanceof Album) {
-			for(Foto f : ((Album)p).getFotos()) {
-				removePublication(f);
-			}
-		}
-		this.publications.remove(p.getTitulo());
 		this.publicationAdapter.deletePublication(p);
+		this.publications.remove(p.getTitulo());
 	}
 	
 	public List<Object> getPublicationsFromHtg(List<String> hashtags) {
 						
-		System.out.println("all hashtags ///: " + hashtags);
 		return this.publications.values().stream()
 			.filter(p -> p.getHashtags().stream()
 							.map(HashTag::getName)
