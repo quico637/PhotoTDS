@@ -132,7 +132,6 @@ public class Controller implements PropertyChangeListener {
 		}
 		this.valids.put(username, true);
 		this.currentuser = Optional.ofNullable(u);
-		System.out.println(this.logins);
 
 		return true;
 
@@ -199,8 +198,6 @@ public class Controller implements PropertyChangeListener {
 	 * @return all users from app
 	 */
 	public List<User> getAllusers() {
-		userRepo.getAllUsers().stream().forEach(u -> System.out.println(u.toString()));
-
 		// Avoids aliasing
 		return new LinkedList<>(userRepo.getAllUsers());
 	}
@@ -210,7 +207,6 @@ public class Controller implements PropertyChangeListener {
 	 * @return all publications, including photos and albums.
 	 */
 	public List<Publication> getAllPublications() {
-		this.pubRepo.getAllPublications().stream().forEach(p -> System.out.println(p));
 		return new LinkedList<>(pubRepo.getAllPublications());
 	}
 	
@@ -306,7 +302,6 @@ public class Controller implements PropertyChangeListener {
 
 		return this.userRepo.getUser(user).get().updateDescription(newDescription);
 	}
-
 	/**
 	 * 
 	 * @param user
@@ -397,7 +392,6 @@ public class Controller implements PropertyChangeListener {
 		
 		this.pubRepo.removePublication(p);
 		this.userRepo.updateUser(u);
-		System.out.println("user + "  + u.getPublications());
 		return true;
 	}
 
@@ -413,7 +407,6 @@ public class Controller implements PropertyChangeListener {
 
 		this.pubRepo.createPublication(a);
 		this.userRepo.updateUser(u);
-		System.out.println("user-1 + "  + u.getPublications());
 		return true;
 	}
 

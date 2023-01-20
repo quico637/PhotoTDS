@@ -103,8 +103,6 @@ public class User {
 	
 	
 	public boolean updateDescription(String desc) {
-		if(this.descripcion.equals(desc))
-			return false;
 		this.descripcion = desc;
 		return true;
 	}
