@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import umu.tds.app.PhotoTDS.model.Album;
+import umu.tds.app.PhotoTDS.model.Foto;
 import umu.tds.app.PhotoTDS.model.HashTag;
 import umu.tds.app.PhotoTDS.model.Publication;
 import umu.tds.app.PhotoTDS.model.User;
@@ -56,10 +58,15 @@ public class PublicationRepository {
 	
 	public void updatePublication(Publication p) {
 		this.publicationAdapter.updatePublication(p);
-//		this.publications.put(p.getTitulo(), p);
 	}
 	
 	public void removePublication(Publication p) {
+		
+		if(p instanceof Album) {
+			for(Foto f : ((Album)p).getFotos()) {
+				removePublication(f);
+			}
+		}
 		this.publications.remove(p.getTitulo());
 		this.publicationAdapter.deletePublication(p);
 	}

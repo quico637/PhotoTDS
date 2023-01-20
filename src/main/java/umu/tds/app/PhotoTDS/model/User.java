@@ -205,7 +205,11 @@ public class User {
 	
 	
 	public boolean removePublication(Publication p) {
-		
+		if(p instanceof Album) {	
+			for(Foto f : ((Album)p).getFotos()) {
+				this.publications.remove(f);
+			}
+		}
 		return this.publications.remove(p);
 	}
 	
