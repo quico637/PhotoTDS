@@ -49,6 +49,7 @@ public class PanelPerfilNotLogged {
 	
 	
 	private static List<Foto> l;
+	private static List<String> usernames = new LinkedList<>();
 	
 	private String userLogged;
 	
@@ -89,6 +90,8 @@ public class PanelPerfilNotLogged {
 		super();
 		this.user = user;
 		this.userLogged = userLogged;
+		this.usernames.add(user);
+		this.usernames.add(userLogged);
 		this.use = Controller.getInstancia().getUser(user).get();
 		initialize();
 	}
@@ -276,10 +279,11 @@ public class PanelPerfilNotLogged {
 			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 
+				
 				Component renderer = (Component) value;
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
-						JPanel panelFoto = new PanelFotoNotLogged(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelFoto = new PanelFotoNotLogged(l.get(index), usernames.get(0)).getPanel();
 						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
 						panelCentralCardLayout.add(panelFoto, "panelFoto");
 						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();

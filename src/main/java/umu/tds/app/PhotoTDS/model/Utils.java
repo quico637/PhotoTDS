@@ -47,6 +47,8 @@ public class Utils {
 	
 	
 	public static boolean isHashtag(String s) {
+		if((s == null) || (s.length() == 0))
+			return false;
 		return s.charAt(0) == '#';
 	}
 	

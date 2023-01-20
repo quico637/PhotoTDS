@@ -344,7 +344,7 @@ public class VentanaInicio implements IEncendidoListener {
 		
 		List<Component> labelsBusqueda = new LinkedList<>();
 		l2 = Controller.getInstancia().getBusqueda(user, b);
-		if(l == null)
+		if(l2 == null)
 			return;
 		
 		for (Object o : l2) {
@@ -432,7 +432,7 @@ public class VentanaInicio implements IEncendidoListener {
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
 				} else {
 					if(isSelected) {
-						JPanel panelFoto = new PanelFoto(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelFoto = new PanelFoto(l.get(index), user).getPanel();
 						panelCentralCardLayout.add(panelFoto, "panelFoto");
 						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 						cl.show(panelCentralCardLayout, "panelFoto");

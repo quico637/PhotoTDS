@@ -683,6 +683,20 @@ public class Controller implements PropertyChangeListener {
 	}
 	
 	public List<Foto> getFotosProfile(String user) {
+		Optional<User> userOpt = this.userRepo.getUser(user);
+		if(userOpt.isEmpty())
+			return null;
+		
+		User u = userOpt.get();
+		
+		return this.pubRepo.getAllPublicationsUser(u.getUsername()).stream()
+				.filter(p -> p instanceof Foto)
+				.filter(p -> u.isFotoInAlbum((Foto) p))
+				.map(p -> (Foto) p)
+				.collect(Collectors.toList());
+	}
+	
+	public List<Album> getAlbumsProfile(String user) {
 //		Optional<User> userOpt = checkLoginAndGetUser(user);
 //		if (userOpt.isEmpty())
 //			return null;
@@ -694,8 +708,8 @@ public class Controller implements PropertyChangeListener {
 		User u = userOpt.get();
 		
 		return this.pubRepo.getAllPublicationsUser(u.getUsername()).stream()
-				.filter(p -> p instanceof Foto)
-				.map(p -> (Foto) p)
+				.filter(p -> p instanceof Album)
+				.map(p -> (Album) p)
 				.collect(Collectors.toList());
 	}
 		

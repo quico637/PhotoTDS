@@ -57,46 +57,42 @@ public class PanelAlbum {
 	private final static int X = 150;
 	private final static int Y = 150;
 	private JFrame frame;
-		
+
 	private String user;
 	private String profilePath;
 	private JPanel panelPerfil;
 	private User use;
-	
+
 	private String userLogged;
-	
+
 	private static List<Album> albums = new LinkedList<>();
 
-	
 	public JFrame getFrame() {
 		return this.frame;
 	}
-	
+
 	public JPanel getPanelPerfil() {
 		return panelPerfil;
 	}
-	
+
 	private ImageIcon createImageIcon(String path) {
-		if(path == null) {
+		if (path == null) {
 			System.err.println("Path is null!!!.");
 			return null;
 		}
 		java.net.URL imgURL = getClass().getResource(path);
-		
+
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		}
 		ImageIcon img = new ImageIcon(path);
-		if(img != null)
+		if (img != null)
 			return img;
-			
+
 		System.err.println("Couldn't find file: " + path);
 		return null;
-		
+
 	}
-
-
-
 
 	public PanelAlbum(String user, String userLogged) {
 		super();
@@ -106,7 +102,6 @@ public class PanelAlbum {
 		this.use = us.get();
 		initialize();
 	}
-	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -116,15 +111,15 @@ public class PanelAlbum {
 		frame.setBounds(0, 0, 500, 625);
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		panelPerfil = new JPanel();
 		GridBagLayout gbl_panelPerfil = new GridBagLayout();
-		gbl_panelPerfil.columnWidths = new int[]{40, 0, 0, 50, 0, 55, 65, 50, 0};
-		gbl_panelPerfil.rowHeights = new int[]{40, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelPerfil.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelPerfil.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPerfil.columnWidths = new int[] { 40, 0, 0, 50, 0, 55, 65, 50, 0 };
+		gbl_panelPerfil.rowHeights = new int[] { 40, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_panelPerfil.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelPerfil.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		panelPerfil.setLayout(gbl_panelPerfil);
-		
+
 		JLabel profPic = new JLabel();
 		GridBagConstraints gbc_profPic = new GridBagConstraints();
 		gbc_profPic.gridwidth = 2;
@@ -141,8 +136,7 @@ public class PanelAlbum {
 		Image img = createImageIcon(use.getProfilePic()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(img);
 		profPic.setIcon(icon);
-		
-		
+
 		JLabel userName = new JLabel(user);
 		GridBagConstraints gbc_userName = new GridBagConstraints();
 		gbc_userName.anchor = GridBagConstraints.WEST;
@@ -150,7 +144,7 @@ public class PanelAlbum {
 		gbc_userName.gridx = 4;
 		gbc_userName.gridy = 1;
 		panelPerfil.add(userName, gbc_userName);
-		
+
 		JLabel seguidoresLabel = new JLabel("Followers");
 		GridBagConstraints gbc_seguidoresLabel = new GridBagConstraints();
 		gbc_seguidoresLabel.anchor = GridBagConstraints.WEST;
@@ -158,38 +152,38 @@ public class PanelAlbum {
 		gbc_seguidoresLabel.gridx = 4;
 		gbc_seguidoresLabel.gridy = 2;
 		panelPerfil.add(seguidoresLabel, gbc_seguidoresLabel);
-		
+
 		JLabel seguidosLabel = new JLabel("Following");
 		GridBagConstraints gbc_seguidosLabel = new GridBagConstraints();
 		gbc_seguidosLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_seguidosLabel.gridx = 5;
 		gbc_seguidosLabel.gridy = 2;
 		panelPerfil.add(seguidosLabel, gbc_seguidosLabel);
-		
+
 		JLabel lblNewLabel_1 = new JLabel(Integer.toString(this.use.getNumFollowers()));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 4;
 		gbc_lblNewLabel_1.gridy = 3;
 		panelPerfil.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
+
 		JLabel lblNewLabel = new JLabel(Integer.toString(this.use.getNumFollowing()));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 5;
 		gbc_lblNewLabel.gridy = 3;
 		panelPerfil.add(lblNewLabel, gbc_lblNewLabel);
-		
+
 		JButton editButton = new JButton("Edit Profile");
 		GridBagConstraints gbc_editButton = new GridBagConstraints();
 		gbc_editButton.gridwidth = 2;
 		gbc_editButton.insets = new Insets(0, 0, 5, 5);
 		gbc_editButton.gridx = 5;
 		gbc_editButton.gridy = 1;
-		
-		if(isUserLogged())
-		panelPerfil.add(editButton, gbc_editButton);
-		
+
+		if (isUserLogged())
+			panelPerfil.add(editButton, gbc_editButton);
+
 		JLabel completeName = new JLabel(use.getNombreCompleto());
 		GridBagConstraints gbc_completeName = new GridBagConstraints();
 		gbc_completeName.gridwidth = 6;
@@ -197,7 +191,7 @@ public class PanelAlbum {
 		gbc_completeName.gridx = 1;
 		gbc_completeName.gridy = 5;
 		panelPerfil.add(completeName, gbc_completeName);
-		
+
 		JLabel lblNewLabel_2 = new JLabel(this.use.getDescripcion());
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.gridwidth = 6;
@@ -205,7 +199,7 @@ public class PanelAlbum {
 		gbc_lblNewLabel_2.gridx = 1;
 		gbc_lblNewLabel_2.gridy = 6;
 		panelPerfil.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 6;
@@ -214,40 +208,40 @@ public class PanelAlbum {
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 7;
 		panelPerfil.add(scrollPane, gbc_scrollPane);
-		
+
 		List<JLabel> labels = new LinkedList<>();
 //		List<Publication> l = Controller.getInstancia().getUser(user).get().getPublications();
-		List<Publication> l = Controller.getInstancia().getAllPublications();
-		for (Publication p : l) {
-			if (p instanceof Album) {
-				JLabel etiqueta = new JLabel();
-				Image icono = new ImageIcon(((Album)p).getPathProfileFoto()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
-				etiqueta.setIcon(new ImageIcon(icono));
-				labels.add(etiqueta);
-				albums.add((Album) p);
-				System.out.println("Publicacion: " + p);
-			}
+		List<Album> l = Controller.getInstancia().getAlbumsProfile(user);
+		for (Album p : l) {
+			JLabel etiqueta = new JLabel();
+			Image icono = new ImageIcon(((Album) p).getPathProfileFoto()).getImage().getScaledInstance(X, Y,
+					Image.SCALE_SMOOTH);
+			etiqueta.setIcon(new ImageIcon(icono));
+			labels.add(etiqueta);
+			albums.add(p);
+			System.out.println("Publicacion: " + p);
+
 		}
-		
+
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
 		demoList.addAll(labels);
-		
+
 		JList<Component> jList = new JList<>(demoList);
 		jList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		jList.setVisibleRowCount(-1);
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
-		
+
 		JButton btnNewButton = new JButton("Photos");
 		btnNewButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
 			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelPerfil");
 		});
-		
+
 		JButton btnNewButton_1 = new JButton("Add album");
 		btnNewButton_1.addActionListener(e -> {
-			
+
 			AlbumWindow pw = new AlbumWindow(user);
 			pw.showWindow(frame);
 		});
@@ -262,14 +256,11 @@ public class PanelAlbum {
 		gbc_btnNewButton.gridx = 6;
 		gbc_btnNewButton.gridy = 8;
 		panelPerfil.add(btnNewButton, gbc_btnNewButton);
-		
-		
-		
+
 		editButton.addActionListener(e -> {
 			CardLayout cl = (CardLayout) VentanaInicio.getPanelCentralCardLayout().getLayout();
 			cl.show(VentanaInicio.getPanelCentralCardLayout(), "panelEdit");
 		});
-		
 
 		JButton logout = new JButton("Logout");
 		GridBagConstraints gbc_logout = new GridBagConstraints();
@@ -277,38 +268,31 @@ public class PanelAlbum {
 		gbc_logout.insets = new Insets(0, 0, 5, 5);
 		gbc_logout.gridx = 1;
 		gbc_logout.gridy = 4;
-		
+
 		logout.addActionListener(e -> {
-			if(!Controller.getInstancia().logout(user)) System.out.println("Cagaste en LOGOUT");
+			if (!Controller.getInstancia().logout(user))
+				System.out.println("Cagaste en LOGOUT");
 			VentanaInicio.hideWindow();
 			VentanaLogin.getInstancia().showWindow();
 		});
 
-		
-		
-		
-		if(isUserLogged())
+		if (isUserLogged())
 			panelPerfil.add(logout, gbc_logout);
 		else {
 			JButton follow = new JButton("");
-			if(Controller.getInstancia().checkFollower(userLogged, user))
+			if (Controller.getInstancia().checkFollower(userLogged, user))
 				follow.setText("Unfollow");
-			else 
+			else
 				follow.setText("Follow");
-			
-			
+
 			follow.addActionListener(e -> {
 				Controller.getInstancia().follow(userLogged, user);
 				// update
 			});
 			panelPerfil.add(follow, gbc_logout);
 		}
-		
-		
-		
-		
+
 	}
-	
 
 	private static ListCellRenderer<? super Component> createListRenderer() {
 		return new DefaultListCellRenderer() {
@@ -324,25 +308,25 @@ public class PanelAlbum {
 					boolean cellHasFocus) {
 
 				Component renderer = (Component) value;
-				if(renderer instanceof JLabel) {
-					if(isSelected) {
-						JPanel panelAlbumFotos = new PanelAlbumFotos(albums.get(index), albums.get(index).getCreator()).getPanel();
+				if (renderer instanceof JLabel) {
+					if (isSelected) {
+						JPanel panelAlbumFotos = new PanelAlbumFotos(albums.get(index), albums.get(index).getCreator())
+								.getPanel();
 						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
 						panelCentralCardLayout.add(panelAlbumFotos, "panelAlbumFotos");
 						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 						cl.show(panelCentralCardLayout, "panelAlbumFotos");
-						System.out.println("Fotico golfa");
+						System.out.println("Fotico golfa" + albums.get(index));
 					}
-					
-					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
-				}
 
+					((JLabel) renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
+				}
 
 				return renderer;
 			}
 		};
 	}
-	
+
 	private boolean isUserLogged() {
 		return user.equals(userLogged);
 	}

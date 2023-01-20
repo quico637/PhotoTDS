@@ -157,6 +157,16 @@ public class User {
 		return true;
 	}
 	
+	public boolean isFotoInAlbum(Foto f) {
+		for(Publication a : this.publications) {
+			if(a instanceof Album) {
+				if(((Album) a).getFotos().contains(f))
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	public Foto createPhoto(String titulo, String descripcion, String path) {
 		Foto f = new Foto(this.username, titulo, new Date(), descripcion, path);

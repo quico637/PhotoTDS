@@ -273,6 +273,8 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 				
 				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
 			} else if (prop.getNombre().equals("fotos")) {
+//				((Album)p).getFotos().stream().forEach(f -> getInstance().createPublication(f));
+				
 				prop.setValor(obtenerCodigosFotos(p.getFotos()));
 			}
 			servPersistencia.modificarPropiedad(prop);
