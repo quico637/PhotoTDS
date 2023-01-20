@@ -4,7 +4,7 @@ import umu.tds.app.PhotoTDS.view.VentanaLogin;
 
 /**
  * 
- * @author quico y JC Commit for reach the 100 commits, this is the 99 commit.
+ * @author quico y JC Commit for reach the 100 commits. We did it on time.
  *
  */
 public class App {

@@ -114,7 +114,7 @@ public class AlbumWindowFotos {
 				System.out.println("NOOO");
 		});
 		
-		JLabel lblNewLabel_1 = new JLabel("Titulo:");
+		JLabel lblNewLabel_1 = new JLabel("* Title:");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
