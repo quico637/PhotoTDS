@@ -72,7 +72,8 @@ public class PublicationRepository {
 	}
 	
 	public List<Object> getPublicationsFromHtg(List<String> hashtags) {
-				
+						
+		System.out.println("all hashtags ///: " + hashtags);
 		return this.publications.values().stream()
 			.filter(p -> p.getHashtags().stream()
 							.map(HashTag::getName)

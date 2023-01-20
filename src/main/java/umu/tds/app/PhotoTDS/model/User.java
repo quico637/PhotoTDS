@@ -174,6 +174,22 @@ public class User {
 		return f;
 	}
 	
+	public Foto createPhoto(String titulo, String descripcion, String path, List<String> hs) {
+		
+		List<HashTag> l = new LinkedList<>();
+		for(String h : hs) {
+			HashTag htg = HashTag.createHashtag("#" + h);
+			if(htg == null)
+				continue;
+			
+			l.add(htg);
+		}
+		
+		Foto f = new Foto(this.username, titulo, new Date(), descripcion, 0, l, new LinkedList<>(), path);
+		this.publications.add(f);
+		return f;
+	}
+	
 	/**
 	 * Only adds foto if album belongs to user.
 	 * @param a

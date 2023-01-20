@@ -29,6 +29,7 @@ public class Foto extends Publication {
 		super(creator, titulo, fechaPublicacion, descripcion, likes, hashtags, comentarios);
 		this.path = path;
 	}
+	
 
 	public String getPath() {
 		return path;

@@ -63,12 +63,18 @@ public class Controller implements PropertyChangeListener {
 		// TODO Auto-generated method stub
 
 		umu.tds.fotos.Fotos fotos = umu.tds.fotos.MapperFotosXMLtoJava.cargarFotos(evt.getNewValue().toString());
+		if (this.currentuser.isEmpty())
+			return;
+		User u = this.currentuser.get();
+		
+		int n = 0;
 		for (umu.tds.fotos.Foto f : fotos.getFoto()) {
-			if (this.currentuser.isEmpty())
-				continue;
-			User u = this.currentuser.get();
-			Foto ph = new Foto(u.getUsername(), f.getTitulo(), new Date(), f.getDescripcion(), f.getPath());
-			this.pubRepo.createPublication(ph);
+//			Foto foto = u.createPhoto(f.getTitulo(), f.getDescripcion(), f.getPath(), f.getHashTags().stream().flatMap(h -> h.getHashTag().stream()).collect(Collectors.toList()));
+			Foto foto = u.createPhoto(f.getTitulo(), f.getDescripcion(), f.getPath(), f.getHashTags().get(0).getHashTag());
+
+			this.pubRepo.createPublication(foto);
+			this.userRepo.updateUser(u);
+
 		}
 
 	}
@@ -391,8 +397,6 @@ public class Controller implements PropertyChangeListener {
 		System.out.println("l: " + l);
 		return l;
 	}
-
-	// TBD busqueda hashtags
 
 	/**
 	 * Method for finding people or hashtags

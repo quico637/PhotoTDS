@@ -37,7 +37,8 @@ public class Publication {
 	public Publication(String creator, String titulo, Date fechaPublicacion, String descripcion, int likes,
 			List<HashTag> hashtags, List<Comentario> comentarios) {
 		this(creator, titulo, fechaPublicacion, descripcion);
-		this.hashtags = getHashTagsFromText(descripcion);
+		this.hashtags = hashtags;
+		System.out.println("FOTOHASTAGS ¿¿¿¿¿¿¿¿¿ " + this.hashtags);
 		this.comentarios = comentarios;
 
 	}
