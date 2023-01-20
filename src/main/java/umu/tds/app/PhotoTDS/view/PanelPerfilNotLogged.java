@@ -106,9 +106,9 @@ public class PanelPerfilNotLogged {
 		panelPerfil = new JPanel();
 		GridBagLayout gbl_panelPerfil = new GridBagLayout();
 		gbl_panelPerfil.columnWidths = new int[]{40, 0, 0, 50, 0, 55, 65, 50, 0};
-		gbl_panelPerfil.rowHeights = new int[]{40, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panelPerfil.rowHeights = new int[]{40, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelPerfil.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelPerfil.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPerfil.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panelPerfil.setLayout(gbl_panelPerfil);
 		
 		JLabel profPic = new JLabel();
@@ -178,12 +178,19 @@ public class PanelPerfilNotLogged {
 		
 		JLabel completeName = new JLabel(use.getNombreCompleto());
 		GridBagConstraints gbc_completeName = new GridBagConstraints();
-		gbc_completeName.anchor = GridBagConstraints.WEST;
-		gbc_completeName.gridwidth = 2;
+		gbc_completeName.gridwidth = 6;
 		gbc_completeName.insets = new Insets(0, 0, 5, 5);
-		gbc_completeName.gridx = 4;
-		gbc_completeName.gridy = 4;
+		gbc_completeName.gridx = 1;
+		gbc_completeName.gridy = 5;
 		panelPerfil.add(completeName, gbc_completeName);
+		
+		JLabel lblNewLabel_2 = new JLabel(this.use.getDescripcion());
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.gridwidth = 6;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 1;
+		gbc_lblNewLabel_2.gridy = 6;
+		panelPerfil.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -191,7 +198,7 @@ public class PanelPerfilNotLogged {
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
-		gbc_scrollPane.gridy = 5;
+		gbc_scrollPane.gridy = 7;
 		panelPerfil.add(scrollPane, gbc_scrollPane);
 		
 		List<JLabel> labels = new LinkedList<>();
@@ -227,7 +234,7 @@ public class PanelPerfilNotLogged {
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_1.gridx = 6;
-		gbc_btnNewButton_1.gridy = 6;
+		gbc_btnNewButton_1.gridy = 8;
 		panelPerfil.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 		GridBagConstraints gbc_logout = new GridBagConstraints();

@@ -139,7 +139,7 @@ public class PanelPublicacion {
 		gbl_seccionComentario.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		seccionComentario.setLayout(gbl_seccionComentario);
 		
-		JLabel lblNewLabel_2 = new JLabel("Comentario: " + this.comentario);
+		JLabel lblNewLabel_2 = new JLabel("Description: " + comentario);
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 0;

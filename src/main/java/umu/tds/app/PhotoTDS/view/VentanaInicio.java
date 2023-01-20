@@ -157,7 +157,7 @@ public class VentanaInicio implements IEncendidoListener {
 		JLabel lblNewLabel = new JLabel("Profile");
 		
 		lblNewLabel.setIcon(
-				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/profileInicio.png")));
+				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/id-card.png")));
 		lblNewLabel.setFont(new Font("Chalkduster", Font.BOLD, 16));
 		panelNorte.add(lblNewLabel, BorderLayout.EAST);
 		
