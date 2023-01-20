@@ -674,9 +674,9 @@ public class Controller implements PropertyChangeListener {
 	
 	public Optional<Publication> getPublication(String user, String title) {
 
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return null;
+//		Optional<User> userOpt = checkLoginAndGetUser(user);
+//		if (userOpt.isEmpty())
+//			return Optional.empty();
 		
 		return this.pubRepo.getPublication(title);
 		

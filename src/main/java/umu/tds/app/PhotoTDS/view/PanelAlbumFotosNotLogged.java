@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.eclipse.persistence.jpa.jpql.parser.DatabaseTypeFactory;
 
 import umu.tds.app.PhotoTDS.controller.Controller;
+import umu.tds.app.PhotoTDS.model.Album;
 import umu.tds.app.PhotoTDS.model.Comentario;
 import umu.tds.app.PhotoTDS.model.Foto;
 import umu.tds.app.PhotoTDS.model.Publication;
@@ -49,7 +50,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.JTextField;
 
-public class PanelFotoNotLogged {
+public class PanelAlbumFotosNotLogged {
 
 	/**
 	 * 
@@ -59,12 +60,12 @@ public class PanelFotoNotLogged {
 	private final static int Y = 150;
 	private JFrame frame;
 
-	private Publication publicacion;
+	private Album publicacion;
 	private String profilePath;
 	private JPanel panel;
+	private static List<Foto> l;
 
 	private String userLogged;
-	private JTextField textField;
 
 	public JFrame getFrame() {
 		return this.frame;
@@ -93,10 +94,11 @@ public class PanelFotoNotLogged {
 
 	}
 
-	public PanelFotoNotLogged(Publication publicacion, String userLogged) {
+	public PanelAlbumFotosNotLogged(Album publicacion, String userLogged) {
 		super();
-		this.publicacion = publicacion;
 		this.userLogged = userLogged;
+		this.publicacion = publicacion;
+		System.out.println("titulo album: " + this.publicacion.getTitulo());
 		initialize();
 	}
 
@@ -110,15 +112,15 @@ public class PanelFotoNotLogged {
 
 		panel = new JPanel();
 		GridBagLayout gbl_panelFoto = new GridBagLayout();
-		gbl_panelFoto.columnWidths = new int[] { 40, 0, 0, 0, 0, 40, 0 };
+		gbl_panelFoto.columnWidths = new int[] { 40, 0, 0, 0, 0, 40, 40, 0 };
 		gbl_panelFoto.rowHeights = new int[] { 40, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panelFoto.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelFoto.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_panelFoto.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panelFoto);
 
 		JLabel userName = new JLabel(publicacion.getCreator() + " : " + publicacion.getTitulo());
 		GridBagConstraints gbc_userName = new GridBagConstraints();
-		gbc_userName.gridwidth = 4;
+		gbc_userName.gridwidth = 5;
 		gbc_userName.insets = new Insets(0, 0, 5, 5);
 		gbc_userName.gridx = 1;
 		gbc_userName.gridy = 1;
@@ -126,66 +128,57 @@ public class PanelFotoNotLogged {
 
 		JLabel profPicEdit = new JLabel();
 		GridBagConstraints gbc_profPicEdit = new GridBagConstraints();
-		gbc_profPicEdit.gridwidth = 4;
+		gbc_profPicEdit.gridwidth = 5;
 		gbc_profPicEdit.gridheight = 3;
 		gbc_profPicEdit.insets = new Insets(0, 0, 5, 5);
 		gbc_profPicEdit.gridx = 1;
 		gbc_profPicEdit.gridy = 2;
 		panel.add(profPicEdit, gbc_profPicEdit);
 		profPicEdit.setBounds(0, 0, 40, 40);
-		Image imageEdit = createImageIcon(((Foto) publicacion).getPath()).getImage().getScaledInstance(380, 380,
-				Image.SCALE_SMOOTH);
+		Image imageEdit;
+		imageEdit = createImageIcon(((Album) publicacion).getFotos().get(0).getPath()).getImage().getScaledInstance(200,
+				200, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(imageEdit);
 		profPicEdit.setIcon(icon);
-
-		JLabel lblNewLabel = new JLabel("");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 5;
-		panel.add(lblNewLabel, gbc_lblNewLabel);
-		lblNewLabel.setText(Integer.toString(publicacion.getLikes()));
-
-		JButton like = new JButton("");
-		like.setIcon(new ImageIcon(PanelFotoNotLogged.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
-		GridBagConstraints gbc_like = new GridBagConstraints();
-		gbc_like.fill = GridBagConstraints.HORIZONTAL;
-		gbc_like.insets = new Insets(0, 0, 5, 5);
-		gbc_like.gridx = 2;
-		gbc_like.gridy = 5;
-		panel.add(like, gbc_like);
-		like.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				Controller.getInstancia().meGusta(publicacion, userLogged);
-			}
-		});
-
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 5;
-		panel.add(textField, gbc_textField);
-		textField.setColumns(10);
-
-		JButton send = new JButton("");
-		send.setIcon(new ImageIcon(PanelFotoNotLogged.class.getResource("/umu/tds/app/PhotoTDS/images/send.png")));
-		GridBagConstraints gbc_send = new GridBagConstraints();
-		gbc_send.fill = GridBagConstraints.HORIZONTAL;
-		gbc_send.insets = new Insets(0, 0, 5, 5);
-		gbc_send.gridx = 4;
-		gbc_send.gridy = 5;
-		panel.add(send, gbc_send);
-		send.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				Controller.getInstancia().addComentario(publicacion, textField.getText(), userLogged);
-			}
-		});
+				
+						JButton btnNewButton = new JButton("");
+						btnNewButton.addActionListener(e -> {
+							// Hay que cambiarlo a AlbumAddWindow - Crealo yulari mentiendono
+							AlbumWindowFotos pw = new AlbumWindowFotos(userLogged, publicacion);
+							pw.showWindow(frame);
+						});
+								
+										JLabel lblNewLabel = new JLabel("");
+										GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+										gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+										gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+										gbc_lblNewLabel.gridx = 1;
+										gbc_lblNewLabel.gridy = 5;
+										panel.add(lblNewLabel, gbc_lblNewLabel);
+										lblNewLabel.setText(Integer.toString(publicacion.getLikes()));
+						
+								JButton like = new JButton("");
+								like.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+									}
+								});
+								like.setIcon(new ImageIcon(PanelAlbumFotosNotLogged.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
+								GridBagConstraints gbc_like = new GridBagConstraints();
+								gbc_like.fill = GridBagConstraints.HORIZONTAL;
+								gbc_like.insets = new Insets(0, 0, 5, 5);
+								gbc_like.gridx = 2;
+								gbc_like.gridy = 5;
+								panel.add(like, gbc_like);
+								like.addMouseListener(new MouseAdapter() {
+									public void mouseClicked(MouseEvent e) {
+										Controller.getInstancia().meGusta(publicacion, userLogged);
+									}
+								});
+		
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 4;
+		gbc_scrollPane.gridwidth = 5;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
@@ -193,11 +186,14 @@ public class PanelFotoNotLogged {
 		panel.add(scrollPane, gbc_scrollPane);
 
 		List<JLabel> labels = new LinkedList<>();
-		List<Comentario> l = publicacion.getComentarios();
-		for (Comentario p : l) {
-			JLabel etiqueta = new JLabel(p.getAutor() + " : " + p.getTexto() + " -- " + p.getFechaPublicacion());
+		l = ((Album) publicacion).getFotos();
+		for (Foto p : l) {
+			JLabel etiqueta = new JLabel();
+			Image imagen = createImageIcon(((Foto) p).getPath()).getImage().getScaledInstance(X, Y, Image.SCALE_SMOOTH);
+			ImageIcon icono = new ImageIcon(imagen);
+			etiqueta.setIcon(icono);
 			labels.add(etiqueta);
-			System.out.println("Comentarios: " + p);
+			System.out.println("Publicacion: " + p);
 		}
 
 		DefaultListModel<Component> demoList = new DefaultListModel<>();
@@ -209,7 +205,6 @@ public class PanelFotoNotLogged {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
-		
 
 	}
 
@@ -229,7 +224,12 @@ public class PanelFotoNotLogged {
 				Component renderer = (Component) value;
 				if (renderer instanceof JLabel) {
 					if (isSelected) {
-						JLabel l = (JLabel) value;
+						JPanel panelFoto = new PanelFoto(l.get(index), l.get(index).getCreator()).getPanel();
+						JPanel panelCentralCardLayout = VentanaInicio.getPanelCentralCardLayout();
+						panelCentralCardLayout.add(panelFoto, "panelFoto");
+						CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
+						cl.show(panelCentralCardLayout, "panelFoto");
+						System.out.println("Fotico golfa");
 					}
 
 					((JLabel) renderer).setBackground(index % 2 == 0 ? background : defaultBackground);

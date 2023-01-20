@@ -65,6 +65,8 @@ public class VentanaInicio implements IEncendidoListener {
 	private JTextField textField;
 	private static JPanel panelBusquedaClicked;
 	
+	private static List<Object> l2 = new LinkedList<>();
+	
 	private static JPanel panelCentralCardLayout;
 	
 	private static String user;
@@ -145,7 +147,7 @@ public class VentanaInicio implements IEncendidoListener {
 		
 					
 		JLabel photoApp = new JLabel("PhotoApp");
-		photoApp.setFont(new Font("Segoe Script", Font.PLAIN, 20));
+		photoApp.setFont(new Font("Chalkduster", Font.PLAIN, 20));
 
 
 		photoApp.setIcon(
@@ -156,7 +158,7 @@ public class VentanaInicio implements IEncendidoListener {
 		
 		lblNewLabel.setIcon(
 				new ImageIcon(VentanaInicio.class.getResource("/umu/tds/app/PhotoTDS/images/profileInicio.png")));
-		lblNewLabel.setFont(new Font("Segoe Script", Font.BOLD, 16));
+		lblNewLabel.setFont(new Font("Chalkduster", Font.BOLD, 16));
 		panelNorte.add(lblNewLabel, BorderLayout.EAST);
 		
 	
@@ -262,11 +264,14 @@ public class VentanaInicio implements IEncendidoListener {
 		panelCentralCardLayout.add(panelEdit, "panelEdit");
 	}
 	
-	private static void initializeBusquedaClickedPanel(String u) {
+	private static void initializeBusquedaClickedPanel(String u, Object pub) {
 		JPanel panelBusquedaClicked;
 		if(Controller.getInstancia().getUser(u).isPresent())
 			panelBusquedaClicked = new PanelPerfilNotLogged(u, user).getPanelPerfil();
-		else {
+		else if (pub instanceof Album) {
+				panelBusquedaClicked = new PanelAlbumFotosNotLogged((Album)pub, user).getPanel();
+			
+		}	else {
 			PanelFotoNotLogged p = new PanelFotoNotLogged(Controller.getInstancia().getPublication(user, u).get(), user);
 			panelBusquedaClicked = p.getPanel();
 		}
@@ -338,11 +343,11 @@ public class VentanaInicio implements IEncendidoListener {
 		
 		
 		List<Component> labelsBusqueda = new LinkedList<>();
-		List<Object> l = Controller.getInstancia().getBusqueda(user, b);
+		l2 = Controller.getInstancia().getBusqueda(user, b);
 		if(l == null)
 			return;
 		
-		for (Object o : l) {
+		for (Object o : l2) {
 			JLabel label = new JLabel("");
 			label.setFont(new Font("Segoe Script", Font.BOLD, 16));
 			label.setBounds(0, 0, PROFILE_PIC_SIZE, PROFILE_PIC_SIZE);
@@ -372,8 +377,15 @@ public class VentanaInicio implements IEncendidoListener {
 			
 			else if (o instanceof Album) {
 				Album p = ((Album)o);
-				label.setText("[Album] " + p.getTitulo());
+				label.setText(p.getTitulo());
+				
+
+				Image img = createImageIcon(p.getFotos().get(0).getPath()).getImage().getScaledInstance(label.getHeight(), label.getWidth(), Image.SCALE_SMOOTH);
+				ImageIcon icon = new ImageIcon(img);
+				label.setIcon(icon);
+				
 				labelsBusqueda.add(label);
+				
 			}
 			
 		}
@@ -413,7 +425,8 @@ public class VentanaInicio implements IEncendidoListener {
 				if(renderer instanceof JLabel) {
 					if(isSelected) {
 						JLabel l = (JLabel) value;
-						showBusquedaClicked(l.getText());
+						boolean foto;
+						showBusquedaClicked(l.getText(), l2.get(index));
 					}
 					
 					((JLabel)renderer).setBackground(index % 2 == 0 ? background : defaultBackground);
@@ -432,8 +445,8 @@ public class VentanaInicio implements IEncendidoListener {
 		};
 	}
 	
-	private static void showBusquedaClicked(String u) {
-		initializeBusquedaClickedPanel(u);
+	private static void showBusquedaClicked(String u, Object pub) {
+		initializeBusquedaClickedPanel(u, pub);
 		CardLayout cl = (CardLayout) panelCentralCardLayout.getLayout();
 		cl.show(panelCentralCardLayout, "panelBusquedaClicked");
 	}

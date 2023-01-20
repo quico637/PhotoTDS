@@ -133,7 +133,7 @@ public class VentanaLogin {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JLabel photoApp = new JLabel("PhotoApp");
-		photoApp.setFont(new Font("Segoe Script", Font.PLAIN, 32));
+		photoApp.setFont(new Font("Chalkduster", Font.PLAIN, 32));
 		photoApp.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/app/PhotoTDS/images/instagram.png")));
 		panel.add(photoApp);
 

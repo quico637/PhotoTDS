@@ -230,7 +230,11 @@ public class PanelPerfilNotLogged {
 		gbc_btnNewButton_1.gridy = 6;
 		panelPerfil.add(btnNewButton_1, gbc_btnNewButton_1);
 		
-		
+		GridBagConstraints gbc_logout = new GridBagConstraints();
+		gbc_logout.gridwidth = 2;
+		gbc_logout.insets = new Insets(0, 0, 5, 5);
+		gbc_logout.gridx = 1;
+		gbc_logout.gridy = 4;
 		JButton follow = new JButton("");
 		
 		if (Controller.getInstancia().checkFollower(userLogged, user)) {
@@ -246,6 +250,8 @@ public class PanelPerfilNotLogged {
 
 			});
 		}
+		
+		panelPerfil.add(follow, gbc_logout);
 		
 	}
 
