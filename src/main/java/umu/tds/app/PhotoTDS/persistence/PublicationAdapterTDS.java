@@ -237,6 +237,10 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			} else if (prop.getNombre().equals("hashtags")) {
 				prop.setValor(obtenerCodigosHashTags(p.getHashTags()));
 			} else if (prop.getNombre().equals("comentarios")) {
+				
+				ComentarioAdapterTDS adaptadorCom = (ComentarioAdapterTDS) ComentarioAdapterTDS.getInstance();
+				p.getComentarios().stream().forEach(c -> adaptadorCom.createComentario(c));
+				
 				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
 			} else if (prop.getNombre().equals("path")) {
 				prop.setValor(p.getPath());
@@ -262,6 +266,11 @@ public class PublicationAdapterTDS implements IPublicationDAO {
 			} else if (prop.getNombre().equals("hashtags")) {
 				prop.setValor(obtenerCodigosHashTags(p.getHashTags()));
 			} else if (prop.getNombre().equals("comentarios")) {
+				
+
+				ComentarioAdapterTDS adaptadorCom = (ComentarioAdapterTDS) ComentarioAdapterTDS.getInstance();
+				p.getComentarios().stream().forEach(c -> adaptadorCom.createComentario(c));
+				
 				prop.setValor(obtenerCodigosComentarios(p.getComentarios()));
 			} else if (prop.getNombre().equals("fotos")) {
 				prop.setValor(obtenerCodigosFotos(p.getFotos()));

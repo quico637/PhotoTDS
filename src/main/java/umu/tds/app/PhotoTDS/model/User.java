@@ -133,6 +133,14 @@ public class User {
 		return true;
 	}
 	
+	public boolean unfollow(User u) {
+		if(!this.usuariosSeguidos.contains(u))
+			return false;
+		
+		this.usuariosSeguidos.remove(u);
+		return true;
+	}
+	
 	public boolean addFollower(User f) {
 		if(this.usuariosSeguidores.contains(f))
 			return false;
@@ -140,6 +148,15 @@ public class User {
 		this.usuariosSeguidores.add(f);
 		return true;
 	}
+	
+	public boolean removeFollower(User f) {
+		if(!this.usuariosSeguidores.contains(f))
+			return false;
+		
+		this.usuariosSeguidores.remove(f);
+		return true;
+	}
+	
 	
 	public Foto createPhoto(String titulo, String descripcion, String path) {
 		Foto f = new Foto(this.username, titulo, new Date(), descripcion, path);

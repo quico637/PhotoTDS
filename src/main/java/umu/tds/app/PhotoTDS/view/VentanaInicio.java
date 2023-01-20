@@ -265,9 +265,9 @@ public class VentanaInicio implements IEncendidoListener {
 	private static void initializeBusquedaClickedPanel(String u) {
 		JPanel panelBusquedaClicked;
 		if(Controller.getInstancia().getUser(u).isPresent())
-			panelBusquedaClicked = new PanelPerfil(u, user).getPanelPerfil();
+			panelBusquedaClicked = new PanelPerfilNotLogged(u, user).getPanelPerfil();
 		else {
-			PanelFoto p = new PanelFoto(Controller.getInstancia().getPublication(user, u).get(), u);
+			PanelFotoNotLogged p = new PanelFotoNotLogged(Controller.getInstancia().getPublication(user, u).get(), user);
 			panelBusquedaClicked = p.getPanel();
 		}
 		panelCentralCardLayout.add(panelBusquedaClicked, "panelBusquedaClicked");

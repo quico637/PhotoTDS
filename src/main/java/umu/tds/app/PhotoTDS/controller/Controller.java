@@ -275,22 +275,30 @@ public class Controller implements PropertyChangeListener {
 	}
 
 	public boolean meGusta(Publication pub, String user) {
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
 
+		Optional<User> userOpt = this.userRepo.getUser(pub.getCreator());
+		User creator = userOpt.get();
+		
 		pub.addMeGusta();
 		this.pubRepo.updatePublication(pub);
+//		this.userRepo.updateUser(creator);
+		
 
 		return true;
 	}
 
 	public boolean addComentario(Publication pub, String comentario, String user) {
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty())
-			return false;
-		pub.anadirComentarios(comentario, userOpt.get().getUsername());
+
+//		Optional<User> userOpt = this.userRepo.getUser(user);
+//		if(userOpt.isEmpty())
+//			return false;
+		
+		Optional<User> creatorOpt = this.userRepo.getUser(pub.getCreator());
+		
+	
+		pub.anadirComentarios(comentario, this.userRepo.getUser(user).get().getUsername());
 		this.pubRepo.updatePublication(pub);
+//		this.userRepo.updateUser(creatorOpt.get());
 
 		return true;
 	}
@@ -603,6 +611,33 @@ public class Controller implements PropertyChangeListener {
 
 		return true;
 	}
+	
+	public boolean unfollow(String user, String unfollow) {
+		Optional<User> userOpt = checkLoginAndGetUser(user);
+		if (userOpt.isEmpty())
+			return false;
+
+		User u = userOpt.get();
+
+		Optional<User> us = this.userRepo.getUser(user);
+
+		if (us.isEmpty())
+			return false;
+
+		Optional<User> newUnfollowedOpt = this.userRepo.getUser(unfollow);
+		if (newUnfollowedOpt.isEmpty())
+			return false;
+
+		User newFollowed = newUnfollowedOpt.get();
+
+		if (u.unfollow(newFollowed))
+			this.userRepo.updateUser(u);
+
+		if (newFollowed.removeFollower(u))
+			this.userRepo.updateUser(newFollowed);
+
+		return true;
+	}
 
 	public List<Publication> getMoreLikedFotos(String user) {
 
@@ -687,16 +722,16 @@ public class Controller implements PropertyChangeListener {
 	 * @param f
 	 * @return true or false
 	 */
-	public boolean checkFollower(String user, String f) {
+	public boolean checkFollower(String f, String user) {
 
 		// check if user is logged
-		Optional<User> userOpt = checkLoginAndGetUser(user);
-		if (userOpt.isEmpty()) {
-			System.out.println("checkFollower(): user not logged");
-			return false;
-		}
+//		Optional<User> userOpt = checkLoginAndGetUser(user);
+//		if (userOpt.isEmpty()) {
+//			System.out.println("checkFollower(): user not logged");
+//			return false;
+//		}
 
-		User u = userOpt.get();
+		User u = this.userRepo.getUser(user).get();
 
 		Optional<User> followerOp = this.userRepo.getUser(f);
 		if (followerOp.isEmpty()) {
@@ -706,7 +741,9 @@ public class Controller implements PropertyChangeListener {
 
 		User follower = followerOp.get();
 
-		return u.getUsuariosSeguidores().contains(follower);
+		return u.getUsuariosSeguidores().stream()
+				.map(User::getUsername)
+				.anyMatch(un -> un.equals(f));
 	}
 	
 	

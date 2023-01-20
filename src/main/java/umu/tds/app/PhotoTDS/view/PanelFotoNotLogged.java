@@ -49,7 +49,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.JTextField;
 
-public class PanelFoto {
+public class PanelFotoNotLogged {
 
 	/**
 	 * 
@@ -93,7 +93,7 @@ public class PanelFoto {
 
 	}
 
-	public PanelFoto(Publication publicacion, String userLogged) {
+	public PanelFotoNotLogged(Publication publicacion, String userLogged) {
 		super();
 		this.publicacion = publicacion;
 		this.userLogged = userLogged;
@@ -147,7 +147,7 @@ public class PanelFoto {
 		lblNewLabel.setText(Integer.toString(publicacion.getLikes()));
 
 		JButton like = new JButton("");
-		like.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
+		like.setIcon(new ImageIcon(PanelFotoNotLogged.class.getResource("/umu/tds/app/PhotoTDS/images/love.png")));
 		GridBagConstraints gbc_like = new GridBagConstraints();
 		gbc_like.fill = GridBagConstraints.HORIZONTAL;
 		gbc_like.insets = new Insets(0, 0, 5, 5);
@@ -170,7 +170,7 @@ public class PanelFoto {
 		textField.setColumns(10);
 
 		JButton send = new JButton("");
-		send.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/send.png")));
+		send.setIcon(new ImageIcon(PanelFotoNotLogged.class.getResource("/umu/tds/app/PhotoTDS/images/send.png")));
 		GridBagConstraints gbc_send = new GridBagConstraints();
 		gbc_send.fill = GridBagConstraints.HORIZONTAL;
 		gbc_send.insets = new Insets(0, 0, 5, 5);
@@ -209,18 +209,6 @@ public class PanelFoto {
 		jList.ensureIndexIsVisible(jList.getHeight());
 		jList.setCellRenderer(createListRenderer());
 		scrollPane.setViewportView(jList);
-		
-		JButton deleteBtn = new JButton("");
-		deleteBtn.addActionListener(e -> {
-			if(!Controller.getInstancia().removePublication(userLogged, publicacion))
-				System.out.println("User Not logged in PanelFoto.");
-		});
-		deleteBtn.setIcon(new ImageIcon(PanelFoto.class.getResource("/umu/tds/app/PhotoTDS/images/delete.png")));
-		GridBagConstraints gbc_deleteBtn = new GridBagConstraints();
-		gbc_deleteBtn.insets = new Insets(0, 0, 0, 5);
-		gbc_deleteBtn.gridx = 1;
-		gbc_deleteBtn.gridy = 8;
-		panel.add(deleteBtn, gbc_deleteBtn);
 
 	}
 
