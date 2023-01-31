@@ -12,6 +12,4 @@ public class App {
 	  VentanaLogin.main(args);
   }
   
-  
-  // buenas
 } 
